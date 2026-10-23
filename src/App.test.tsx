@@ -1,10 +1,10 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 
 describe('Freequiz', () => {
   beforeEach(() => localStorage.clear())
-  afterEach(() => cleanup())
+  afterEach(() => { cleanup(); vi.useRealTimers() })
 
   it('shows the calm overview and demo library', () => {
     render(<App />)
@@ -43,6 +43,30 @@ describe('Freequiz', () => {
     fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
     expect(screen.getByLabelText('Time limit (minutes)')).toBeInTheDocument()
     expect(screen.getByLabelText('Answer type')).toBeInTheDocument()
+  })
+
+  it('withholds correctness feedback until a timed exam is submitted', () => {
+    render(<App />)
+    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
+    fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
+    expect(screen.getByText(/Exam mode/)).toBeInTheDocument()
+    expect(screen.queryByText(/Correct\. Nice work\./)).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Finish now' }))
+    expect(screen.getByRole('heading', { name: 'Exam results' })).toBeInTheDocument()
+    expect(screen.getByText(/0 correct out of 2 questions/)).toBeInTheDocument()
+  })
+
+  it('automatically submits a timed exam when its timer expires', () => {
+    vi.useFakeTimers()
+    render(<App />)
+    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
+    fireEvent.change(screen.getByLabelText('Time limit (minutes)'), { target: { value: '1' } })
+    fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
+    act(() => { vi.advanceTimersByTime(60_000) })
+    expect(screen.getByRole('heading', { name: 'Exam results' })).toBeInTheDocument()
+    expect(screen.getByText(/0 correct out of 2 questions/)).toBeInTheDocument()
   })
 
 })
