@@ -10,6 +10,7 @@ Awaiting explicit user approval. Planning only; no application code changes are 
 - Use native responsive SVG/chart markup unless repository inspection shows a compelling reason to add a dependency.
 - Multi-section selection is additive: each checked section includes itself and descendants; the final question set is deduplicated by stable question ID.
 - Keep the home screen concise. Put full chart controls and deeper breakdowns in Statistics.
+- The AI prompt generator outputs a reusable instruction preamble only; source material is supplied directly to the external AI by the user, not entered into Freequiz.
 
 ## Phase 0: Inspect and baseline
 1. Review current overview/setup, timeline/statistics, domain types, styles, tests, storage and service worker.
@@ -44,7 +45,14 @@ Awaiting explicit user approval. Planning only; no application code changes are 
 3. Improve empty states, clear-selection behaviour, keyboard navigation, focus visibility, and responsive layout.
 4. Preserve the existing primary Study action and compact menu for secondary features.
 
-## Phase 5: Validate and release
+## Phase 5: Simplify the AI prompt generator
+1. Inspect the existing prompt-generator UI and output format.
+2. Remove the source-document upload/paste inputs and any prompt-generation logic that depends on source content.
+3. Generate a clear reusable instruction preamble explaining the AI's task, desired question quality, supported answer modes (`single`, `exactly-n`, `select-all`), variable option counts, correct-answer format, and explanations.
+4. Make the next step explicit: copy the prompt, then attach the document or paste the source text into the external AI conversation.
+5. Add tests confirming prompt generation works without source content and does not embed source text or call an AI API.
+
+## Phase 6: Validate and release
 1. Run tests, TypeScript check, and production build.
 2. Add regression tests for existing practice/exam behaviour and section filtering.
 3. Verify GitHub Pages deployment and update README/Knowledge Base plus this request's status.
