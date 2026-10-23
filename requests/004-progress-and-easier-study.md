@@ -38,11 +38,13 @@ Make Freequiz feel more motivating and easier to use without adding visual clutt
 - Explain the expected question structure and supported answer modes (`single`, `exactly-n`, and `select-all`), including variable option counts, correct-answer identification, and explanations where appropriate.
 - Keep the workflow local and copy-friendly: generate the prompt, copy it, then attach/paste source material in the external AI. No AI API calls and no source-material upload/paste field in this prompt-generator flow.
 
-## 5. Light gamification
-- Add a compact study-activity calendar/heatmap showing when the learner practised, based on meaningful activity and existing timestamps. Avoid streak pressure or punishment for missed days.
-- Add learning-focused session summaries that highlight meaningful outcomes, such as questions strengthened or first-time mastery, only where existing data supports the claim. Do not reward raw volume alone or claim improvement from tiny samples.
-- Keep these features understated and integrated into the progress experience; no energy systems, leaderboards, noisy animations, or guilt-based streaks.
-- Leave unlockable achievement collections and weekly goals out of this request unless they prove necessary; they can be considered later.
+## 5. Optional, configurable gamification
+- Treat all motivational/gamified elements as optional, not just notifications. A learner should be able to use Freequiz as a clean study tool without milestones, rewards, streaks, or goal pressure.
+- Add a Gamification settings area with a master enable/disable switch and independent controls for each feature, so users can hide individual elements without disabling everything else.
+- Potential independently configurable elements include the activity calendar/heatmap, streaks, milestones and achievements, weekly goals, celebratory effects, and motivational session highlights. Keep ordinary learning statistics, the accuracy graph, and factual session results available regardless of these settings.
+- Add a compact activity calendar/heatmap showing when the learner practised, based on meaningful activity and existing timestamps. Avoid punishment for missed days.
+- Add learning-focused session highlights that report meaningful outcomes, such as questions strengthened or first-time mastery, only where existing data supports the claim. Do not reward raw volume alone or claim improvement from tiny samples.
+- Keep enabled features understated: no energy systems, leaderboards, noisy animations, or guilt-based messages. All settings must be reversible and must not delete study history when switched off.
 
 ## 6. Optional notifications
 - Build a customizable reminder settings area. Users can turn all reminders off or configure each reminder type independently.
@@ -71,6 +73,7 @@ Make Freequiz feel more motivating and easier to use without adding visual clutt
 - Available counts, Due for review, Needs practice, answer-mode filters, and sampled sessions use the same filtered question set.
 - Mobile and desktop layouts remain usable in light/dark mode and all four accent presets.
 - The AI prompt generator outputs only reusable instructions and does not ask the user to upload or paste source material into Freequiz.
+- Every gamified element (including milestones/achievements, streaks, activity heatmap, weekly goals, celebrations, and motivational session highlights) can be toggled off independently; a master switch can disable all gamification. Ordinary progress charts and factual results remain available.
 - The activity calendar and session summaries use grounded existing study data and avoid inflated or unsupported claims.
 - Notifications are opt-in, off by default, individually configurable, and accurately documented for supported browsers. Daily/weekly schedules, local time, optional weekly targets, and goal-aware reminder behaviour must be covered by tests.
 - Tests cover trend aggregation, sparse/empty data, date boundaries, overlapping section selection, nested sections, and session filtering.
