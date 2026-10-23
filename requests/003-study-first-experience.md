@@ -1,7 +1,8 @@
 # Request 003: Simple study-first experience and study tools
 
 ## Status
-Drafted on 2026-10-23; awaiting explicit user approval. No application code has been changed for this request.
+Approved by the user on 2026-10-23. Implementation is in progress in [PR #1](https://github.com/OliverZsuffa/freequiz/pull/1). Verification and deployment are pending.
+
 
 ## Goal
 Make Freequiz feel like a simple study tool rather than a collection of features. The primary loop should be obvious to a first-time user, even one who struggles with complicated interfaces:
