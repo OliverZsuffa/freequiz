@@ -22,6 +22,8 @@ jobs:
       - name: Type check, test, and build
         run: npm run test && npm run build
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
