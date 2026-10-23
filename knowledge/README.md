@@ -36,7 +36,11 @@ Freequiz is a private, client side only progressive web app for organising and p
 - Question editor supports adding and editing questions, variable option counts, explanations, and multiple correct answers; edits retain the question ID.
 - Favourites and reusable custom study groups are profile-local and available as session sources.
 - Section selection/filtering includes the selected section and all descendants for library lists, counts, practice, and exam source selection.
-- Session results include score/accuracy visuals and a topic breakdown. Statistics include practice summaries and separate exam history.
+- Session results include score/accuracy visuals and a topic breakdown. Statistics include practice accuracy trends, mastered-question trends, and separate exam history.
+- Session setup supports multiple selected sections and deduplicates questions across parent/child selections.
+- Gamification elements (activity, streaks, milestones, weekly goals, celebrations, and motivational highlights) are independently configurable; ordinary charts and factual results remain available when gamification is off.
+- Weekly goals and opt-in reminders are configurable. Reminder delivery is checked while the app is open only; closed-app delivery is not guaranteed.
+- AI prompt generation outputs reusable instructions without collecting source material in Freequiz.
 - Four persisted accent presets (blue, purple, orange, green), plus dark/light appearance.
 - Import assistant validates JSON and previews merge/replace; AI prompt generation remains local and does not call an API.
 - IndexedDB persistence with localStorage fallback, profile backup export, responsive layout, PWA manifest/service worker, and GitHub Pages deployment workflow.
@@ -44,7 +48,8 @@ Freequiz is a private, client side only progressive web app for organising and p
 ## Known limitations
 - Section creation currently adds top-level sections only. Imported nested sections display and filter correctly, but nested creation/moving and section renaming are not yet available.
 - The editor preserves existing tags but does not yet offer tag editing or a question-delete action.
-- Statistics do not yet include a daily practice trend chart; the timeline remains a list of recent attempts, while session results show topic bars.
+- Historical mastery trends use the current question bank, so deleted questions are excluded.
+- Reminder checks run only while the app is open; reliable closed-app delivery requires supported push infrastructure.
 - Review scheduling remains a simple heuristic without configurable policy.
 - Full backup export includes all profiles, but importing a backup does not restore all profile metadata, histories, favourites, groups, or exams; import currently applies question-bank content to the active profile.
 - Edited questions keep their IDs. If an option's text changes, its old option ID may no longer be retained, so older attempts referencing that option are historical events rather than a snapshot of the old question wording.
