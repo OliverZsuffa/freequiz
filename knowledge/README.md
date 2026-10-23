@@ -46,6 +46,11 @@ Freequiz is a private, client side only progressive web app for organising and p
 - PWA caching needs a deployed browser smoke test. Google Fonts are optional styling resources and may not load offline.
 - Browser persistence does not synchronise across devices.
 
+## Verification record
+- GitHub Actions run `39993205768` confirmed the unit tests and TypeScript/production build step passed on commit `51311d1568a2058cb8fcce7bba4ae0f274c9e191`.
+- The Pages configuration step failed because the repository does not yet have GitHub Pages enabled. The workflow is configured, but an owner must enable it under Settings → Pages → Build and deployment → Source → GitHub Actions. The `configure-pages` action cannot enable the site with the default `GITHUB_TOKEN`.
+- After Pages is enabled, rerun the latest workflow or push a new commit, then verify the deployment job and published URL. A live browser and offline smoke test has not yet been performed.
+
 ## Working process
 1. Read this Knowledge Base and relevant request documents before planning changes.
 2. Document an implementation plan under `requests/`.
