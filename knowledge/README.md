@@ -28,12 +28,12 @@ Freequiz is a private, client side only progressive web app for organising and p
 - Question schema identifier: `freequiz/questions-v1`; backup identifier: `freequiz/backup-v1`.
 
 ## Current implementation
-- Dashboard with profile switching, mastery summaries, section overview, and practice shortcuts.
+- Redesigned calm, content-first dashboard with one primary practice action, compact mastery summary, three session modes, and a quiet section list.
 - Quiz runner with one question at a time, feedback, and explanations.
 - Library search, section filtering, manual single answer question creation, and question specific practice.
 - Import assistant with JSON validation and preview, merge or replace, and AI prompt generation.
 - Attempt timeline and current mastery review list.
-- Dark and light appearance, responsive styles, IndexedDB and localStorage fallback, PWA manifest and service worker.
+- Dark and light appearance with the selected theme persisted in localStorage; responsive styles, IndexedDB and localStorage fallback for app data, PWA manifest and service worker.
 - GitHub Pages workflow at `.github/workflows/pages.yml`.
 
 ## Known limitations
@@ -47,6 +47,7 @@ Freequiz is a private, client side only progressive web app for organising and p
 - Browser persistence does not synchronise across devices.
 
 ## Verification record
+- Request 002 UI redesign committed to `main` on 2026-10-23. Latest GitHub Actions run: `39996154220` (in progress at the time of this update); wait for completion before claiming tests/build/deployment passed. A real-browser visual and mobile smoke test has not been performed from this environment.
 - GitHub Actions run `39993205768` confirmed the unit tests and TypeScript/production build step passed on commit `51311d1568a2058cb8fcce7bba4ae0f274c9e191`.
 - The Pages configuration step failed because the repository does not yet have GitHub Pages enabled. The workflow is configured, but an owner must enable it under Settings → Pages → Build and deployment → Source → GitHub Actions. The `configure-pages` action cannot enable the site with the default `GITHUB_TOKEN`.
 - After Pages is enabled, rerun the latest workflow or push a new commit, then verify the deployment job and published URL. A live browser and offline smoke test has not yet been performed.
