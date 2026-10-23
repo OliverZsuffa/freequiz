@@ -55,8 +55,10 @@ Freequiz is a private, client side only progressive web app for organising and p
 - Edited questions keep their IDs. If an option's text changes, its old option ID may no longer be retained, so older attempts referencing that option are historical events rather than a snapshot of the old question wording.
 - PWA caching has not had a manual browser/device/offline smoke test. Optional external fonts may not load offline.
 - Browser persistence does not synchronise across devices.
+- Manual desktop/mobile/offline smoke testing and real-world notification timing were not performed from this environment. Reminder delivery is only checked while the app is open.
 
 ## Verification record
+- Request 004 PR #3 passed 27 automated tests, TypeScript check, and production build on PR head `7d23789193738fb0784df8f251a29626539505b1` (workflow run [`40032130448`](https://github.com/OliverZsuffa/freequiz/actions/runs/40032130448)). The merged main deployment, including documentation status updates, passed build and GitHub Pages deployment in run [`40032234099`](https://github.com/OliverZsuffa/freequiz/actions/runs/40032234099).
 - Request 002 UI redesign passed GitHub Actions run `39996335067` on commit `40e41440152df183b76309814f72e6412528aa75`.
 - Request 003 passed the PR workflow run [`40029404119`](https://github.com/OliverZsuffa/freequiz/actions/runs/40029404119) on PR head `b6b509caaceb49929b71c4cd104051019089620a`: TypeScript check, tests, production build, Pages configuration, and artifact upload succeeded.
 - The merged main commit is `b881a6821a08cbc8636ad08f003de3ecc58569df`. GitHub Actions run [`40029476793`](https://github.com/OliverZsuffa/freequiz/actions/runs/40029476793) passed tests, TypeScript check, production build, Pages configuration, artifact upload, and GitHub Pages deployment.
