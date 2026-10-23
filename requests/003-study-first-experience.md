@@ -96,3 +96,14 @@ Keep the rich capabilities, but reveal secondary tools only when relevant or ins
 - All four accent presets persist and remain readable in light and dark modes.
 - Existing features and data imports remain compatible; TypeScript checks, tests, and production build pass.
 - Any browser, mobile, offline, or live-deployment checks not performed are explicitly reported rather than assumed successful.
+
+
+## Additional requirements: answer modes and option randomization
+
+- Randomize displayed answer-option order for each new question presentation/session. Keep stable option IDs attached to their text so grading, editing, imports and history remain correct. Do not reshuffle while the learner is answering the same question.
+- Support explicit per-question answer modes: **single answer**, **exactly N answers** (show the required count), and **select all that apply** (do not reveal how many are correct).
+- These are distinct instructions/interactions, not just a guess based on the number of correct options. Validate that mode and correct-answer count agree.
+- For old/imported questions with no mode, default one correct option to single answer and multiple correct options to select-all-that-apply. Never infer exactly-N automatically.
+- The question editor must allow a variable number of options, at least two and without an arbitrary low cap. Option IDs and displayed labels must continue to work beyond 26 options.
+- Add answer-mode filters to the question library and session setup; apply them consistently to practice and exams.
+- Add tests for randomized option display with stable IDs, all three modes, filtering, backwards-compatible imports, and large option lists.
