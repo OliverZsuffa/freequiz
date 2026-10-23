@@ -12,7 +12,7 @@ Awaiting explicit user approval. Planning only; no application code changes are 
 - Keep the home screen concise. Put full chart controls and deeper breakdowns in Statistics.
 - The AI prompt generator outputs a reusable instruction preamble only; source material is supplied directly to the external AI by the user, not entered into Freequiz.
 - Gamification stays subtle and learning-focused: an activity heatmap and evidence-based session summary, not streak pressure or rewards for raw volume.
-- Notifications are opt-in and off by default; do not promise reliable background delivery unless the current PWA/browser architecture actually supports it.
+- Notifications are opt-in and off by default, with independently configurable schedules and optional weekly targets; do not promise reliable background delivery unless the current PWA/browser architecture actually supports it.
 
 ## Phase 0: Inspect and baseline
 1. Review current overview/setup, timeline/statistics, domain types, styles, tests, storage and service worker.
@@ -61,11 +61,13 @@ Awaiting explicit user approval. Planning only; no application code changes are 
 4. Test empty history, date grouping, and session summaries with sparse and substantial data.
 
 ## Phase 7: Assess and implement optional notifications
-1. Inspect current PWA/service-worker capabilities and browser support before choosing an implementation.
-2. Provide an explicit opt-in setting and request notification permission only after a user action.
-3. Implement only reminder types that can be delivered honestly without a backend; explain foreground/background and installed-PWA limitations.
-4. Ensure notifications can be disabled and do not create repeated or guilt-inducing prompts.
-5. Test permission-denied, unsupported, disabled, and scheduled/reminder states where feasible.
+1. Inspect current PWA/service-worker capabilities and browser support before choosing an implementation; determine what can work without a backend and what requires push infrastructure.
+2. Design a reminder settings area with a global off switch, per-type controls, daily/weekly/custom-day schedules, and a user-chosen local time.
+3. Add an optional weekly target for questions answered or study days, with a transparent pacing rule for goal-aware reminders.
+4. Allow reminders without a goal, goals without frequent reminders, temporary pause, and complete opt-out.
+5. Request notification permission only after an explicit user action; implement only delivery behaviour that can be supported honestly and explain limitations.
+6. Prevent duplicate or unnecessary reminders, stop goal-aware reminders when the target is met, and avoid guilt-based copy.
+7. Test target calculations, week boundaries, schedule settings, permission-denied, unsupported, disabled, and paused states where feasible.
 
 ## Phase 8: Validate and release
 1. Run tests, TypeScript check, and production build.
