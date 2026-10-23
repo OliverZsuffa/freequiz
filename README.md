@@ -18,8 +18,12 @@ Freequiz is a client side only, installable quiz app for building question banks
 - Transparent mastery labels: New, Learning, Known, Needs work, and Weak
 - Practice all questions, new questions, weak questions, or questions due for review
 - JSON import with validation and preview, plus profile backup and export
-- AI prompt generator that includes your existing section tree and JSON contract
+- AI prompt generator that creates reusable instructions; source material is supplied directly to your chosen external AI
 - Learning timeline, mastery summaries, dark and light appearance
+- Practice accuracy trend chart with date ranges and a separate mastered-question trend
+- Multi-section session filters with descendant inclusion and deduplication
+- Independently configurable activity heatmap, streaks, milestones, weekly goals, celebrations, and session highlights
+- Opt-in reminders checked while the app is open; closed-app delivery is not guaranteed
 - IndexedDB persistence with localStorage fallback
 - Installable PWA and service worker for offline app shell caching
 - Responsive layout
