@@ -1,7 +1,7 @@
 # Request 003: Simple study-first experience and study tools
 
 ## Status
-Approved by the user on 2026-10-23. Implementation is in progress in [PR #1](https://github.com/OliverZsuffa/freequiz/pull/1). Verification and deployment are pending.
+Implemented and merged on 2026-10-23 in [PR #1](https://github.com/OliverZsuffa/freequiz/pull/1). Automated tests, TypeScript check, production build, and GitHub Pages deployment passed. Manual browser/device/offline smoke testing remains outstanding.
 
 
 ## Goal
