@@ -8,7 +8,13 @@ Freequiz is a client side only, installable quiz app for building question banks
 
 - Multiple profiles with independent question banks and practice history
 - Nested section display, question search, tags, and section filters
-- One question at a time, immediate feedback, and explanations
+- Study-first home screen with source/count setup and a compact secondary-tools menu
+- Randomized answer order with stable option IDs; variable option counts, including more than 26 choices
+- Explicit single-answer, exactly-N, and select-all modes with answer-mode filters
+- Immediate feedback in practice and strict timed exams with results at submission
+- Question editing, favourites, reusable custom study groups, and nested-section filtering
+- Visual session results, topic breakdowns, practice history, and separate exam history
+- Four persisted accent presets: blue, purple, orange, and green
 - Transparent mastery labels: New, Learning, Known, Needs work, and Weak
 - Practice all questions, new questions, weak questions, or questions due for review
 - JSON import with validation and preview, plus profile backup and export
@@ -55,7 +61,7 @@ The canonical format is `freequiz/questions-v1`.
 }
 ```
 
-Correct answers reference option IDs. Multiple IDs support multiple select questions. A simple question array is also accepted, with an integer `answer` index or string `answer` option ID.
+Correct answers reference option IDs. `answerMode` can be `single`, `exactly-n`, or `select-all`. Older files without `answerMode` remain supported: one correct ID defaults to `single`, multiple IDs default to `select-all`. Exactly-N is never guessed for older files. Option count is variable, with at least two options. A simple question array is also accepted, with an integer `answer` index or string `answer` option ID.
 
 ## Data and privacy
 
