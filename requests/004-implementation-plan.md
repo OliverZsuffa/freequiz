@@ -1,7 +1,7 @@
 # Request 004 implementation plan
 
 ## Status
-Awaiting explicit user approval. Planning only; no application code changes are authorised yet.
+Approved and implemented in PR #3. PR checks passed; verify the main-branch deployment before marking release verification complete.
 
 ## Design decisions
 - Primary chart: practice accuracy over time, based only on practice attempts.
