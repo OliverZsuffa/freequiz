@@ -1,8 +1,12 @@
 export type Option = { id: string; text: string }
-export type Question = { id: string; prompt: string; options: Option[]; correctOptionIds: string[]; sectionId: string | null; explanation?: string; tags?: string[] }
+export type AnswerMode = 'single' | 'exactly-n' | 'select-all'
+export type Question = { id: string; prompt: string; options: Option[]; correctOptionIds: string[]; answerMode?: AnswerMode; sectionId: string | null; explanation?: string; tags?: string[] }
+export type QuestionGroup = { id: string; name: string; questionIds: string[] }
+export type ExamResponse = { questionId: string; selectedOptionIds: string[]; correct: boolean }
+export type ExamSession = { id: string; at: string; source: string; timeLimitSeconds: number; durationSeconds: number; responses: ExamResponse[]; score: number }
 export type Section = { id: string; name: string; parentId: string | null }
 export type Attempt = { id: string; questionId: string; at: string; selectedOptionIds: string[]; correct: boolean }
-export type Profile = { id: string; name: string; sections: Section[]; questions: Question[]; attempts: Attempt[] }
+export type Profile = { id: string; name: string; sections: Section[]; questions: Question[]; attempts: Attempt[]; favourites?: string[]; groups?: QuestionGroup[]; exams?: ExamSession[] }
 export type Store = { version: 1; activeProfileId: string; profiles: Profile[] }
 export type Mastery = 'new' | 'learning' | 'known' | 'needs-work' | 'weak'
 export function masteryFor(attempts: Attempt[], id: string): Mastery {
@@ -32,7 +36,10 @@ export function parseImport(raw: unknown): {sections: Section[]; questions: Ques
   if (!Array.isArray(correct) && typeof q.answer === 'number') correct = [options[q.answer]?.id]
   if (!Array.isArray(correct) && typeof q.answer === 'string') correct = [q.answer]
   if (!Array.isArray(correct) || !correct.length || !correct.every((id:string) => options.some(o=>o.id===id))) throw new Error('Question '+(i+1)+': correctOptionIds must reference existing option IDs.')
-  return {id:typeof q.id==='string'?q.id:crypto.randomUUID(),prompt:q.prompt.trim(),options,correctOptionIds:correct,sectionId:typeof q.sectionId==='string'?q.sectionId:null,explanation:typeof q.explanation==='string'?q.explanation:'',tags:Array.isArray(q.tags)?q.tags.filter((t:any)=>typeof t==='string'):[]}
+  const answerMode = q.answerMode === 'single' || q.answerMode === 'exactly-n' || q.answerMode === 'select-all' ? q.answerMode : (correct.length > 1 ? 'select-all' : 'single')
+  if (answerMode === 'single' && correct.length !== 1) throw new Error('Question '+(i+1)+': single-answer mode requires exactly one correct option.')
+  if (answerMode === 'exactly-n' && correct.length < 2) throw new Error('Question '+(i+1)+': exactly-N mode requires at least two correct options.')
+  return {id:typeof q.id==='string'?q.id:crypto.randomUUID(),prompt:q.prompt.trim(),options,correctOptionIds:correct,answerMode,sectionId:typeof q.sectionId==='string'?q.sectionId:null,explanation:typeof q.explanation==='string'?q.explanation:'',tags:Array.isArray(q.tags)?q.tags.filter((t:any)=>typeof t==='string'):[]}
  })
  return {sections,questions}
 }
