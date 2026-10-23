@@ -45,8 +45,13 @@ Make Freequiz feel more motivating and easier to use without adding visual clutt
 - Leave unlockable achievement collections and weekly goals out of this request unless they prove necessary; they can be considered later.
 
 ## 6. Optional notifications
-- Explore opt-in browser/PWA notifications for a user-chosen study reminder, a gentle weekly-goal reminder if goals are later implemented, and/or due-review reminders only if the existing review logic can reliably identify them.
-- Notifications must be disabled by default, requested only after the user explicitly enables them, and easy to turn off.
+- Build a customizable reminder settings area. Users can turn all reminders off or configure each reminder type independently.
+- Support schedules such as daily, weekly, or selected days of the week, with a user-chosen local time.
+- Support an optional weekly study target, such as a number of questions answered or number of study days. A target must be optional and editable.
+- Support goal-aware reminders: on the user's selected reminder days, notify only when progress indicates they are behind a reasonable pace toward the weekly target; stop when the target is met. Explain the pacing rule in the UI.
+- Keep the reminder schedule and weekly target independent, so users can have reminders without a target or a target with only occasional reminders.
+- Due-review reminders may be offered only if the current review logic can reliably identify due questions.
+- Notifications must be disabled by default, requested only after the user explicitly enables them, and easy to turn off or pause. Each reminder type must be individually configurable.
 - Respect browser/OS permission rules and explain that delivery may depend on browser support, installed-PWA status, and whether the app/browser is allowed to run in the background.
 - Do not add a backend or telemetry. Be explicit about the limits of client-side scheduling; if reliable background delivery is not feasible for the current PWA, implement only reminders that can honestly be supported and document the limitation rather than implying guaranteed delivery.
 - No streak warnings, repeated nags, or milestone spam.
@@ -67,7 +72,7 @@ Make Freequiz feel more motivating and easier to use without adding visual clutt
 - Mobile and desktop layouts remain usable in light/dark mode and all four accent presets.
 - The AI prompt generator outputs only reusable instructions and does not ask the user to upload or paste source material into Freequiz.
 - The activity calendar and session summaries use grounded existing study data and avoid inflated or unsupported claims.
-- Any notifications are opt-in, off by default, controllable, and accurately documented for supported browsers.
+- Notifications are opt-in, off by default, individually configurable, and accurately documented for supported browsers. Daily/weekly schedules, local time, optional weekly targets, and goal-aware reminder behaviour must be covered by tests.
 - Tests cover trend aggregation, sparse/empty data, date boundaries, overlapping section selection, nested sections, and session filtering.
 - Production build, automated tests, and GitHub Pages deployment pass.
 - Do not implement until the user explicitly approves this request and implementation plan.
