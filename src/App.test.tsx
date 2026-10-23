@@ -16,7 +16,8 @@ describe('Freequiz', () => {
 
   it('opens the import assistant', () => {
     render(<App />)
-    fireEvent.click(screen.getAllByRole('button', { name: /Import assistant/i })[0])
+    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
     expect(screen.getByText('Import JSON')).toBeInTheDocument()
     expect(screen.getByText('Ask your AI')).toBeInTheDocument()
   })
@@ -26,4 +27,22 @@ describe('Freequiz', () => {
     fireEvent.click(screen.getByRole('button', { name: /Light appearance/i }))
     expect(localStorage.getItem('freequiz-theme')).toBe('light')
   })
+  it('offers explicit answer modes in the question editor', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.click(screen.getByRole('button', { name: /New question/i }))
+    expect(screen.getByLabelText('Answer mode')).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'Pick exactly N' })).toBeInTheDocument()
+    expect(screen.getByLabelText(/Correct option number/i)).toBeInTheDocument()
+  })
+
+  it('offers a timed exam setup and answer-mode filters', () => {
+    render(<App />)
+    expect(screen.getByLabelText('Question source')).toBeInTheDocument()
+    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    expect(screen.getByLabelText('Time limit (minutes)')).toBeInTheDocument()
+    expect(screen.getByLabelText('Answer type')).toBeInTheDocument()
+  })
+
 })
