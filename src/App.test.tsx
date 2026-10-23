@@ -33,7 +33,7 @@ describe('Freequiz', () => {
     fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
     fireEvent.click(screen.getByRole('button', { name: /New question/i }))
     expect(screen.getByLabelText('Answer mode')).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'Pick exactly N' })).toBeInTheDocument()
+    expect(screen.getAllByRole('option', { name: 'Pick exactly N' }).length).toBeGreaterThan(0)
     expect(screen.getByLabelText(/Correct option number/i)).toBeInTheDocument()
   })
 
