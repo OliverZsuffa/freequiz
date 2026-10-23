@@ -1,7 +1,7 @@
 # Request 003 Implementation Plan: Study-first Freequiz
 
 ## Status
-Approved by the user on 2026-10-23. Implementation is underway on `feature/request-003-study-first` in [PR #1](https://github.com/OliverZsuffa/freequiz/pull/1). Verification and deployment are pending.
+Completed and merged on 2026-10-23 in [PR #1](https://github.com/OliverZsuffa/freequiz/pull/1), merge commit `b881a6821a08cbc8636ad08f003de3ecc58569df`. PR checks passed in [run 40029404119](https://github.com/OliverZsuffa/freequiz/actions/runs/40029404119); the main build and GitHub Pages deployment passed in [run 40029476793](https://github.com/OliverZsuffa/freequiz/actions/runs/40029476793). Manual browser/device/offline smoke testing remains outstanding.
 
 ## Product principle
 The app should expose the next useful study action, not the whole feature set. The intended loop is: see what needs study → choose source and amount → answer → see results → leave. Keep powerful tools available behind a small labelled menu or within the context where they are needed.
