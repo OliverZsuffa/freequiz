@@ -38,7 +38,20 @@ Make Freequiz feel more motivating and easier to use without adding visual clutt
 - Explain the expected question structure and supported answer modes (`single`, `exactly-n`, and `select-all`), including variable option counts, correct-answer identification, and explanations where appropriate.
 - Keep the workflow local and copy-friendly: generate the prompt, copy it, then attach/paste source material in the external AI. No AI API calls and no source-material upload/paste field in this prompt-generator flow.
 
-## 5. Data and privacy constraints
+## 5. Light gamification
+- Add a compact study-activity calendar/heatmap showing when the learner practised, based on meaningful activity and existing timestamps. Avoid streak pressure or punishment for missed days.
+- Add learning-focused session summaries that highlight meaningful outcomes, such as questions strengthened or first-time mastery, only where existing data supports the claim. Do not reward raw volume alone or claim improvement from tiny samples.
+- Keep these features understated and integrated into the progress experience; no energy systems, leaderboards, noisy animations, or guilt-based streaks.
+- Leave unlockable achievement collections and weekly goals out of this request unless they prove necessary; they can be considered later.
+
+## 6. Optional notifications
+- Explore opt-in browser/PWA notifications for a user-chosen study reminder, a gentle weekly-goal reminder if goals are later implemented, and/or due-review reminders only if the existing review logic can reliably identify them.
+- Notifications must be disabled by default, requested only after the user explicitly enables them, and easy to turn off.
+- Respect browser/OS permission rules and explain that delivery may depend on browser support, installed-PWA status, and whether the app/browser is allowed to run in the background.
+- Do not add a backend or telemetry. Be explicit about the limits of client-side scheduling; if reliable background delivery is not feasible for the current PWA, implement only reminders that can honestly be supported and document the limitation rather than implying guaranteed delivery.
+- No streak warnings, repeated nags, or milestone spam.
+
+## 7. Data and privacy constraints
 - Keep all data client-side; no backend, telemetry, or automatic AI API calls. The prompt generator must not require the source material to be entered into Freequiz.
 - Use existing timestamped practice attempts and exam records. Do not fabricate historical values or imply that imported questions have a practice history.
 - Preserve profiles, question banks, favourites, custom groups, JSON exports, and offline PWA behaviour.
@@ -53,6 +66,8 @@ Make Freequiz feel more motivating and easier to use without adding visual clutt
 - Available counts, Due for review, Needs practice, answer-mode filters, and sampled sessions use the same filtered question set.
 - Mobile and desktop layouts remain usable in light/dark mode and all four accent presets.
 - The AI prompt generator outputs only reusable instructions and does not ask the user to upload or paste source material into Freequiz.
+- The activity calendar and session summaries use grounded existing study data and avoid inflated or unsupported claims.
+- Any notifications are opt-in, off by default, controllable, and accurately documented for supported browsers.
 - Tests cover trend aggregation, sparse/empty data, date boundaries, overlapping section selection, nested sections, and session filtering.
 - Production build, automated tests, and GitHub Pages deployment pass.
 - Do not implement until the user explicitly approves this request and implementation plan.
