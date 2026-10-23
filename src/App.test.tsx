@@ -9,7 +9,7 @@ describe('Freequiz', () => {
   it('shows the calm overview and demo library', () => {
     render(<App />)
     expect(screen.getByRole('heading', { name: 'What would you like to practise?' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Choose a session' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Set up a session' })).toBeInTheDocument()
     expect(screen.getAllByText('Mathematics').length).toBeGreaterThan(0)
     expect(screen.queryByText('Good to have you here.')).not.toBeInTheDocument()
   })
