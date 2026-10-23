@@ -11,8 +11,9 @@ Awaiting explicit user approval. Planning only; no application code changes are 
 - Multi-section selection is additive: each checked section includes itself and descendants; the final question set is deduplicated by stable question ID.
 - Keep the home screen concise. Put full chart controls and deeper breakdowns in Statistics.
 - The AI prompt generator outputs a reusable instruction preamble only; source material is supplied directly to the external AI by the user, not entered into Freequiz.
-- Gamification stays subtle and learning-focused: an activity heatmap and evidence-based session summary, not streak pressure or rewards for raw volume.
-- Notifications are opt-in and off by default, with independently configurable schedules and optional weekly targets; do not promise reliable background delivery unless the current PWA/browser architecture actually supports it.
+- Every gamified element is optional and independently configurable, with a master gamification switch. This covers activity heatmap, streaks, milestones/achievements, weekly goals, celebrations, and motivational session highlights. Ordinary progress charts and factual session results remain available when gamification is off.
+- Gamification stays subtle and learning-focused: no guilt-based streak pressure or rewards for raw volume.
+- Notifications are a separate setting, opt-in and off by default, with independently configurable schedules and optional weekly targets; do not promise reliable background delivery unless the current PWA/browser architecture actually supports it.
 
 ## Phase 0: Inspect and baseline
 1. Review current overview/setup, timeline/statistics, domain types, styles, tests, storage and service worker.
@@ -54,11 +55,13 @@ Awaiting explicit user approval. Planning only; no application code changes are 
 4. Make the next step explicit: copy the prompt, then attach the document or paste the source text into the external AI conversation.
 5. Add tests confirming prompt generation works without source content and does not embed source text or call an AI API.
 
-## Phase 6: Add light gamification
-1. Add a compact activity heatmap using existing timestamped study attempts, with clear accessible labels and responsive layout.
-2. Add a restrained session wrap-up that reports only supported outcomes and links to the next useful study action.
-3. Avoid guilt-based streaks, leaderboards, energy systems, distracting animations, and unsupported mastery/improvement claims.
-4. Test empty history, date grouping, and session summaries with sparse and substantial data.
+## Phase 6: Add optional gamification and settings
+1. Add a Gamification settings area with a master switch and independent toggles for activity heatmap, streaks, milestones/achievements, weekly goals, celebratory effects, and motivational session highlights.
+2. Ensure toggles hide/disable only their corresponding motivational elements; they must not erase history or hide ordinary progress charts and factual session results.
+3. Add a compact activity heatmap using existing timestamped study attempts, with clear accessible labels and responsive layout.
+4. Add a restrained session wrap-up that reports only supported outcomes and links to the next useful study action; keep factual results visible even when motivational highlights are off.
+5. Avoid guilt-based streaks, leaderboards, energy systems, distracting animations, and unsupported mastery/improvement claims.
+6. Test each setting independently, master-switch behaviour, persistence across reloads, empty history, date grouping, and session summaries with sparse and substantial data.
 
 ## Phase 7: Assess and implement optional notifications
 1. Inspect current PWA/service-worker capabilities and browser support before choosing an implementation; determine what can work without a backend and what requires push infrastructure.
