@@ -1,7 +1,7 @@
 # Request 004: Progress insights and easier study setup
 
 ## Status
-Drafted on 2026-10-23. Awaiting explicit user approval. Documentation/planning only; do not change application code until approved.
+Implemented and merged via PR #3 on 2026-10-23. Automated tests, TypeScript check, production build, and Pages artifact upload passed on the PR head. Main-branch deployment verification is pending.
 
 ## Goal
 Make Freequiz feel more motivating and easier to use without adding visual clutter. Show whether the learner is improving over time and let them start a focused practice session from several sections with minimal effort.
@@ -78,4 +78,4 @@ Make Freequiz feel more motivating and easier to use without adding visual clutt
 - Notifications are opt-in, off by default, individually configurable, and accurately documented for supported browsers. Daily/weekly schedules, local time, optional weekly targets, and goal-aware reminder behaviour must be covered by tests.
 - Tests cover trend aggregation, sparse/empty data, date boundaries, overlapping section selection, nested sections, and session filtering.
 - Production build, automated tests, and GitHub Pages deployment pass.
-- Do not implement until the user explicitly approves this request and implementation plan.
+- Implementation was approved by the user and merged after the PR checks passed. Verify the main-branch deployment before treating the request as fully released.
