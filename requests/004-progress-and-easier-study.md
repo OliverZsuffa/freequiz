@@ -31,8 +31,15 @@ Make Freequiz feel more motivating and easier to use without adding visual clutt
 - Keep the question library, import/export, detailed statistics, timeline, and theme settings accessible through the existing compact menu.
 - Improve labels, spacing, focus states, and mobile layout; do not add decorative content that does not help users study.
 
-## 4. Data and privacy constraints
-- Keep all data client-side; no backend, telemetry, or automatic AI API calls.
+## 4. Simpler AI prompt generator
+- Remove the current requirement to upload or paste source material into Freequiz when generating an AI prompt.
+- Generate only a reusable instruction prompt that tells an external AI how to turn the material the user supplies into useful quiz questions.
+- The copied prompt must explicitly tell the AI to wait for and use the document/text the user attaches or pastes into that AI conversation; Freequiz itself should not collect the source material for this workflow.
+- Explain the expected question structure and supported answer modes (`single`, `exactly-n`, and `select-all`), including variable option counts, correct-answer identification, and explanations where appropriate.
+- Keep the workflow local and copy-friendly: generate the prompt, copy it, then attach/paste source material in the external AI. No AI API calls and no source-material upload/paste field in this prompt-generator flow.
+
+## 5. Data and privacy constraints
+- Keep all data client-side; no backend, telemetry, or automatic AI API calls. The prompt generator must not require the source material to be entered into Freequiz.
 - Use existing timestamped practice attempts and exam records. Do not fabricate historical values or imply that imported questions have a practice history.
 - Preserve profiles, question banks, favourites, custom groups, JSON exports, and offline PWA behaviour.
 - Keep exam results separate from practice mastery and clearly communicate any limitations caused by sparse or deleted historical data.
@@ -45,6 +52,7 @@ Make Freequiz feel more motivating and easier to use without adding visual clutt
 - Parent/child section selection follows documented descendant semantics and never duplicates questions.
 - Available counts, Due for review, Needs practice, answer-mode filters, and sampled sessions use the same filtered question set.
 - Mobile and desktop layouts remain usable in light/dark mode and all four accent presets.
+- The AI prompt generator outputs only reusable instructions and does not ask the user to upload or paste source material into Freequiz.
 - Tests cover trend aggregation, sparse/empty data, date boundaries, overlapping section selection, nested sections, and session filtering.
 - Production build, automated tests, and GitHub Pages deployment pass.
 - Do not implement until the user explicitly approves this request and implementation plan.
