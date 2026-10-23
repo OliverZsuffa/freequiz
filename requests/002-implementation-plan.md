@@ -1,7 +1,7 @@
 # Request 002 Implementation Plan: Minimal UI redesign
 
 ## Status
-Approved and implemented on 2026-10-23. Automated verification is running; see the Knowledge Base for the latest verified result.
+Approved and implemented on 2026-10-23. Automated checks and GitHub Pages deployment passed; see the Knowledge Base for the verification record.
 
 ## Design direction
 Use a quiet, content-first interface. Retain the dark/light theme and lime-green accent, but reduce decorative treatments and competing emphasis. Prefer whitespace, typography, alignment, and subtle dividers over a card for every item.
@@ -69,7 +69,7 @@ Use a quiet, content-first interface. Retain the dark/light theme and lime-green
 - Updated tests for the redesigned overview and theme preference.
 
 ## Verification status
-Pending GitHub Actions run for the latest commit. Visual inspection in a real browser and confirmation of the deployed Pages build remain separate checks.
+GitHub Actions run `39996335067` passed type checking, tests, production build, Pages configuration, artifact upload, and deployment. Visual inspection in a real browser and manual phone/offline smoke testing remain outstanding.
 
 
 ## Implementation notes
