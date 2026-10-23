@@ -1,7 +1,7 @@
 # Request 004: Progress insights and easier study setup
 
 ## Status
-Implemented and merged via PR #3 on 2026-10-23. Automated tests, TypeScript check, production build, and Pages artifact upload passed on the PR head. Main-branch deployment verification is pending.
+Implemented and deployed via PR #3 on 2026-10-23. Automated tests, TypeScript check, production build, Pages artifact upload, and GitHub Pages deployment all passed. Deployment run: 40032234099.
 
 ## Goal
 Make Freequiz feel more motivating and easier to use without adding visual clutter. Show whether the learner is improving over time and let them start a focused practice session from several sections with minimal effort.
