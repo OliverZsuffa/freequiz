@@ -22,7 +22,7 @@ describe('Freequiz', () => {
 
   it('persists the selected appearance', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Light appearance/i }))
+    fireEvent.click(screen.getAllByRole('button', { name: /Light appearance/i })[0])
     expect(localStorage.getItem('freequiz-theme')).toBe('light')
   })
 })
