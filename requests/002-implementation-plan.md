@@ -1,7 +1,7 @@
 # Request 002 Implementation Plan: Minimal UI redesign
 
 ## Status
-Proposed only. No implementation changes authorised until the user explicitly approves this plan.
+Approved and implemented on 2026-10-23. Automated verification is running; see the Knowledge Base for the latest verified result.
 
 ## Design direction
 Use a quiet, content-first interface. Retain the dark/light theme and lime-green accent, but reduce decorative treatments and competing emphasis. Prefer whitespace, typography, alignment, and subtle dividers over a card for every item.
@@ -59,3 +59,14 @@ Use a quiet, content-first interface. Retain the dark/light theme and lime-green
 - New study algorithms or mastery rules.
 - New account, sync, backend, analytics, or AI integrations.
 - Full backup restoration, full question editing, nested section management, and other functional gaps already listed in Request 001. These should be handled in a separate functional-hardening request unless a UI change requires a minimal adjustment.
+
+
+## Implementation notes
+- Replaced the greeting-led dashboard and four competing metric cards with one primary practice action, a compact mastery summary, three session choices, and a quiet section list.
+- Applied a restrained visual system across the existing screens: fewer tinted surfaces and icon badges, more whitespace and subtle dividers, clearer typography, and a consistent green accent.
+- Kept the full feature set and navigation. On mobile, navigation labels remain visible; the session choices stack vertically and secondary practice statistics are removed from the narrow layout.
+- Persisted the dark/light preference in localStorage without changing the question-data schema or adding services.
+- Updated tests for the redesigned overview and theme preference.
+
+## Verification status
+Pending GitHub Actions run for the latest commit. Visual inspection in a real browser and confirmation of the deployed Pages build remain separate checks.
