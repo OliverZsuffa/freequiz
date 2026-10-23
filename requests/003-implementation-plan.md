@@ -1,7 +1,7 @@
 # Request 003 Implementation Plan: Study-first Freequiz
 
 ## Status
-Drafted on 2026-10-23; awaiting explicit user approval. Planning/documentation only; no application code has been changed for this request.
+Approved by the user on 2026-10-23. Implementation is underway on `feature/request-003-study-first` in [PR #1](https://github.com/OliverZsuffa/freequiz/pull/1). Verification and deployment are pending.
 
 ## Product principle
 The app should expose the next useful study action, not the whole feature set. The intended loop is: see what needs study → choose source and amount → answer → see results → leave. Keep powerful tools available behind a small labelled menu or within the context where they are needed.
