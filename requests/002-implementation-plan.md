@@ -70,3 +70,14 @@ Use a quiet, content-first interface. Retain the dark/light theme and lime-green
 
 ## Verification status
 Pending GitHub Actions run for the latest commit. Visual inspection in a real browser and confirmation of the deployed Pages build remain separate checks.
+
+
+## Implementation notes
+- Replaced the greeting-led dashboard and four competing metric cards with one primary practice action, a compact mastery summary, three session choices, and a quiet section list.
+- Applied a restrained visual system across existing screens: fewer tinted surfaces and icon badges, more whitespace and subtle dividers, clearer typography, and a consistent green accent.
+- Kept the full feature set and navigation. On mobile, navigation labels remain visible; session choices stack vertically and secondary practice statistics are removed from the narrow layout.
+- Persisted the dark/light preference in localStorage without changing the question-data schema or adding services.
+- Updated tests for the redesigned overview and theme preference.
+
+## Verification status
+Pending GitHub Actions run for the latest commit. Visual inspection in a real browser and confirmation of the deployed Pages build remain separate checks.
