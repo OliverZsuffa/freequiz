@@ -1,9 +1,10 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import App from './App'
 
 describe('Freequiz', () => {
   beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
 
   it('shows the calm overview and demo library', () => {
     render(<App />)
@@ -22,7 +23,7 @@ describe('Freequiz', () => {
 
   it('persists the selected appearance', () => {
     render(<App />)
-    fireEvent.click(screen.getAllByRole('button', { name: /Light appearance/i })[0])
+    fireEvent.click(screen.getByRole('button', { name: /Light appearance/i }))
     expect(localStorage.getItem('freequiz-theme')).toBe('light')
   })
 })
