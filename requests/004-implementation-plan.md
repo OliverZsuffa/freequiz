@@ -11,6 +11,8 @@ Awaiting explicit user approval. Planning only; no application code changes are 
 - Multi-section selection is additive: each checked section includes itself and descendants; the final question set is deduplicated by stable question ID.
 - Keep the home screen concise. Put full chart controls and deeper breakdowns in Statistics.
 - The AI prompt generator outputs a reusable instruction preamble only; source material is supplied directly to the external AI by the user, not entered into Freequiz.
+- Gamification stays subtle and learning-focused: an activity heatmap and evidence-based session summary, not streak pressure or rewards for raw volume.
+- Notifications are opt-in and off by default; do not promise reliable background delivery unless the current PWA/browser architecture actually supports it.
 
 ## Phase 0: Inspect and baseline
 1. Review current overview/setup, timeline/statistics, domain types, styles, tests, storage and service worker.
@@ -52,7 +54,20 @@ Awaiting explicit user approval. Planning only; no application code changes are 
 4. Make the next step explicit: copy the prompt, then attach the document or paste the source text into the external AI conversation.
 5. Add tests confirming prompt generation works without source content and does not embed source text or call an AI API.
 
-## Phase 6: Validate and release
+## Phase 6: Add light gamification
+1. Add a compact activity heatmap using existing timestamped study attempts, with clear accessible labels and responsive layout.
+2. Add a restrained session wrap-up that reports only supported outcomes and links to the next useful study action.
+3. Avoid guilt-based streaks, leaderboards, energy systems, distracting animations, and unsupported mastery/improvement claims.
+4. Test empty history, date grouping, and session summaries with sparse and substantial data.
+
+## Phase 7: Assess and implement optional notifications
+1. Inspect current PWA/service-worker capabilities and browser support before choosing an implementation.
+2. Provide an explicit opt-in setting and request notification permission only after a user action.
+3. Implement only reminder types that can be delivered honestly without a backend; explain foreground/background and installed-PWA limitations.
+4. Ensure notifications can be disabled and do not create repeated or guilt-inducing prompts.
+5. Test permission-denied, unsupported, disabled, and scheduled/reminder states where feasible.
+
+## Phase 8: Validate and release
 1. Run tests, TypeScript check, and production build.
 2. Add regression tests for existing practice/exam behaviour and section filtering.
 3. Verify GitHub Pages deployment and update README/Knowledge Base plus this request's status.
