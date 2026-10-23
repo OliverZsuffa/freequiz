@@ -1,7 +1,7 @@
 # Request 004 implementation plan
 
 ## Status
-Approved and implemented in PR #3. PR checks passed; verify the main-branch deployment before marking release verification complete.
+Approved, implemented, tested, merged, and deployed via PR #3. GitHub Pages deployment run 40032234099 succeeded. Manual desktop/mobile/offline interaction testing remains outstanding.
 
 ## Design decisions
 - Primary chart: practice accuracy over time, based only on practice attempts.
