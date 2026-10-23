@@ -28,29 +28,34 @@ Freequiz is a private, client side only progressive web app for organising and p
 - Question schema identifier: `freequiz/questions-v1`; backup identifier: `freequiz/backup-v1`.
 
 ## Current implementation
-- Redesigned calm, content-first dashboard with one primary practice action, compact mastery summary, three session modes, and a quiet section list.
-- Quiz runner with one question at a time, feedback, and explanations.
-- Library search, section filtering, manual single answer question creation, and question specific practice.
-- Import assistant with JSON validation and preview, merge or replace, and AI prompt generation.
-- Attempt timeline and current mastery review list.
-- Dark and light appearance with the selected theme persisted in localStorage; responsive styles, IndexedDB and localStorage fallback for app data, PWA manifest and service worker.
-- GitHub Pages workflow at `.github/workflows/pages.yml`.
+- Study-first home screen with source and question-count setup, practice/exam selection, due/weak shortcuts, and a compact secondary-tools menu.
+- Single-answer, exactly-N, and select-all answer modes. Legacy questions infer single mode from one correct option and select-all from multiple correct options.
+- Answer choices are shuffled for each session while option IDs remain stable; option counts are variable and labels remain usable beyond 26 choices.
+- Practice provides immediate feedback and saves ordinary practice attempts for mastery/review scheduling.
+- Timed exams hide correctness feedback until submission or timeout and save separate exam-session records, so exam answers do not silently alter ordinary practice mastery.
+- Question editor supports adding and editing questions, variable option counts, explanations, and multiple correct answers; edits retain the question ID.
+- Favourites and reusable custom study groups are profile-local and available as session sources.
+- Section selection/filtering includes the selected section and all descendants for library lists, counts, practice, and exam source selection.
+- Session results include score/accuracy visuals and a topic breakdown. Statistics include practice summaries and separate exam history.
+- Four persisted accent presets (blue, purple, orange, green), plus dark/light appearance.
+- Import assistant validates JSON and previews merge/replace; AI prompt generation remains local and does not call an API.
+- IndexedDB persistence with localStorage fallback, profile backup export, responsive layout, PWA manifest/service worker, and GitHub Pages deployment workflow.
 
 ## Known limitations
-- Section creation currently adds top level sections only. Nested section display works when imported data contains parent IDs; nested editing and moving questions need a management UI.
-- Manual question editor supports one correct answer; imported questions and the practice runner support multiple correct option IDs.
-- Review scheduling is a simple heuristic and needs configurable policy and more edge case tests.
-- Session completion returns to overview without a dedicated summary screen.
-- Timeline shows recent attempt events, not a daily trend chart.
-- Backup export supports all profiles; import currently imports a question bank into the active profile rather than restoring a full backup.
-- PWA caching needs a deployed browser smoke test. Google Fonts are optional styling resources and may not load offline.
+- Section creation currently adds top-level sections only. Imported nested sections display and filter correctly, but nested creation/moving and section renaming are not yet available.
+- The editor preserves existing tags but does not yet offer tag editing or a question-delete action.
+- Statistics do not yet include a daily practice trend chart; the timeline remains a list of recent attempts, while session results show topic bars.
+- Review scheduling remains a simple heuristic without configurable policy.
+- Full backup export includes all profiles, but importing a backup does not restore all profile metadata, histories, favourites, groups, or exams; import currently applies question-bank content to the active profile.
+- Edited questions keep their IDs. If an option's text changes, its old option ID may no longer be retained, so older attempts referencing that option are historical events rather than a snapshot of the old question wording.
+- PWA caching has not had a manual browser/device/offline smoke test. Optional external fonts may not load offline.
 - Browser persistence does not synchronise across devices.
 
 ## Verification record
-- Request 002 UI redesign passed GitHub Actions run `39996335067` on commit `40e41440152df183b76309814f72e6412528aa75`: TypeScript check, all tests, production build, Pages configuration, artifact upload, and deployment succeeded. A real-browser visual inspection and manual phone/offline smoke test have not been performed from this environment.
-- GitHub Actions run `39993205768` confirmed the unit tests and TypeScript/production build step passed on commit `51311d1568a2058cb8fcce7bba4ae0f274c9e191`.
-- The Pages configuration step failed because the repository does not yet have GitHub Pages enabled. The workflow is configured, but an owner must enable it under Settings → Pages → Build and deployment → Source → GitHub Actions. The `configure-pages` action cannot enable the site with the default `GITHUB_TOKEN`.
-- After Pages is enabled, rerun the latest workflow or push a new commit, then verify the deployment job and published URL. A live browser and offline smoke test has not yet been performed.
+- Request 002 UI redesign passed GitHub Actions run `39996335067` on commit `40e41440152df183b76309814f72e6412528aa75`.
+- Request 003 passed the PR workflow run [`40029404119`](https://github.com/OliverZsuffa/freequiz/actions/runs/40029404119) on PR head `b6b509caaceb49929b71c4cd104051019089620a`: TypeScript check, tests, production build, Pages configuration, and artifact upload succeeded.
+- The merged main commit is `b881a6821a08cbc8636ad08f003de3ecc58569df`. GitHub Actions run [`40029476793`](https://github.com/OliverZsuffa/freequiz/actions/runs/40029476793) passed tests, TypeScript check, production build, Pages configuration, artifact upload, and GitHub Pages deployment.
+- Automated checks and deployment succeeded. A manual browser, phone, and offline smoke test has not been performed from this environment.
 
 ## Working process
 1. Read this Knowledge Base and relevant request documents before planning changes.
