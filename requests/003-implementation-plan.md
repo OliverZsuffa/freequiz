@@ -83,3 +83,14 @@ The app should expose the next useful study action, not the whole feature set. T
 - **Import compatibility:** older `freequiz/questions-v1` files must continue to import unchanged. New group/favourite metadata should be handled as optional profile data or in an explicitly versioned backup format, not silently inserted into the existing question-bank contract.
 - **Visual restraint:** charts and rewards should make progress easier to understand, not add decorative noise or a new wall of cards.
 - **Scope control:** this is a substantial feature and UX pass. Preserve existing working features, avoid unrelated refactors, and do not claim a visual or offline check passed unless it was actually run.
+
+
+## Additional implementation details: answer modes and options
+
+1. **Current-state finding:** the question schema already stores an array of correct option IDs, the importer accepts variable option counts (minimum two), and the practice runner supports multiple selections when a question has multiple correct IDs. However, the manual editor only creates one correct answer, answer mode is inferred rather than explicitly stored, answer options are not randomized, and the option labels/IDs use single-character codes that do not scale reliably beyond 26 options.
+2. Add an explicit backwards-compatible answer mode: single answer, exactly N, or select all that apply. For older data without this field, infer single answer for one correct ID and select-all for multiple correct IDs. Never infer exactly-N for legacy data.
+3. In exactly-N mode, state the number to select. In select-all mode, do not disclose the number of correct options. Grade by exact set match, so missing or extra selections are incorrect.
+4. Shuffle option display order when a question is first presented in a session. Preserve option IDs and text pairings, do not mutate stored canonical option order, and do not reshuffle mid-question. Use this in both practice and exam modes.
+5. The editor should support a variable number of choices, with a minimum of two and no arbitrary low cap. Generate option IDs independently from display labels; make labels robust beyond 26 choices.
+6. Add answer-mode filters to both the question library and the practice/exam setup. Source counts and selected questions must respect both the source and mode filter.
+7. Regression tests must cover all three modes, selection/grading behaviour, stable IDs under shuffling, legacy imports, filtering, and large option counts.
