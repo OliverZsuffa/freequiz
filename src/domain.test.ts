@@ -89,7 +89,7 @@ describe('Request 006 AI prompt quality', () => {
     expect(prompt).toContain('AI-Extracted')
   })
 
-  it('uses compact section references and can omit them', () => {
+  it('treats supplied sections as references and forbids repeating their definitions', () => {
     const sections = [
       { id: 'accounting', name: 'Accounting', parentId: null },
       { id: 'valuation', name: 'Valuation', parentId: 'accounting' }
@@ -97,17 +97,46 @@ describe('Request 006 AI prompt quality', () => {
     const included = buildAiPrompt(sections, 'generate')
     expect(included).toContain('accounting | - | Accounting')
     expect(included).toContain('valuation | accounting | Valuation')
+    expect(included).toContain('Do not return, copy, rename, or redefine any existing section')
+    expect(included).toContain('If existing sections fit, return sections: [].')
     expect(included).not.toContain('"parentId":')
     const omitted = buildAiPrompt(sections, 'generate', false)
     expect(omitted).not.toContain('Existing sections (id | parentId | name)')
     expect(omitted).toContain('Create a concise section hierarchy from course headings/content as needed')
   })
 
-  it('asks for broad conceptual coverage and concise natural question stems', () => {
+  it('requires broad coverage and a substantial set without padding', () => {
     const prompt = buildAiPrompt([], 'generate')
-    expect(prompt).toContain('Create as many distinct high-quality questions as the material supports')
+    expect(prompt).toContain('Build a comprehensive question bank, not a short sample')
+    expect(prompt).toContain('at least 3 distinct questions')
+    expect(prompt).toContain('every major topic is represented')
+    expect(prompt).toContain('Do not pad the bank with near-duplicates')
     expect(prompt).toContain('Skip introductions, agendas, advertisements')
-    expect(prompt).toContain('avoid repetitive stems')
     expect(prompt).toContain('Vary correct-answer positions')
+  })
+
+  it('strictly forbids source-referencing wording in generated questions', () => {
+    const prompt = buildAiPrompt([], 'generate')
+    expect(prompt).toContain('STRICTLY DO NOT write phrases such as')
+    expect(prompt).toContain('according to the slides')
+    expect(prompt).toContain('Do not mention slides, lectures, notes, documents, or the source')
+    expect(prompt).toContain('Every question stem must be direct, natural, self-contained')
+  })
+
+  it('accepts a question that references an existing section without repeating its definition', () => {
+    const existingSection = { id: 'accounting', name: 'Accounting', parentId: null }
+    const parsed = parseImport({
+      format: 'freequiz/questions-v1',
+      sections: [],
+      questions: [{
+        id: 'q-accounting',
+        prompt: 'What is accounting used for?',
+        options: [{ id: 'a', text: 'Decision-useful information' }, { id: 'b', text: 'Eliminating all risk' }],
+        correctOptionIds: ['a'],
+        sectionId: existingSection.id
+      }]
+    })
+    expect(parsed.sections).toEqual([])
+    expect(parsed.questions[0].sectionId).toBe(existingSection.id)
   })
 })
