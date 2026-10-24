@@ -40,10 +40,12 @@ Freequiz is a private, client side only progressive web app for organising and p
 - Session setup supports multiple selected sections and deduplicates questions across parent/child selections.
 - Gamification elements (activity, streaks, milestones, weekly goals, celebrations, and motivational highlights) are independently configurable; ordinary charts and factual results remain available when gamification is off.
 - Weekly goals and opt-in reminders are configurable. Reminder delivery is checked while the app is open only; closed-app delivery is not guaranteed.
-- AI prompt generation has two reusable modes: extraction of existing questions and generation of new questions. Source material is supplied to the external AI, not collected by Freequiz.
+- AI prompt generation has two reusable modes: strict extraction of explicitly posed questions and generation of new questions. A stated fact or hierarchy is not an existing question. Generation prompts ask for broad conceptual coverage, concise stems, source-grounded answers, and plausible balanced distractors. Source material is supplied to the external AI, not collected by Freequiz.
+- AI prompts use compact section references, omit redundant schema examples, and allow users to omit existing-section matching for stricter prompt limits. With section matching omitted, the prompt instructs the AI to derive a concise hierarchy from the supplied material.
 - Questions may carry protected `AI-Extracted` or `AI-Generated` provenance metadata, separate from editable ordinary tags. Provenance survives editing and JSON import/export; unsupported provenance values are ignored.
-- Four persisted accent presets (blue, purple, orange, green), plus dark/light appearance.
-- Import assistant validates JSON and previews merge/replace; AI prompt generation remains local and does not call an API.
+- Four persisted accent presets (blue, purple, orange, green), plus dark/light appearance. Request 006 aligns dark/light surfaces with the selected accent while retaining semantic correctness and mastery colours.
+- Import workflow validates JSON and previews merge/replace; AI prompt generation remains local and does not call an API.
+- Import history is profile-local and optional for legacy profiles. Each batch stores its timestamp, name, source type, original question/section snapshot, and IDs newly added. Users can inspect batches, see added/skipped counts, see the first import attribution in the library, and export an individual batch as a question-bank JSON file. Snapshots remain available if library questions are later changed or deleted.
 - IndexedDB persistence with localStorage fallback, profile backup export, responsive layout, PWA manifest/service worker, and GitHub Pages deployment workflow.
 
 ## Known limitations
@@ -81,3 +83,9 @@ Freequiz is a private, client side only progressive web app for organising and p
 - Legacy question banks without provenance remain supported.
 
 - Request 005 verification: 33 tests passed, TypeScript check passed, production build passed, and GitHub Pages deployment passed in workflow run 40079472885. Manual browser/device smoke testing was not performed.
+
+
+## Request 006 implementation status
+- PR #5 implements the site-wide UI simplification, blue-led consistent accent surfaces, shorter strict extraction/generation prompts, optional compact section matching, and per-profile import history with batch exports.
+- Automated verification is being rerun after fixing initial test selector/assertion issues. Do not treat this feature as deployed until the final Pages workflow succeeds.
+- Manual browser, mobile, and offline checks remain outstanding.
