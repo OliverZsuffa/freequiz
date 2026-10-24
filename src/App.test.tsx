@@ -145,8 +145,10 @@ describe('Request 006 import history', () => {
     expect(screen.getByLabelText('Match my existing sections')).toBeChecked()
     fireEvent.click(screen.getByRole('button', { name: /Generate AI prompt/i }))
     const prompt = (screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i) as HTMLTextAreaElement).value
-    expect(prompt).toContain('Create as many distinct high-quality questions')
-    expect(prompt).toContain('avoid repetitive stems')
+    expect(prompt).toContain('Build a comprehensive question bank, not a short sample')
+    expect(prompt).toContain('STRICTLY DO NOT write phrases such as')
+    expect(prompt).toContain('at least 3 distinct questions')
+    expect(prompt).toContain('If existing sections fit, return sections: [].')
     fireEvent.click(screen.getByLabelText('Match my existing sections'))
     fireEvent.click(screen.getByRole('button', { name: /Generate AI prompt/i }))
     expect((screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i) as HTMLTextAreaElement).value).not.toContain('Existing sections')

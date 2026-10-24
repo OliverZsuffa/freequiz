@@ -18,7 +18,7 @@ Freequiz is a client side only, installable quiz app for building question banks
 - Transparent mastery labels: New, Learning, Known, Needs work, and Weak
 - Practice all questions, new questions, weak questions, or questions due for review
 - JSON import with validation and preview, import history with per-batch inspection and re-export, plus profile backup and export
-- Two AI prompt modes: extract only questions explicitly posed in the source, or generate a broad set of new course questions with concise stems and plausible, balanced distractors. Prompts use compact section references and can omit existing sections for stricter chatbot limits; source material is supplied directly to your chosen external AI
+- Two AI prompt modes: extract only questions explicitly posed in the source, or generate a comprehensive set of new course questions. Generation strictly forbids slide/source references in stems, requires topic coverage checks and multiple questions per substantial topic without padding, and treats supplied section IDs as existing references rather than output definitions. Source material is supplied directly to your chosen external AI
 - Protected AI provenance metadata (`AI-Extracted` / `AI-Generated`) kept separate from editable ordinary tags
 - Learning timeline, mastery summaries, dark and light appearance
 - Practice accuracy trend chart with date ranges and a separate mastered-question trend
@@ -75,4 +75,4 @@ Browser storage is not cloud sync. Export a backup regularly, especially before 
 
 ## Status
 
-Request 006 is merged. Its pull-request workflow passed 38 tests, TypeScript checking, production build, and Pages artifact upload. Check the latest Actions run on `main` before treating the live site as updated; manual browser, mobile, and offline checks remain outstanding.
+Request 006 is merged. The follow-up AI prompt reliability change is tracked in Request 007. Check its pull-request workflow and the latest Actions run on `main` before treating the live site as updated; manual browser, mobile, and offline checks remain outstanding.

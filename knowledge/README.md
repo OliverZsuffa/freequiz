@@ -96,3 +96,12 @@ Freequiz is a private, client side only progressive web app for organising and p
 - Implemented and merged via [PR #5](https://github.com/OliverZsuffa/freequiz/pull/5), merge commit `3ea6cf4870a0be4f739d9d6777d0ceec83e3eeaa`.
 - PR workflow run [40086825611](https://github.com/OliverZsuffa/freequiz/actions/runs/40086825611) passed all 38 tests, TypeScript checking, production build, Pages configuration, and artifact upload.
 - Main push deployment and live site were not independently verified because the available connector did not expose the push-triggered workflow run and the live URL could not be fetched. Manual desktop/mobile/offline smoke tests were not performed.
+
+
+## Request 007: AI prompt reliability follow-up
+- Tightens generated question stems to strictly forbid references to slides, lectures, notes, presentations, or source material except when the source itself is the topic.
+- Requires a coverage-first pass, multiple distinct questions for substantial topics, and an explicit final check for underrepresented topics, while prohibiting padding and near-duplicates.
+- Clarifies that supplied sections are the existing catalogue: reuse their IDs in question sectionId fields and return sections: [] when no genuinely new section is needed. Only new sections belong in the output sections array.
+- Adds regression tests for these prompt requirements and for importing questions that reference existing section IDs without repeating section definitions.
+- Importer review: merge mode already deduplicates sections by ID and accepts question sectionId references even when the imported sections array is empty.
+- Automated verification and deployment status will be recorded after the PR workflow completes. Manual browser/device checks are separate and must not be implied by automated checks.
