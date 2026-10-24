@@ -104,4 +104,6 @@ Freequiz is a private, client side only progressive web app for organising and p
 - Clarifies that supplied sections are the existing catalogue: reuse their IDs in question sectionId fields and return sections: [] when no genuinely new section is needed. Only new sections belong in the output sections array.
 - Adds regression tests for these prompt requirements and for importing questions that reference existing section IDs without repeating section definitions.
 - Importer review: merge mode already deduplicates sections by ID and accepts question sectionId references even when the imported sections array is empty.
-- Automated verification and deployment status will be recorded after the PR workflow completes. Manual browser/device checks are separate and must not be implied by automated checks.
+- Implemented and merged via [PR #6](https://github.com/OliverZsuffa/freequiz/pull/6), merge commit `acfe0c84147e5fe7b72cf3c717f1d54dab190c51`.
+- PR workflow run [40095796298](https://github.com/OliverZsuffa/freequiz/actions/runs/40095796298) passed all 40 tests, TypeScript checking, production build, Pages configuration, and artifact upload.
+- The PR workflow skipped deployment, and the main push deployment/live app were not independently verified. Manual browser/device checks remain outstanding.
