@@ -10,3 +10,7 @@ Planning only. No application code has been changed.
 
 ## Approval
 Please approve the plan and these defaults, or specify changes before implementation.
+
+
+## Approval update
+Oliver approved the proposed defaults on 2026-10-24.
