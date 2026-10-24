@@ -73,3 +73,43 @@ describe('Freequiz', () => {
 
 
 describe('Request 004 features',()=>{beforeEach(()=>localStorage.clear());afterEach(()=>cleanup());it('shows the progress graph empty state',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Statistics/i}));expect(screen.getByRole('heading',{name:'Accuracy over time'})).toBeInTheDocument();expect(screen.getByText(/Your progress graph starts here/)).toBeInTheDocument()});it('offers optional gamification and reminders',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Settings & reminders/i}));expect(screen.getByRole('heading',{name:'Gamification'})).toBeInTheDocument();expect(screen.getByText('Milestones and achievements')).toBeInTheDocument();expect(screen.getByRole('checkbox',{name:'Enable study reminders'})).not.toBeChecked()});it('offers multiple-section filtering',()=>{render(<App/>);expect(screen.getByLabelText('Search sections')).toBeInTheDocument();fireEvent.click(screen.getByRole('button',{name:'Clear'}));expect(screen.getByText('All sections')).toBeInTheDocument()});it('generates a reusable prompt without a source field',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Import \/ export/i}));expect(screen.queryByLabelText('Source material')).not.toBeInTheDocument();fireEvent.click(screen.getByRole('button',{name:/Generate AI prompt/i}));expect(screen.getByDisplayValue(/source material the user will provide/i)).toBeInTheDocument()})});
+
+
+describe('AI prompt UI and editable tags', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
+
+  it('offers extraction and generation prompt modes', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    expect(screen.getByLabelText('AI prompt mode')).toHaveValue('generate')
+    fireEvent.change(screen.getByLabelText('AI prompt mode'), { target: { value: 'extract' } })
+    fireEvent.click(screen.getByRole('button', { name: /Generate extraction prompt/i }))
+    expect(screen.getByDisplayValue(/MODE: EXTRACT EXISTING QUESTIONS/)).toBeInTheDocument()
+    expect(screen.getByDisplayValue(/AI-Extracted/)).toBeInTheDocument()
+  })
+
+  it('preserves protected provenance while ordinary tags remain editable', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    fireEvent.change(screen.getByLabelText('JSON content'), { target: { value: JSON.stringify({
+      format: 'freequiz/questions-v1', sections: [], questions: [{
+        id: 'source-question', prompt: 'Imported question?', options: [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }],
+        correctOptionIds: ['a'], answerMode: 'single', sectionId: null, explanation: '', tags: ['old-tag'], provenance: 'AI-Generated'
+      }]
+    }) } })
+    fireEvent.click(screen.getByRole('button', { name: /Validate and preview/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Merge into profile/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Edit Imported question?' }))
+    expect(screen.getByText(/Provenance: AI-Generated/)).toBeInTheDocument()
+    const tags = screen.getByLabelText('Question tags')
+    expect(tags).toHaveValue('old-tag')
+    fireEvent.change(tags, { target: { value: 'new-tag, review' } })
+    fireEvent.click(screen.getByRole('button', { name: /Save question/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Edit Imported question?' }))
+    expect(screen.getByLabelText('Question tags')).toHaveValue('new-tag, review')
+    expect(screen.getByText(/Provenance: AI-Generated/)).toBeInTheDocument()
+  })
+})
