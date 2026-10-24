@@ -79,3 +79,35 @@ describe('AI prompt modes and provenance', () => {
     expect(parsed.questions[1].tags).toEqual([])
   })
 })
+
+
+describe('Request 006 AI prompt quality', () => {
+  it('keeps extraction strictly to explicitly posed questions', () => {
+    const prompt = buildAiPrompt([{ id: 'math', name: 'Math', parentId: null }], 'extract')
+    expect(prompt).toContain('Extract only questions explicitly posed as questions')
+    expect(prompt).toContain('Never invent a question from a fact, ranking, definition, or hierarchy')
+    expect(prompt).toContain('AI-Extracted')
+  })
+
+  it('uses compact section references and can omit them', () => {
+    const sections = [
+      { id: 'accounting', name: 'Accounting', parentId: null },
+      { id: 'valuation', name: 'Valuation', parentId: 'accounting' }
+    ]
+    const included = buildAiPrompt(sections, 'generate')
+    expect(included).toContain('accounting | - | Accounting')
+    expect(included).toContain('valuation | accounting | Valuation')
+    expect(included).not.toContain('"parentId":')
+    const omitted = buildAiPrompt(sections, 'generate', false)
+    expect(omitted).not.toContain('Existing sections (id | parentId | name)')
+    expect(omitted).toContain('Create a new section only when no existing section fits')
+  })
+
+  it('asks for broad conceptual coverage and concise natural question stems', () => {
+    const prompt = buildAiPrompt([], 'generate')
+    expect(prompt).toContain('Create as many distinct high-quality questions as the material supports')
+    expect(prompt).toContain('Skip introductions, agendas, advertisements')
+    expect(prompt).toContain('avoid repetitive stems')
+    expect(prompt).toContain('Vary correct-answer positions')
+  })
+})
