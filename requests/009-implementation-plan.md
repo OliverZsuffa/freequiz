@@ -1,7 +1,7 @@
 # Request 009 implementation plan
 
 ## Status
-Approved by Oliver on 2026-10-24. Implementation and automated verification are in progress.
+Approved by Oliver on 2026-10-24. Implemented on PR #9; automated checks pass. Awaiting merge approval.
 
 ## Goal
 Make question-library filters genuinely composable through multi-select controls, and improve question handling during practice with an in-session favourite action and a persistent defer marker. In exams, defer records the marker but must not skip or otherwise bypass the exam question.
