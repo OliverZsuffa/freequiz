@@ -18,8 +18,8 @@ describe('Freequiz', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
     fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
-    expect(screen.getByText('Import JSON')).toBeInTheDocument()
-    expect(screen.getByText('Ask your AI')).toBeInTheDocument()
+    expect(screen.getByText('Import a question bank')).toBeInTheDocument()
+    expect(screen.getByText('Prepare questions with AI')).toBeInTheDocument()
   })
 
   it('persists the selected appearance', () => {
@@ -94,7 +94,7 @@ describe('AI prompt UI and editable tags', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
     fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
-    fireEvent.change(screen.getByLabelText('JSON content'), { target: { value: JSON.stringify({
+    fireEvent.change(screen.getByLabelText('Question bank (JSON)'), { target: { value: JSON.stringify({
       format: 'freequiz/questions-v1', sections: [], questions: [{
         id: 'source-question', prompt: 'Imported question?', options: [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }],
         correctOptionIds: ['a'], answerMode: 'single', sectionId: null, explanation: '', tags: ['old-tag'], provenance: 'AI-Generated'
@@ -111,5 +111,44 @@ describe('AI prompt UI and editable tags', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Edit Imported question?' }))
     expect(screen.getByLabelText('Question tags')).toHaveValue('new-tag, review')
     expect(screen.getByText('AI-Generated', { selector: 'strong' })).toBeInTheDocument()
+  })
+})
+
+
+describe('Request 006 import history', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
+
+  it('records an import batch and shows its questions in import history', async () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    fireEvent.change(screen.getByLabelText('Import name'), { target: { value: 'Lecture 3' } })
+    fireEvent.change(screen.getByLabelText('Question bank (JSON)'), { target: { value: JSON.stringify({
+      format: 'freequiz/questions-v1',
+      sections: [{ id: 'batch-topic', name: 'Batch topic', parentId: null }],
+      questions: [{ id: 'batch-q1', prompt: 'What is import history?', options: [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }], correctOptionIds: ['a'], sectionId: 'batch-topic', explanation: 'Test', tags: [] }]
+    }) } })
+    fireEvent.click(screen.getByRole('button', { name: /Validate and preview/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Merge into profile/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
+    fireEvent.click(screen.getAllByRole('button', { name: /Import history/i })[0])
+    expect(screen.getByRole('heading', { name: 'Import history' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Lecture 3' })).toBeInTheDocument()
+    expect(screen.getByText('What is import history?')).toBeInTheDocument()
+  })
+
+  it('offers a short prompt and optional existing-section matching', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    expect(screen.getByLabelText('Match my existing sections')).toBeChecked()
+    fireEvent.click(screen.getByRole('button', { name: /Generate AI prompt/i }))
+    const prompt = (screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i) as HTMLTextAreaElement).value
+    expect(prompt).toContain('Create as many distinct high-quality questions')
+    expect(prompt).toContain('avoid repetitive stems')
+    fireEvent.click(screen.getByLabelText('Match my existing sections'))
+    fireEvent.click(screen.getByRole('button', { name: /Generate AI prompt/i }))
+    expect((screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i) as HTMLTextAreaElement).value).not.toContain('Existing sections')
   })
 })
