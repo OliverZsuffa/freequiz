@@ -94,7 +94,7 @@ describe('AI prompt UI and editable tags', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
     fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
-    fireEvent.change(screen.getByLabelText('JSON content'), { target: { value: JSON.stringify({
+    fireEvent.change(screen.getByLabelText('Question bank (JSON)'), { target: { value: JSON.stringify({
       format: 'freequiz/questions-v1', sections: [], questions: [{
         id: 'source-question', prompt: 'Imported question?', options: [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }],
         correctOptionIds: ['a'], answerMode: 'single', sectionId: null, explanation: '', tags: ['old-tag'], provenance: 'AI-Generated'
@@ -132,7 +132,7 @@ describe('Request 006 import history', () => {
     fireEvent.click(screen.getByRole('button', { name: /Validate and preview/i }))
     fireEvent.click(screen.getByRole('button', { name: /Merge into profile/i }))
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Import history/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Import history', exact: true }))
     expect(screen.getByRole('heading', { name: 'Import history' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Lecture 3' })).toBeInTheDocument()
     expect(screen.getByText('What is import history?')).toBeInTheDocument()
@@ -145,7 +145,7 @@ describe('Request 006 import history', () => {
     fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
     expect(screen.getByLabelText('Match my existing sections')).toBeChecked()
     fireEvent.click(screen.getByRole('button', { name: /Generate AI prompt/i }))
-    const prompt = screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i).getAttribute('value') ?? ''
+    const prompt = (screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i) as HTMLTextAreaElement).value
     expect(prompt).toContain('Create as many distinct high-quality questions')
     expect(prompt).toContain('avoid repetitive stems')
     fireEvent.click(screen.getByLabelText('Match my existing sections'))
