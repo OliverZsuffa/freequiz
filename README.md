@@ -18,7 +18,8 @@ Freequiz is a client side only, installable quiz app for building question banks
 - Transparent mastery labels: New, Learning, Known, Needs work, and Weak
 - Practice all questions, new questions, weak questions, or questions due for review
 - JSON import with validation and preview, plus profile backup and export
-- AI prompt generator that creates reusable instructions; source material is supplied directly to your chosen external AI
+- Two AI prompt modes: extract existing questions without invention, or generate new questions with plausible distractors and balanced answer options; source material is supplied directly to your chosen external AI
+- Protected AI provenance metadata (`AI-Extracted` / `AI-Generated`) kept separate from editable ordinary tags
 - Learning timeline, mastery summaries, dark and light appearance
 - Practice accuracy trend chart with date ranges and a separate mastered-question trend
 - Multi-section session filters with descendant inclusion and deduplication
@@ -60,12 +61,13 @@ The canonical format is `freequiz/questions-v1`.
     "correctOptionIds": ["b"],
     "sectionId": "geometry",
     "explanation": "The interior angles sum to 180 degrees.",
-    "tags": ["geometry"]
+    "tags": ["geometry"],
+    "provenance": "AI-Generated"
   }]
 }
 ```
 
-Correct answers reference option IDs. `answerMode` can be `single`, `exactly-n`, or `select-all`. Older files without `answerMode` remain supported: one correct ID defaults to `single`, multiple IDs default to `select-all`. Exactly-N is never guessed for older files. Option count is variable, with at least two options. A simple question array is also accepted, with an integer `answer` index or string `answer` option ID.
+Correct answers reference option IDs. `answerMode` can be `single`, `exactly-n`, or `select-all`. Older files without `answerMode` remain supported: one correct ID defaults to `single`, multiple IDs default to `select-all`. Exactly-N is never guessed for older files. Option count is variable, with at least two options. A simple question array is also accepted, with an integer `answer` index or string `answer` option ID. The optional `provenance` field accepts `AI-Generated` or `AI-Extracted`; unsupported values are ignored. Provenance is kept separately from ordinary editable `tags`, and legacy questions without provenance remain valid.
 
 ## Data and privacy
 
