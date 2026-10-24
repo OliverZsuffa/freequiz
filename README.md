@@ -14,11 +14,11 @@ Freequiz is a client side only, installable quiz app for building question banks
 - Immediate feedback in practice and strict timed exams with results at submission
 - Question editing, favourites, reusable custom study groups, and nested-section filtering
 - Visual session results, topic breakdowns, practice history, and separate exam history
-- Four persisted accent presets: blue, purple, orange, and green
+- Four persisted accent presets: blue, purple, orange, and green, applied consistently across dark and light themes
 - Transparent mastery labels: New, Learning, Known, Needs work, and Weak
 - Practice all questions, new questions, weak questions, or questions due for review
-- JSON import with validation and preview, plus profile backup and export
-- Two AI prompt modes: extract existing questions without invention, or generate new questions with plausible distractors and balanced answer options; source material is supplied directly to your chosen external AI
+- JSON import with validation and preview, import history with per-batch inspection and re-export, plus profile backup and export
+- Two AI prompt modes: extract only questions explicitly posed in the source, or generate a broad set of new course questions with concise stems and plausible, balanced distractors. Prompts use compact section references and can omit existing sections for stricter chatbot limits; source material is supplied directly to your chosen external AI
 - Protected AI provenance metadata (`AI-Extracted` / `AI-Generated`) kept separate from editable ordinary tags
 - Learning timeline, mastery summaries, dark and light appearance
 - Practice accuracy trend chart with date ranges and a separate mastered-question trend
