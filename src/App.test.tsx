@@ -236,3 +236,20 @@ describe('Request 009 multi-select filters', () => {
     expect(screen.getByLabelText('Filter import source')).toHaveProperty('multiple', true)
   })
 })
+
+
+describe('Request 009 practice controls', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
+  it('allows toggling a favourite during practice after answering', () => {
+    render(<App />)
+    fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
+    fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
+    const option = document.querySelector('.answer-option')
+    expect(option).not.toBeNull()
+    fireEvent.click(option as Element)
+    fireEvent.click(screen.getByRole('button', { name: /Check answer/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Favourite' }))
+    expect(screen.getByRole('button', { name: 'Favourited' })).toHaveAttribute('aria-pressed', 'true')
+  })
+})
