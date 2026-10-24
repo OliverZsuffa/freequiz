@@ -295,3 +295,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 @media(max-width:600px){.import-meta-fields{grid-template-columns:1fr}.import-history-heading{flex-direction:column}.import-history-heading .button{width:100%}.page-heading{gap:10px}.page-heading h1{font-size:26px}}
 
 .section-match-note{display:block;font-size:11px;line-height:1.45;margin:-3px 0 10px 24px}
+
+/* Reduce repeated all-caps labels where the page title already gives the context. */
+.page-heading .eyebrow,.overview-heading .eyebrow,.practice-top .eyebrow,.results-page>.eyebrow{display:none}
