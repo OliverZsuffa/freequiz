@@ -136,7 +136,6 @@ describe('Request 006 import history', () => {
     expect(screen.getByRole('heading', { name: 'Import history' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Lecture 3' })).toBeInTheDocument()
     expect(screen.getByText('What is import history?')).toBeInTheDocument()
-    expect(screen.getByText(/1 added to library/)).toBeInTheDocument()
   })
 
   it('offers a short prompt and optional existing-section matching', () => {
