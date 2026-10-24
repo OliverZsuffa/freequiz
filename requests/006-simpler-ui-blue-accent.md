@@ -29,6 +29,8 @@ Review the entire app, not just importing or AI tools. This includes the dashboa
 - Filter for course relevance. Skip advertisements, administrative information, contact details, schedules, icebreakers, and other non-course content, even if they could be turned into questions.
 - Enforce source fidelity: every correct answer and explanation must be supported by the supplied material. Do not fill gaps with confident guesses or unsupported outside knowledge; flag uncertainty for review.
 - Prioritise course learning objectives, core concepts, meaningful distinctions, and applications over isolated numbers, names, or trivia. Do not generate a question just because a slide contains a fact.
+- **Write concise, direct question stems.** Avoid repetitive meta-introductions such as “According to the lecture slides…”, “Based on the course material…”, “As discussed in the lecture…”, or “Which of the following does the material state…”. Assume the learner is answering questions from their course; do not keep reminding them of the source. Ask the concept directly, for example, “What is the stewardship role of financial accounting?” rather than “According to the lecture slides, what does the material say about the stewardship role?”
+- Include source context in a question only when it is genuinely necessary to understand the scenario or distinguish the intended concept. Do not remove meaningful context just to make every stem short. Keep stems focused and avoid filler; put useful source attribution or nuance in the explanation when needed, not as a repeated preamble.
 - For generated questions, keep distractors plausible and based on common misconceptions, balance option lengths, vary correct-answer positions, and check for wording or pattern clues.
 - Preserve supported answer modes, variable option counts, stable option IDs, provenance metadata, and import-compatible output.
 - Keep prompt generation and **Copy prompt** obvious. The compact prompt should be the default, without making users understand JSON schemas.
@@ -51,6 +53,7 @@ Review the entire app, not just importing or AI tools. This includes the dashboa
 - The prompt clearly distinguishes existing-question extraction from new-question generation and preserves the appropriate provenance tag.
 - Non-course content is excluded; uncertain answers are flagged instead of guessed; correct answers and explanations must be grounded in the supplied material.
 - Generated questions favour course concepts and applications over low-value trivia, with plausible distractors, balanced option lengths, varied correct-answer positions, and no predictable clues.
+- Question stems are concise and direct by default, without repetitive phrases like “according to the lecture slides” or “based on the course material” unless that context is genuinely necessary.
 - A first-time user can choose a mode, generate a prompt, and copy it without reading a long technical explanation.
 - With blue selected, accent surfaces and interactive highlights consistently use blue across the app; no leftover green accent remains in those areas.
 - Switching accent presets recolours the same UI elements consistently in dark and light themes.
