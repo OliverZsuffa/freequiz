@@ -87,5 +87,12 @@ Freequiz is a private, client side only progressive web app for organising and p
 
 ## Request 006 implementation status
 - PR #5 implements the site-wide UI simplification, blue-led consistent accent surfaces, shorter strict extraction/generation prompts, optional compact section matching, and per-profile import history with batch exports.
-- Automated verification is being rerun after fixing initial test selector/assertion issues. Do not treat this feature as deployed until the final Pages workflow succeeds.
-- Manual browser, mobile, and offline checks remain outstanding.
+- PR workflow run [40086825611](https://github.com/OliverZsuffa/freequiz/actions/runs/40086825611) passed 38 tests, TypeScript check, production build, Pages configuration, and artifact upload.
+- The GitHub connector used here does not expose the main-branch push deployment run, and the live site could not be fetched for a browser smoke test. Do not claim the live deployment was independently verified in this session.
+- Manual desktop, mobile, and offline checks remain outstanding.
+
+
+## Request 006 verification
+- Implemented and merged via [PR #5](https://github.com/OliverZsuffa/freequiz/pull/5), merge commit `3ea6cf4870a0be4f739d9d6777d0ceec83e3eeaa`.
+- PR workflow run [40086825611](https://github.com/OliverZsuffa/freequiz/actions/runs/40086825611) passed all 38 tests, TypeScript checking, production build, Pages configuration, and artifact upload.
+- Main push deployment and live site were not independently verified because the available connector did not expose the push-triggered workflow run and the live URL could not be fetched. Manual desktop/mobile/offline smoke tests were not performed.
