@@ -1,7 +1,7 @@
 # Request 005 implementation plan
 
 ## Status
-Draft for approval. No feature implementation has started.
+Approved and implemented on branch `request-005-ai-prompt-modes`; automated verification and deployment are pending.
 
 ## Design decisions
 - Present two clear modes in the existing AI prompt generator: **Extract existing questions** and **Generate new questions**.
