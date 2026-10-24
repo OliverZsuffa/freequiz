@@ -10,4 +10,4 @@ No blocking questions remain. The defaults below were confirmed by Oliver.
 6. **Nested sections:** Parent section filters include descendants by default, with an explicit section-only option. Section assignment targets one specific section.
 7. **Undo:** Add undo for bulk tag changes and section moves if reliable with the current persistence design.
 
-The plan is ready for review. Explicit approval is still required before implementation begins.
+The plan was approved and implemented in Pull Request #8. Automated verification passed: 44 tests, TypeScript check, and production build. Merge and deployment verification remain outstanding.
