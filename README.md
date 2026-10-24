@@ -75,4 +75,4 @@ Browser storage is not cloud sync. Export a backup regularly, especially before 
 
 ## Status
 
-Request 006 is merged. The follow-up AI prompt reliability change is tracked in Request 007. Check its pull-request workflow and the latest Actions run on `main` before treating the live site as updated; manual browser, mobile, and offline checks remain outstanding.
+Request 006 and AI prompt reliability Request 007 are merged. PR #6 passed 40 tests, TypeScript checking, production build, Pages configuration, and artifact upload. The push-triggered main deployment and live app were not independently verified; manual browser, mobile, and offline checks remain outstanding.
