@@ -1,12 +1,12 @@
 export type Option = { id: string; text: string }
 export type AnswerMode = 'single' | 'exactly-n' | 'select-all'
-export type Question = { id: string; prompt: string; options: Option[]; correctOptionIds: string[]; answerMode?: AnswerMode; sectionId: string | null; explanation?: string; tags?: string[]; provenance?: 'AI-Generated' | 'AI-Extracted' }
+export type Question = { id: string; prompt: string; options: Option[]; correctOptionIds: string[]; answerMode?: AnswerMode; sectionId: string | null; explanation?: string; tags?: string[]; provenance?: 'AI-Generated' | 'AI-Extracted'; sourceImportId?: string; sourceFileName?: string; createdAt?: string; updatedAt?: string }
 export type QuestionGroup = { id: string; name: string; questionIds: string[] }
 export type ExamResponse = { questionId: string; selectedOptionIds: string[]; correct: boolean }
 export type ExamSession = { id: string; at: string; source: string; timeLimitSeconds: number; durationSeconds: number; responses: ExamResponse[]; score: number }
 export type Section = { id: string; name: string; parentId: string | null }
 export type Attempt = { id: string; questionId: string; at: string; selectedOptionIds: string[]; correct: boolean }
-export type ImportBatch = { id: string; name: string; at: string; source: 'json' | 'ai-extract' | 'ai-generate' | 'unknown'; addedQuestionIds: string[]; sections: Section[]; questions: Question[] }
+export type ImportBatch = { id: string; name: string; at: string; source: 'json' | 'ai-extract' | 'ai-generate' | 'unknown'; addedQuestionIds: string[]; sections: Section[]; questions: Question[]; sourceFileName?: string; sourceIdentity?: string }
 export type Profile = { id: string; name: string; sections: Section[]; questions: Question[]; attempts: Attempt[]; favourites?: string[]; groups?: QuestionGroup[]; exams?: ExamSession[]; imports?: ImportBatch[] }
 export type Store = { version: 1; activeProfileId: string; profiles: Profile[] }
 export type Mastery = 'new' | 'learning' | 'known' | 'needs-work' | 'weak'
