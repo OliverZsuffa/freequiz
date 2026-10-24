@@ -38,3 +38,44 @@ describe('answer modes and import compatibility', () => {
     expect(() => parseImport({ questions: [{ prompt: 'Invalid N', answerMode: 'exactly-n', options: [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }], correctOptionIds: ['a'] }] })).toThrow(/exactly-N mode/)
   })
 })
+
+
+describe('AI prompt modes and provenance', () => {
+  it('writes an extraction-only prompt that forbids invented content and guessing', () => {
+    const prompt = buildAiPrompt([{ id: 'math', name: 'Math', parentId: null }], 'extract')
+    expect(prompt).toContain('MODE: EXTRACT EXISTING QUESTIONS')
+    expect(prompt).toContain('AI-Extracted')
+    expect(prompt).toContain('Never invent a question')
+    expect(prompt).toContain('do not guess')
+    expect(prompt).toContain('Math')
+  })
+
+  it('writes a generation prompt with quality constraints and generated provenance', () => {
+    const prompt = buildAiPrompt([], 'generate')
+    expect(prompt).toContain('MODE: GENERATE NEW QUESTIONS')
+    expect(prompt).toContain('AI-Generated')
+    expect(prompt).toContain('Distractors must be credible mistakes')
+    expect(prompt).toContain('Balance answer lengths')
+    expect(prompt).toContain('Vary correct-answer positions')
+    expect(prompt).toContain('grammar')
+  })
+
+  it('round-trips valid provenance and keeps it separate from ordinary tags', () => {
+    const parsed = parseImport({ questions: [{
+      id: 'generated', prompt: 'Question?', options: [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }],
+      correctOptionIds: ['a'], provenance: 'AI-Generated', tags: ['revision', 'AI-Extracted']
+    }] })
+    expect(parsed.questions[0].provenance).toBe('AI-Generated')
+    expect(parsed.questions[0].tags).toEqual(['revision'])
+  })
+
+  it('ignores unsupported provenance values and remains compatible with legacy questions', () => {
+    const parsed = parseImport({ questions: [
+      { id: 'bad', prompt: 'Question?', options: [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }], correctOptionIds: ['a'], provenance: 'AI-Whatever', tags: ['topic'] },
+      { id: 'legacy', prompt: 'Old question?', options: ['A', 'B'], answer: 0 }
+    ] })
+    expect(parsed.questions[0].provenance).toBeUndefined()
+    expect(parsed.questions[1].provenance).toBeUndefined()
+    expect(parsed.questions[1].tags).toEqual([])
+  })
+})
