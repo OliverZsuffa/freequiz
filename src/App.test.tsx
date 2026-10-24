@@ -221,3 +221,67 @@ describe('Request 006 import history', () => {
   })
 
 })
+
+
+describe('Request 009 multi-select filters', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
+  it('exposes categorical library filters as multi-select controls', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    expect(screen.getByLabelText('Filter section')).toHaveProperty('multiple', true)
+    expect(screen.getByLabelText('Filter answer types')).toHaveProperty('multiple', true)
+    expect(screen.getByLabelText('Filter provenance')).toHaveProperty('multiple', true)
+    expect(screen.getByLabelText('Filter import source')).toHaveProperty('multiple', true)
+  })
+})
+
+
+describe('Request 009 practice controls', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
+  it('allows toggling a favourite during practice after answering', () => {
+    render(<App />)
+    fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
+    fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
+    const option = document.querySelector('.answer-option')
+    expect(option).not.toBeNull()
+    fireEvent.click(option as Element)
+    fireEvent.click(screen.getByRole('button', { name: /Check answer/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Favourite' }))
+    expect(screen.getByRole('button', { name: 'Favourited' })).toHaveAttribute('aria-pressed', 'true')
+  })
+})
+
+
+describe('Request 009 practice deferral', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
+  it('skips deferred practice questions without recording answers', () => {
+    render(<App />)
+    fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
+    fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
+    const first = screen.getByRole('heading', { level: 2 }).textContent
+    fireEvent.click(screen.getByRole('button', { name: 'Defer' }))
+    expect(screen.getByRole('heading', { level: 2 }).textContent).not.toBe(first)
+    fireEvent.click(screen.getByRole('button', { name: 'Defer' }))
+    expect(screen.getByRole('heading', { name: 'Practice results' })).toBeInTheDocument()
+    expect(screen.getByText('0 correct out of 0 questions.')).toBeInTheDocument()
+  })
+})
+
+
+describe('Request 009 exam deferral', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
+  it('marks an exam question deferred without skipping it', () => {
+    render(<App />)
+    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
+    fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
+    const question = screen.getByRole('heading', { level: 2 }).textContent
+    fireEvent.click(screen.getByRole('button', { name: 'Mark deferred' }))
+    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe(question)
+  })
+})

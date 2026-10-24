@@ -317,3 +317,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .profile-delete-action{color:var(--danger,#d44)!important}
 .bulk-editor-grid .button{min-height:38px}
 @media(max-width:700px){.advanced-filter-grid,.bulk-editor-grid{grid-template-columns:1fr}.bulk-selection-summary{align-items:flex-start}.library-toolbar{flex-wrap:wrap}.library-toolbar>*{max-width:100%}.question-row{gap:8px}.compact-check{white-space:normal}}
+
+
+/* Native multi-selects make categorical filters composable while keeping choices visible. */
+.multi-filter-label { display: flex; flex-direction: column; gap: 6px; min-width: 150px; }
+.multi-filter-label select[multiple], .advanced-filter-grid select[multiple] { min-height: 76px; }

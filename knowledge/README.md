@@ -118,3 +118,7 @@ Implementation is available in Pull Request #8 and is awaiting merge into `main`
 - Bulk selection supports individual questions and all matching results across the full filtered set. Bulk actions support adding, removing, or replacing tags, moving sections, setting explanations, and changing answer mode when existing correct-answer counts remain valid. Bulk tag changes and section moves, along with the other supported bulk changes, can be undone through the saved question snapshot.
 - Import batches record original filename/source identity when available and each import operation remains distinct. Existing questions without timestamps or source attribution are not assigned fabricated history.
 - Automated verification on the pull request passed: 2 test files, 44 tests, TypeScript checking, and production build. This does not represent manual desktop/mobile/offline testing or a deployed main-branch build.
+
+
+## Request 009 verification
+PR #9 adds multi-select library filters, practice favourites, and profile-level deferred markers. Practice deferral skips without recording an answer; exam deferral marks the question without advancing. Workflow run [40107477903](https://github.com/OliverZsuffa/freequiz/actions/runs/40107477903) passed all 48 tests, TypeScript checking, production build, Pages configuration, and artifact upload. The PR remains unmerged, so deployment and manual desktop/mobile/offline checks are outstanding.
