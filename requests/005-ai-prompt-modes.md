@@ -1,7 +1,7 @@
 # Request 005: Separate AI extraction and question generation
 
 ## Status
-Draft for approval. No feature implementation has started.
+Approved and implemented on branch `request-005-ai-prompt-modes`; automated verification and deployment are pending.
 
 ## Goal
 Make the AI prompt generator useful for two distinct workflows: extracting questions that already exist in a supplied source, and generating new questions from learning material. The prompts must make the difference explicit and produce question-bank JSON that Freequiz can import.
