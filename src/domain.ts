@@ -7,7 +7,7 @@ export type ExamSession = { id: string; at: string; source: string; timeLimitSec
 export type Section = { id: string; name: string; parentId: string | null }
 export type Attempt = { id: string; questionId: string; at: string; selectedOptionIds: string[]; correct: boolean }
 export type ImportBatch = { id: string; name: string; at: string; source: 'json' | 'ai-extract' | 'ai-generate' | 'unknown'; addedQuestionIds: string[]; sections: Section[]; questions: Question[]; sourceFileName?: string; sourceIdentity?: string }
-export type Profile = { id: string; name: string; sections: Section[]; questions: Question[]; attempts: Attempt[]; favourites?: string[]; groups?: QuestionGroup[]; exams?: ExamSession[]; imports?: ImportBatch[] }
+export type Profile = { id: string; name: string; sections: Section[]; questions: Question[]; attempts: Attempt[]; favourites?: string[]; deferredQuestionIds?: string[]; groups?: QuestionGroup[]; exams?: ExamSession[]; imports?: ImportBatch[] }
 export type Store = { version: 1; activeProfileId: string; profiles: Profile[] }
 export type Mastery = 'new' | 'learning' | 'known' | 'needs-work' | 'weak'
 export function masteryFor(attempts: Attempt[], id: string): Mastery {
