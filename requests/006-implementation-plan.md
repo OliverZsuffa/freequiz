@@ -22,8 +22,12 @@ Draft for approval. No implementation has started.
    - Ensure every correct answer and explanation is supported by the supplied material. Do not fill gaps with confident guesses or unsupported outside knowledge; flag uncertainty for review.
    - Prioritise course learning objectives, core concepts, meaningful distinctions, and applications over isolated numbers, names, or trivia. Do not create a question merely because a slide contains a fact.
    - Keep distractors plausible and based on common misconceptions; balance option lengths, vary correct-answer positions, and check for wording or pattern clues.
-7. Keep supported answer modes, variable option counts, stable option IDs, provenance, and import-compatible output requirements.
-8. Add tests for compact section serialization, include/omit behaviours, protocol separation, exclusions of non-course content, source-grounding/uncertainty rules, conceptual question-quality rules, distractor/answer-pattern rules, provenance, and schema compatibility.
+7. Require concise, direct question stems:
+   - Avoid repetitive meta-prefaces such as “According to the lecture slides,” “Based on the course material,” and “As discussed in the lecture.”
+   - Ask the concept directly and assume the learner knows the course context. Include source/scenario context only when it is genuinely needed to make the question clear or precise.
+   - Avoid filler without stripping away context required to test the intended concept. Put useful source attribution or nuance in explanations where appropriate rather than repeating it in every stem.
+8. Keep supported answer modes, variable option counts, stable option IDs, provenance, and import-compatible output requirements.
+9. Add tests for compact section serialization, include/omit behaviours, protocol separation, exclusions of non-course content, source-grounding/uncertainty rules, conceptual question quality, concise stems, distractor/answer-pattern rules, provenance, and schema compatibility.
 
 ## Phase 3: Simplify the AI prompt and import screen
 1. Remove the privacy callout, redundant explanatory paragraphs, "Prompt automatically includes" checklist, and prominent schema example from the main workflow.
@@ -42,7 +46,7 @@ Draft for approval. No implementation has started.
 
 ## Phase 5: Verification
 1. Update UI tests for the site-wide copy/layout simplifications and the AI prompt flow.
-2. Test the prompt requirements directly and inspect representative generated prompt text for length and clarity. Verify that compacting does not drop source-fidelity, relevance, protocol-separation, or question-quality requirements.
+2. Test the prompt requirements directly and inspect representative generated prompt text for length and clarity. Verify that compacting does not drop source-fidelity, relevance, protocol-separation, question-quality, or concise-wording requirements.
 3. Run the full test suite, TypeScript check and production build.
 4. Merge only after checks pass and verify the Pages workflow.
 5. Record deployment status and whether manual desktop/mobile theme checks were performed.
