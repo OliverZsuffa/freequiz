@@ -1,7 +1,7 @@
 # Request 008 implementation plan
 
 ## Status
-Plan written to repository. Awaiting Oliver's explicit approval. No application code has been changed for Request 008.
+Implementation committed on feature branch `feature/008-question-management` in Pull Request #8. Automated verification passed: 2 test files, 44 tests, TypeScript check, and production build. Awaiting merge into `main` and deployment verification. Manual desktop, mobile, and offline checks remain outstanding.
 
 ## Phase 1: Audit current implementation
 1. Read the current profile types, profile creation/deletion and persistence flows in `src/App.tsx`, `src/domain.ts`, and `src/storage.ts`.
