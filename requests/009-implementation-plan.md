@@ -54,3 +54,7 @@ Make question-library filters genuinely composable through multi-select controls
 
 ## Approval gate
 This is a plan only. Do not edit application code until Oliver explicitly approves the plan.
+
+
+## Approval update
+Oliver approved the plan and defaults on 2026-10-24.
