@@ -1,5 +1,8 @@
 # Request 007: More reliable AI question generation
 
+## Status
+Implemented and merged via [PR #6](https://github.com/OliverZsuffa/freequiz/pull/6), merge commit `acfe0c84147e5fe7b72cf3c717f1d54dab190c51`. PR workflow [40095796298](https://github.com/OliverZsuffa/freequiz/actions/runs/40095796298) passed 40 tests, TypeScript checking, production build, Pages configuration, and artifact upload. Main push deployment and manual browser/device checks remain unverified.
+
 ## Problem
 Generated questions still use phrases such as “according to the course slides”, the output can be too small for the material, and the AI repeats the existing section tree even when Freequiz supplied it.
 
