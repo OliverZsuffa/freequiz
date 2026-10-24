@@ -150,6 +150,6 @@ describe('Request 006 import history', () => {
     expect(prompt).toContain('avoid repetitive stems')
     fireEvent.click(screen.getByLabelText('Match my existing sections'))
     fireEvent.click(screen.getByRole('button', { name: /Generate AI prompt/i }))
-    expect(screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i)).toHaveValue(expect.not.stringContaining('Existing sections'))
+    expect((screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i) as HTMLTextAreaElement).value).not.toContain('Existing sections')
   })
 })
