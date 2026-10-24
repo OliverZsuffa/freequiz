@@ -107,3 +107,14 @@ Freequiz is a private, client side only progressive web app for organising and p
 - Implemented and merged via [PR #6](https://github.com/OliverZsuffa/freequiz/pull/6), merge commit `acfe0c84147e5fe7b72cf3c717f1d54dab190c51`.
 - PR workflow run [40095796298](https://github.com/OliverZsuffa/freequiz/actions/runs/40095796298) passed all 40 tests, TypeScript checking, production build, Pages configuration, and artifact upload.
 - The PR workflow skipped deployment, and the main push deployment/live app were not independently verified. Manual browser/device checks remain outstanding.
+
+
+## Request 008: Question management
+Implementation is available in Pull Request #8 and is awaiting merge into `main`.
+
+- Profile deletion is confirmed and restricted to the active profile. It protects the final profile, switches to another profile after deletion, removes profile-owned data, and leaves app-wide settings unchanged.
+- Section selection uses recursive trees and full hierarchical paths. Parent selection includes descendants in study setup, and question-library filters have an explicit include-descendants toggle.
+- The question library supports search across prompts, options, explanations, tags, section paths, provenance, and import metadata. Filters cover answer mode, section, included/excluded tags, provenance, import batch, import type, explanation/tag presence, and recorded creation/modification dates. Sorting uses available fields and stable original order for ties.
+- Bulk selection supports individual questions and all matching results across the full filtered set. Bulk actions support adding, removing, or replacing tags, moving sections, setting explanations, and changing answer mode when existing correct-answer counts remain valid. Bulk tag changes and section moves, along with the other supported bulk changes, can be undone through the saved question snapshot.
+- Import batches record original filename/source identity when available and each import operation remains distinct. Existing questions without timestamps or source attribution are not assigned fabricated history.
+- Automated verification on the pull request passed: 2 test files, 44 tests, TypeScript checking, and production build. This does not represent manual desktop/mobile/offline testing or a deployed main-branch build.

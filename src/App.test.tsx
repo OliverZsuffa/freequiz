@@ -153,4 +153,71 @@ describe('Request 006 import history', () => {
     fireEvent.click(screen.getByRole('button', { name: /Generate AI prompt/i }))
     expect((screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i) as HTMLTextAreaElement).value).not.toContain('Existing sections')
   })
+  it('filters questions by tags and supports sorting', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.click(screen.getByText('More filters and sorting'))
+    fireEvent.change(screen.getByLabelText('Include tags'), { target: { value: 'angles' } })
+    expect(screen.getAllByText('What is the sum of the interior angles of a triangle in Euclidean geometry?').length).toBeGreaterThan(0)
+    expect(screen.queryByText('Which expression is the derivative of x²?')).not.toBeInTheDocument()
+    fireEvent.change(screen.getByLabelText('Include tags'), { target: { value: '' } })
+    fireEvent.change(screen.getByLabelText('Sort questions'), { target: { value: 'prompt' } })
+    expect(screen.getAllByText('What is the sum of the interior angles of a triangle in Euclidean geometry?').length).toBeGreaterThan(0)
+  })
+
+  it('bulk edits selected questions and offers undo', () => {
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true)
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.click(screen.getByText('More filters and sorting'))
+    fireEvent.change(screen.getByLabelText('Include tags'), { target: { value: 'angles' } })
+    fireEvent.click(screen.getByRole('button', { name: /Select all matching/i }))
+    expect(screen.getByRole('button', { name: /Select all matching/i })).toBeInTheDocument()
+    fireEvent.change(screen.getByLabelText('Bulk tags'), { target: { value: 'review' } })
+    fireEvent.click(screen.getByRole('button', { name: /Apply to 1 selected/i }))
+    expect(confirm).toHaveBeenCalled()
+    expect(screen.getByText('review')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Undo add tags/i }))
+    expect(screen.queryByText('review')).not.toBeInTheDocument()
+    confirm.mockRestore()
+  })
+
+  it('supports deep section paths and descendant filtering', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    fireEvent.change(screen.getByLabelText('Question bank (JSON)'), { target: { value: JSON.stringify({
+      format: 'freequiz/questions-v1',
+      sections: [
+        { id: 'deep-root', name: 'Deep root', parentId: null },
+        { id: 'deep-child', name: 'Child', parentId: 'deep-root' },
+        { id: 'deep-grandchild', name: 'Grandchild', parentId: 'deep-child' },
+        { id: 'deep-leaf', name: 'Leaf', parentId: 'deep-grandchild' }
+      ],
+      questions: [{ id: 'deep-question', prompt: 'Question in a deeply nested section?', options: [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }], correctOptionIds: ['a'], sectionId: 'deep-leaf', explanation: '', tags: [] }]
+    }) } })
+    fireEvent.click(screen.getByRole('button', { name: /Validate and preview/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Merge into profile/i }))
+    expect(screen.getByRole('option', { name: 'Deep root / Child / Grandchild / Leaf' })).toBeInTheDocument()
+    fireEvent.change(screen.getByLabelText('Filter section'), { target: { value: 'deep-root' } })
+    expect(screen.getAllByText('Question in a deeply nested section?').length).toBeGreaterThan(0)
+  })
+
+  it('deletes a profile only after confirmation and switches to another profile', () => {
+    const prompt = vi.spyOn(window, 'prompt').mockReturnValue('Temporary profile')
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true)
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Demo library/i }))
+    fireEvent.click(screen.getByRole('button', { name: /New profile/i }))
+    expect(screen.getAllByRole('button', { name: /Temporary profile/i }).length).toBeGreaterThan(0)
+    fireEvent.click(screen.getAllByRole('button', { name: /Temporary profile/i })[0])
+    fireEvent.click(screen.getByRole('button', { name: /Delete current profile/i }))
+    expect(confirm).toHaveBeenCalled()
+    expect(screen.getByRole('button', { name: /Demo library/i })).toBeInTheDocument()
+    prompt.mockRestore()
+    confirm.mockRestore()
+  })
+
 })
