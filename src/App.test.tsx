@@ -221,3 +221,18 @@ describe('Request 006 import history', () => {
   })
 
 })
+
+
+describe('Request 009 multi-select filters', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
+  it('exposes categorical library filters as multi-select controls', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    expect(screen.getByLabelText('Filter sections')).toHaveProperty('multiple', true)
+    expect(screen.getByLabelText('Filter answer types')).toHaveProperty('multiple', true)
+    expect(screen.getByLabelText('Filter provenance')).toHaveProperty('multiple', true)
+    expect(screen.getByLabelText('Filter import source')).toHaveProperty('multiple', true)
+  })
+})
