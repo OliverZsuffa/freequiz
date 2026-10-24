@@ -1,7 +1,7 @@
 # Request 006 implementation plan
 
 ## Status
-Implementation in progress in PR #5; automated verification is running.
+Implemented and merged via PR #5 (merge commit `3ea6cf4870a0be4f739d9d6777d0ceec83e3eeaa`). PR workflow run [40086825611](https://github.com/OliverZsuffa/freequiz/actions/runs/40086825611) passed 38 tests, TypeScript check, production build, Pages configuration, and artifact upload. Main-branch deployment could not be independently confirmed; manual browser/device checks remain outstanding.
 
 ## Phase 1: Audit the entire UI
 1. Review the app's main screens and shared components: dashboard, quiz setup/runner, question library/editor, results, progress charts, settings, AI prompt generator, import and export.
