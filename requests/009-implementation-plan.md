@@ -53,8 +53,4 @@ Make question-library filters genuinely composable through multi-select controls
 - Backend services, telemetry, automatic AI calls, or cross-device sync.
 
 ## Approval gate
-This is a plan only. Do not edit application code until Oliver explicitly approves the plan.
-
-
-## Approval update
-Oliver approved the plan and defaults on 2026-10-24.
+Oliver approved this plan and its defaults on 2026-10-24. Implementation is complete on PR #9. Merge only after explicit merge approval and successful checks.
