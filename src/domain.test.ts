@@ -97,7 +97,7 @@ describe('Request 006 AI prompt quality', () => {
     const included = buildAiPrompt(sections, 'generate')
     expect(included).toContain('accounting | - | Accounting')
     expect(included).toContain('valuation | accounting | Valuation')
-    expect(included).toContain('Do not return, copy, rename, or redefine any existing section')
+    expect(included).toContain('Do not return, copy, rename, or redefine any listed section')
     expect(included).toContain('If existing sections fit, return sections: [].')
     expect(included).toContain('Existing IDs remain valid even when their definitions are absent from this import file')
     expect(included).toContain('Do NOT make the file self-contained by repeating existing section definitions')
