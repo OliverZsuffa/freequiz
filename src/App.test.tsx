@@ -253,3 +253,20 @@ describe('Request 009 practice controls', () => {
     expect(screen.getByRole('button', { name: 'Favourited' })).toHaveAttribute('aria-pressed', 'true')
   })
 })
+
+
+describe('Request 009 practice deferral', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
+  it('skips deferred practice questions without recording answers', () => {
+    render(<App />)
+    fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
+    fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
+    const first = screen.getByRole('heading', { level: 2 }).textContent
+    fireEvent.click(screen.getByRole('button', { name: 'Defer' }))
+    expect(screen.getByRole('heading', { level: 2 }).textContent).not.toBe(first)
+    fireEvent.click(screen.getByRole('button', { name: 'Defer' }))
+    expect(screen.getByRole('heading', { name: 'Practice results' })).toBeInTheDocument()
+    expect(screen.getByText('0 correct out of 0 questions.')).toBeInTheDocument()
+  })
+})
