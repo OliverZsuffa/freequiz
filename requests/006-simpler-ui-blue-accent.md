@@ -1,7 +1,7 @@
 # Request 006: Simpler site-wide UI, consistent blue accent, and shorter, more reliable AI prompts
 
 ## Status
-Implementation in progress in PR #5; automated verification is running.
+Implemented and merged via PR #5 (merge commit `3ea6cf4870a0be4f739d9d6777d0ceec83e3eeaa`). PR workflow run [40086825611](https://github.com/OliverZsuffa/freequiz/actions/runs/40086825611) passed 38 tests, TypeScript check, production build, Pages configuration, and artifact upload. Main-branch deployment and live browser verification could not be independently confirmed from the available connector; manual desktop/mobile/offline checks remain outstanding.
 
 ## Goal
 Make Freequiz clear and approachable for people who just want to study, not people interested in technical details. Reduce clutter throughout the app, make the selected accent colour consistent, and ensure AI prompts stay within more chatbot input limits without sacrificing the relevance or reliability of the resulting question bank.
