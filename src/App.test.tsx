@@ -72,7 +72,7 @@ describe('Freequiz', () => {
 })
 
 
-describe('Request 004 features',()=>{beforeEach(()=>localStorage.clear());afterEach(()=>cleanup());it('shows the progress graph empty state',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Statistics/i}));expect(screen.getByRole('heading',{name:'Accuracy over time'})).toBeInTheDocument();expect(screen.getByText(/Your progress graph starts here/)).toBeInTheDocument()});it('offers optional gamification and reminders',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Settings & reminders/i}));expect(screen.getByRole('heading',{name:'Gamification'})).toBeInTheDocument();expect(screen.getByText('Milestones and achievements')).toBeInTheDocument();expect(screen.getByRole('checkbox',{name:'Enable study reminders'})).not.toBeChecked()});it('offers multiple-section filtering',()=>{render(<App/>);expect(screen.getByLabelText('Search sections')).toBeInTheDocument();fireEvent.click(screen.getByRole('button',{name:'Clear'}));expect(screen.getByText('All sections')).toBeInTheDocument()});it('generates a reusable prompt without a source field',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Import \/ export/i}));expect(screen.queryByLabelText('Source material')).not.toBeInTheDocument();fireEvent.click(screen.getByRole('button',{name:/Generate AI prompt/i}));expect(screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i)).toBeInTheDocument()})});
+describe('Request 004 features',()=>{beforeEach(()=>localStorage.clear());afterEach(()=>cleanup());it('shows the progress graph empty state',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/^Statistics$/i}));expect(screen.getByRole('heading',{name:'Accuracy over time'})).toBeInTheDocument();expect(screen.getByText(/Your progress graph starts here/)).toBeInTheDocument()});it('offers optional gamification and reminders',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Settings & reminders/i}));expect(screen.getByRole('heading',{name:'Gamification'})).toBeInTheDocument();expect(screen.getByText('Milestones and achievements')).toBeInTheDocument();expect(screen.getByRole('checkbox',{name:'Enable study reminders'})).not.toBeChecked()});it('offers multi-section and tag filtering in the unified Questions workspace',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:'Questions'}));expect(screen.getByLabelText('Filter section')).toBeInTheDocument();expect(screen.getByLabelText('Filter tags')).toBeInTheDocument()});it('generates a reusable prompt without a source field',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Import \/ export/i}));expect(screen.queryByLabelText('Source material')).not.toBeInTheDocument();fireEvent.click(screen.getByRole('button',{name:/Generate AI prompt/i}));expect(screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i)).toBeInTheDocument()})});
 
 
 describe('AI prompt UI and editable tags', () => {
@@ -178,9 +178,9 @@ describe('Request 006 import history', () => {
     fireEvent.change(screen.getByLabelText('Bulk tags'), { target: { value: 'review' } })
     fireEvent.click(screen.getByRole('button', { name: /Apply to 1 selected/i }))
     expect(confirm).toHaveBeenCalled()
-    expect(screen.getByText('review')).toBeInTheDocument()
+    expect(screen.getByText('review', { selector: '.tag' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /Undo add tags/i }))
-    expect(screen.queryByText('review')).not.toBeInTheDocument()
+    expect(screen.queryByText('review', { selector: '.tag' })).not.toBeInTheDocument()
     confirm.mockRestore()
   })
 
@@ -283,5 +283,80 @@ describe('Request 009 exam deferral', () => {
     const question = screen.getByRole('heading', { level: 2 }).textContent
     fireEvent.click(screen.getByRole('button', { name: 'Mark deferred' }))
     expect(screen.getByRole('heading', { level: 2 }).textContent).toBe(question)
+  })
+})
+
+
+describe('Request 010 unified workspace and guidance', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
+
+  it('offers one Questions workspace with tag filters and selection actions', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    expect(screen.getByLabelText('Search questions')).toBeInTheDocument()
+    expect(screen.getByLabelText('Filter tags')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Select all matching/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Practise matches/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Exam \(/i })).toBeInTheDocument()
+  })
+
+  it('provides GitHub feedback drafts and a feature guide', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Help & feedback' }))
+    expect(screen.getByRole('heading', { name: 'Help & feedback' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Report a bug/i })).toHaveAttribute('href', expect.stringContaining('github.com/OliverZsuffa/freequiz/issues/new'))
+    expect(screen.getByRole('link', { name: /Suggest a feature/i })).toBeInTheDocument()
+    expect(screen.getByText(/does not send reports automatically/i)).toBeInTheDocument()
+    expect(screen.getByText('AI extraction vs generation')).toBeInTheDocument()
+  })
+
+  it('runs the interactive workflow tutorial and remembers completion', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Start tutorial/i }))
+    expect(screen.getByRole('dialog', { name: /Find or import questions/i })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Next step/i }))
+    expect(screen.getByRole('dialog', { name: /Filter and select a set/i })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Next step/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Next step/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Finish/i }))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(localStorage.getItem('freequiz-tutorial-completed')).toBe('true')
+  })
+
+  it('shows the activity calendar and question-bank mastery goals on the home page', () => {
+    render(<App />)
+    expect(screen.getByRole('heading', { name: 'Last 7 days' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Mastery, not just activity' })).toBeInTheDocument()
+    expect(screen.getByText(/Bank-relative target/i)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Edit goals/i })).toBeInTheDocument()
+  })
+})
+
+
+describe('Request 010 question metadata filters and bulk actions', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => { cleanup(); vi.restoreAllMocks() })
+
+  it('offers mastery, favourite and deferred filters', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    fireEvent.click(screen.getByText('More filters and sorting'))
+    expect(screen.getByLabelText('Filter mastery')).toBeInTheDocument()
+    expect(screen.getByLabelText('Filter favourite status')).toBeInTheDocument()
+    expect(screen.getByLabelText('Filter deferred status')).toBeInTheDocument()
+  })
+
+  it('bulk-favourites selected questions and can undo the change', () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    fireEvent.click(screen.getByRole('button', { name: /Select all matching/i }))
+    fireEvent.change(screen.getByLabelText('Bulk edit action'), { target: { value: 'set-favourite' } })
+    fireEvent.click(screen.getByRole('button', { name: /Apply to 4 selected/i }))
+    expect(screen.getByRole('button', { name: /Undo favourite questions/i })).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: /Unfavourite/i }).length).toBeGreaterThanOrEqual(4)
+    fireEvent.click(screen.getByRole('button', { name: /Undo favourite questions/i }))
+    expect(screen.getAllByRole('button', { name: /Favourite/i }).length).toBeGreaterThanOrEqual(4)
   })
 })
