@@ -100,7 +100,7 @@ describe('Request 006 AI prompt quality', () => {
     expect(included).not.toContain('"parentId":')
     const omitted = buildAiPrompt(sections, 'generate', false)
     expect(omitted).not.toContain('Existing sections (id | parentId | name)')
-    expect(omitted).toContain('Create a new section only when no existing section fits')
+    expect(omitted).toContain('Create a concise section hierarchy from course headings/content as needed')
   })
 
   it('asks for broad conceptual coverage and concise natural question stems', () => {
