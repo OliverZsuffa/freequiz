@@ -293,3 +293,5 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .import-batch-questions small{font-size:10px;color:var(--muted)}
 .import-source-tag{max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @media(max-width:600px){.import-meta-fields{grid-template-columns:1fr}.import-history-heading{flex-direction:column}.import-history-heading .button{width:100%}.page-heading{gap:10px}.page-heading h1{font-size:26px}}
+
+.section-match-note{display:block;font-size:11px;line-height:1.45;margin:-3px 0 10px 24px}
