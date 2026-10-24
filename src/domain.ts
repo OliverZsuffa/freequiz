@@ -49,7 +49,7 @@ export type AiPromptMode = 'extract' | 'generate'
 export function buildAiPrompt(sections: Section[], mode: AiPromptMode = 'generate', includeSections = true) {
  const hasExistingSections = includeSections && sections.length > 0;
  const sectionList = hasExistingSections
-  ? '\\nExisting sections (id | parentId | name):\\n' + sections.map(s=>s.id+' | '+(s.parentId??'-')+' | '+s.name).join('\\n')
+  ? '\nExisting sections (id | parentId | name):\n' + sections.map(s=>s.id+' | '+(s.parentId??'-')+' | '+s.name).join('\n')
   : '';
  const sectionRules = hasExistingSections
   ? ' Treat the listed sections as the complete existing section catalogue. Reuse the exact existing section ID in each question sectionId whenever a listed section fits. Do not return, copy, rename, or redefine any existing section in the output sections array. That array is ONLY for genuinely new sections that do not fit any existing section, and it must contain only new sections actually used by questions. A new section parentId may refer to an existing section ID. If existing sections fit, return sections: [].'
