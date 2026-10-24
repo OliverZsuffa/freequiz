@@ -98,7 +98,7 @@ describe('Request 006 AI prompt quality', () => {
     expect(included).toContain('accounting | - | Accounting')
     expect(included).toContain('valuation | accounting | Valuation')
     expect(included).toContain('Do not return, copy, rename, or redefine any listed section')
-    expect(included).toContain('If existing sections fit, return sections: [].')
+    expect(included).toContain('If every question fits an existing section, the required output is exactly sections: [].')
     expect(included).toContain('Existing IDs remain valid even when their definitions are absent from this import file')
     expect(included).toContain('Do NOT make the file self-contained by repeating existing section definitions')
     expect(included).toContain('Do not treat generic schema conventions or assumptions about self-contained JSON as a reason to repeat existing sections')
