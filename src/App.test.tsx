@@ -270,3 +270,18 @@ describe('Request 009 practice deferral', () => {
     expect(screen.getByText('0 correct out of 0 questions.')).toBeInTheDocument()
   })
 })
+
+
+describe('Request 009 exam deferral', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
+  it('marks an exam question deferred without skipping it', () => {
+    render(<App />)
+    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
+    fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
+    const question = screen.getByRole('heading', { level: 2 }).textContent
+    fireEvent.click(screen.getByRole('button', { name: 'Mark deferred' }))
+    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe(question)
+  })
+})
