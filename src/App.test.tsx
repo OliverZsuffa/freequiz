@@ -285,3 +285,50 @@ describe('Request 009 exam deferral', () => {
     expect(screen.getByRole('heading', { level: 2 }).textContent).toBe(question)
   })
 })
+
+
+describe('Request 010 unified workspace and guidance', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
+
+  it('offers one Questions workspace with tag filters and selection actions', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    expect(screen.getByLabelText('Search questions')).toBeInTheDocument()
+    expect(screen.getByLabelText('Filter tags')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Select all matching/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Practise matches/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Exam \(/i })).toBeInTheDocument()
+  })
+
+  it('provides GitHub feedback drafts and a feature guide', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Help & feedback' }))
+    expect(screen.getByRole('heading', { name: 'Help & feedback' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Report a bug/i })).toHaveAttribute('href', expect.stringContaining('github.com/OliverZsuffa/freequiz/issues/new'))
+    expect(screen.getByRole('link', { name: /Suggest a feature/i })).toBeInTheDocument()
+    expect(screen.getByText(/does not send reports automatically/i)).toBeInTheDocument()
+    expect(screen.getByText('AI extraction vs generation')).toBeInTheDocument()
+  })
+
+  it('runs the interactive workflow tutorial and remembers completion', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Start tutorial/i }))
+    expect(screen.getByRole('dialog', { name: /Find or import questions/i })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Next step/i }))
+    expect(screen.getByRole('dialog', { name: /Filter and select a set/i })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Next step/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Next step/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Finish/i }))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(localStorage.getItem('freequiz-tutorial-completed')).toBe('true')
+  })
+
+  it('shows the activity calendar and question-bank mastery goals on the home page', () => {
+    render(<App />)
+    expect(screen.getByRole('heading', { name: 'Last 7 days' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Mastery, not just activity' })).toBeInTheDocument()
+    expect(screen.getByText(/Bank-relative target/i)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Edit goals/i })).toBeInTheDocument()
+  })
+})
