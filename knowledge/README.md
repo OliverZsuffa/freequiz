@@ -74,8 +74,10 @@ Freequiz is a private, client side only progressive web app for organising and p
 
 
 ## Request 005 verification
-- Implemented on branch `request-005-ai-prompt-modes`; automated CI and deployment status will be recorded after the pull request workflow completes.
+- Implemented and merged in PR #4. Main build and GitHub Pages deployment passed in workflow run 40079472885.
 - Extraction prompts prioritize fidelity, forbid invented content and guessed answer keys, and separate uncertain items into a review report outside importable JSON.
 - Generation prompts require plausible misconception-based distractors, balanced option length, varied correct-answer positions, and an audit for unintended clues.
 - Provenance is a separate optional field in `freequiz/questions-v1`. Ordinary tags are editable; the editor does not allow ordinary tags to remove or overwrite provenance.
 - Legacy question banks without provenance remain supported.
+
+- Request 005 verification: 33 tests passed, TypeScript check passed, production build passed, and GitHub Pages deployment passed in workflow run 40079472885. Manual browser/device smoke testing was not performed.
