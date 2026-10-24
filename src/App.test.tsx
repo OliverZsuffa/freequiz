@@ -132,7 +132,7 @@ describe('Request 006 import history', () => {
     fireEvent.click(screen.getByRole('button', { name: /Validate and preview/i }))
     fireEvent.click(screen.getByRole('button', { name: /Merge into profile/i }))
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: 'Import history', exact: true }))
+    fireEvent.click(screen.getAllByRole('button', { name: /Import history/i })[0])
     expect(screen.getByRole('heading', { name: 'Import history' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Lecture 3' })).toBeInTheDocument()
     expect(screen.getByText('What is import history?')).toBeInTheDocument()
