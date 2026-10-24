@@ -332,3 +332,31 @@ describe('Request 010 unified workspace and guidance', () => {
     expect(screen.getByRole('button', { name: /Edit goals/i })).toBeInTheDocument()
   })
 })
+
+
+describe('Request 010 question metadata filters and bulk actions', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => { cleanup(); vi.restoreAllMocks() })
+
+  it('offers mastery, favourite and deferred filters', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    fireEvent.click(screen.getByText('More filters and sorting'))
+    expect(screen.getByLabelText('Filter mastery')).toBeInTheDocument()
+    expect(screen.getByLabelText('Filter favourite status')).toBeInTheDocument()
+    expect(screen.getByLabelText('Filter deferred status')).toBeInTheDocument()
+  })
+
+  it('bulk-favourites selected questions and can undo the change', () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    fireEvent.click(screen.getByRole('button', { name: /Select all matching/i }))
+    fireEvent.change(screen.getByLabelText('Bulk edit action'), { target: { value: 'set-favourite' } })
+    fireEvent.click(screen.getByRole('button', { name: /Apply to 4 selected/i }))
+    expect(screen.getByRole('button', { name: /Undo favourite questions/i })).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: /Unfavourite/i }).length).toBeGreaterThanOrEqual(4)
+    fireEvent.click(screen.getByRole('button', { name: /Undo favourite questions/i }))
+    expect(screen.getAllByRole('button', { name: /Favourite/i }).length).toBeGreaterThanOrEqual(4)
+  })
+})
