@@ -298,3 +298,22 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 
 /* Reduce repeated all-caps labels where the page title already gives the context. */
 .page-heading .eyebrow,.overview-heading .eyebrow,.practice-top .eyebrow,.results-page>.eyebrow{display:none}
+
+
+/* Request 008: question library management */
+.advanced-filters,.bulk-editor{margin:12px 0;padding:14px 16px}
+.advanced-filters>summary,.bulk-editor>summary{cursor:pointer;font-weight:650;color:var(--text);font-size:13px}
+.advanced-filter-grid,.bulk-editor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;align-items:end;margin-top:14px}
+.advanced-filter-grid>label,.bulk-editor-grid>label{display:grid;gap:6px;font-size:12px;color:var(--muted)}
+.advanced-filter-grid input,.advanced-filter-grid select,.bulk-editor-grid input,.bulk-editor-grid select,.bulk-editor-grid textarea{width:100%;min-width:0}
+.bulk-selection-summary{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0;font-size:12px;color:var(--muted)}
+.bulk-selection-summary>div{display:flex;gap:8px;flex-wrap:wrap}
+.compact-check{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);white-space:nowrap}
+.compact-check input{width:auto}
+.section-picker-tree>div>label{display:flex;align-items:center;gap:8px;min-height:32px}
+.section-picker-tree>div>label>span{flex:1}
+.section-picker-tree>div>label>small{color:var(--muted)}
+.question-row>input[type=checkbox]{flex:0 0 auto;accent-color:var(--accent)}
+.profile-delete-action{color:var(--danger,#d44)!important}
+.bulk-editor-grid .button{min-height:38px}
+@media(max-width:700px){.advanced-filter-grid,.bulk-editor-grid{grid-template-columns:1fr}.bulk-selection-summary{align-items:flex-start}.library-toolbar{flex-wrap:wrap}.library-toolbar>*{max-width:100%}.question-row{gap:8px}.compact-check{white-space:normal}}
