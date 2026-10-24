@@ -110,6 +110,6 @@ describe('AI prompt UI and editable tags', () => {
     fireEvent.click(screen.getByRole('button', { name: /Save question/i }))
     fireEvent.click(screen.getByRole('button', { name: 'Edit Imported question?' }))
     expect(screen.getByLabelText('Question tags')).toHaveValue('new-tag, review')
-    expect(screen.getByText(/Provenance: AI-Generated/)).toBeInTheDocument()
+    expect(screen.getByText('AI-Generated', { selector: 'strong' })).toBeInTheDocument()
   })
 })
