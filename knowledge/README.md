@@ -40,14 +40,15 @@ Freequiz is a private, client side only progressive web app for organising and p
 - Session setup supports multiple selected sections and deduplicates questions across parent/child selections.
 - Gamification elements (activity, streaks, milestones, weekly goals, celebrations, and motivational highlights) are independently configurable; ordinary charts and factual results remain available when gamification is off.
 - Weekly goals and opt-in reminders are configurable. Reminder delivery is checked while the app is open only; closed-app delivery is not guaranteed.
-- AI prompt generation outputs reusable instructions without collecting source material in Freequiz.
+- AI prompt generation has two reusable modes: extraction of existing questions and generation of new questions. Source material is supplied to the external AI, not collected by Freequiz.
+- Questions may carry protected `AI-Extracted` or `AI-Generated` provenance metadata, separate from editable ordinary tags. Provenance survives editing and JSON import/export; unsupported provenance values are ignored.
 - Four persisted accent presets (blue, purple, orange, green), plus dark/light appearance.
 - Import assistant validates JSON and previews merge/replace; AI prompt generation remains local and does not call an API.
 - IndexedDB persistence with localStorage fallback, profile backup export, responsive layout, PWA manifest/service worker, and GitHub Pages deployment workflow.
 
 ## Known limitations
 - Section creation currently adds top-level sections only. Imported nested sections display and filter correctly, but nested creation/moving and section renaming are not yet available.
-- The editor preserves existing tags but does not yet offer tag editing or a question-delete action.
+- The question editor supports editing ordinary tags and preserves protected AI provenance. A question-delete action is not yet available.
 - Historical mastery trends use the current question bank, so deleted questions are excluded.
 - Reminder checks run only while the app is open; reliable closed-app delivery requires supported push infrastructure.
 - Review scheduling remains a simple heuristic without configurable policy.
@@ -70,3 +71,11 @@ Freequiz is a private, client side only progressive web app for organising and p
 3. Wait for explicit approval before ordinary feature work.
 4. After approval, implement, run available checks, review changes, and update this Knowledge Base.
 5. Verify Actions and the published Pages URL before reporting deployment complete.
+
+
+## Request 005 verification
+- Implemented on branch `request-005-ai-prompt-modes`; automated CI and deployment status will be recorded after the pull request workflow completes.
+- Extraction prompts prioritize fidelity, forbid invented content and guessed answer keys, and separate uncertain items into a review report outside importable JSON.
+- Generation prompts require plausible misconception-based distractors, balanced option length, varied correct-answer positions, and an audit for unintended clues.
+- Provenance is a separate optional field in `freequiz/questions-v1`. Ordinary tags are editable; the editor does not allow ordinary tags to remove or overwrite provenance.
+- Legacy question banks without provenance remain supported.
