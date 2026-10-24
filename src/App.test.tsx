@@ -178,9 +178,9 @@ describe('Request 006 import history', () => {
     fireEvent.change(screen.getByLabelText('Bulk tags'), { target: { value: 'review' } })
     fireEvent.click(screen.getByRole('button', { name: /Apply to 1 selected/i }))
     expect(confirm).toHaveBeenCalled()
-    expect(screen.getByText('review')).toBeInTheDocument()
+    expect(screen.getByText('review', { selector: '.tag' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /Undo add tags/i }))
-    expect(screen.queryByText('review')).not.toBeInTheDocument()
+    expect(screen.queryByText('review', { selector: '.tag' })).not.toBeInTheDocument()
     confirm.mockRestore()
   })
 
