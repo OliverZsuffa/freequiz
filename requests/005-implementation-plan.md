@@ -1,7 +1,7 @@
 # Request 005 implementation plan
 
 ## Status
-Approved and implemented on branch `request-005-ai-prompt-modes`; automated verification and deployment are pending.
+Approved, implemented, tested, merged via PR #4, and deployed. Workflow run 40079472885 passed 33 tests, TypeScript check, production build, and GitHub Pages deployment. Manual browser/device smoke testing remains outstanding.
 
 ## Design decisions
 - Present two clear modes in the existing AI prompt generator: **Extract existing questions** and **Generate new questions**.
