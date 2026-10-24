@@ -75,4 +75,4 @@ Browser storage is not cloud sync. Export a backup regularly, especially before 
 
 ## Status
 
-Initial implementation. The app and tests are committed, and the GitHub Actions workflow is configured. Check Actions before treating the published site as live.
+Request 006 is merged. Its pull-request workflow passed 38 tests, TypeScript checking, production build, and Pages artifact upload. Check the latest Actions run on `main` before treating the live site as updated; manual browser, mobile, and offline checks remain outstanding.
