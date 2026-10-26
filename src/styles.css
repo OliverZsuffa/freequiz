@@ -446,3 +446,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 
 .library-general-search{margin:0 0 14px;max-width:100%}.library-general-search .search-field{width:100%;min-width:0}
 @media(max-width:760px){.library-general-search{margin-bottom:12px}.library-general-search .search-field{width:100%}}
+
+/* A raised menu must also raise its sticky header's stacking context above bottom navigation. */
+@media(max-width:760px){.topbar:has(.global-menu){z-index:65}}
