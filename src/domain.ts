@@ -7,9 +7,56 @@ export type ExamSession = { id: string; at: string; source: string; timeLimitSec
 export type Section = { id: string; name: string; parentId: string | null }
 export type Attempt = { id: string; questionId: string; at: string; selectedOptionIds: string[]; correct: boolean }
 export type ImportBatch = { id: string; name: string; at: string; source: 'json' | 'ai-extract' | 'ai-generate' | 'unknown'; addedQuestionIds: string[]; sections: Section[]; questions: Question[]; sourceFileName?: string; sourceIdentity?: string }
-export type Profile = { id: string; name: string; sections: Section[]; questions: Question[]; attempts: Attempt[]; favourites?: string[]; deferredQuestionIds?: string[]; groups?: QuestionGroup[]; exams?: ExamSession[]; imports?: ImportBatch[] }
+export type Profile = { id: string; name: string; sections: Section[]; questions: Question[]; attempts: Attempt[]; favourites?: string[]; favouriteTags?: string[]; deferredQuestionIds?: string[]; groups?: QuestionGroup[]; exams?: ExamSession[]; imports?: ImportBatch[] }
+export type FullProfileBackup = { format: 'freequiz/backup-v1'; backupVersion: 1; exportedAt: string; activeProfileId: string; profiles: Profile[] }
 export type Store = { version: 1; activeProfileId: string; profiles: Profile[] }
 export type Mastery = 'new' | 'learning' | 'known' | 'needs-work' | 'weak'
+
+export function exportQuestions(profile: Profile) {
+ const used = new Set(profile.questions.map(q => q.sectionId).filter((id): id is string => !!id))
+ let changed = true
+ while (changed) {
+  changed = false
+  profile.sections.forEach(section => {
+   if (used.has(section.id) && section.parentId && !used.has(section.parentId)) {
+    used.add(section.parentId)
+    changed = true
+   }
+  })
+ }
+ const questions = profile.questions.map(q => {
+  const { sourceImportId: _sourceImportId, ...content } = q
+  return content
+ })
+ return { format: 'freequiz/questions-v1' as const, sections: profile.sections.filter(section => used.has(section.id)).map(section => ({...section})), questions }
+}
+export function parseBackup(raw: unknown): FullProfileBackup {
+ const src = raw as any
+ if (!src || src.format !== 'freequiz/backup-v1' || !Array.isArray(src.profiles) || src.profiles.length === 0) {
+  throw new Error('Expected a full Freequiz profile backup with at least one profile.')
+ }
+ const ids = new Set<string>()
+ for (let i = 0; i < src.profiles.length; i++) {
+  const p = src.profiles[i]
+  if (!p || typeof p.id !== 'string' || !p.id || typeof p.name !== 'string' || !p.name.trim() || !Array.isArray(p.sections) || !Array.isArray(p.questions) || !Array.isArray(p.attempts)) {
+   throw new Error('Backup profile ' + (i + 1) + ' is missing required profile data.')
+  }
+  if (ids.has(p.id)) throw new Error('Backup contains duplicate profile IDs.')
+  ids.add(p.id)
+  if (p.sections.some((s: any) => !s || typeof s.id !== 'string' || typeof s.name !== 'string' || !(s.parentId === null || typeof s.parentId === 'string'))) {
+   throw new Error('Backup profile "' + p.name + '" contains an invalid section.')
+  }
+  parseImport({sections:p.sections,questions:p.questions})
+  if (p.attempts.some((a: any) => !a || typeof a.id !== 'string' || typeof a.questionId !== 'string' || typeof a.at !== 'string' || !Array.isArray(a.selectedOptionIds) || typeof a.correct !== 'boolean')) {
+   throw new Error('Backup profile "' + p.name + '" contains an invalid learning attempt.')
+  }
+  if (p.favourites !== undefined && (!Array.isArray(p.favourites) || p.favourites.some((id: any) => typeof id !== 'string'))) throw new Error('Backup profile "' + p.name + '" contains invalid favourites.')
+  if (p.favouriteTags !== undefined && (!Array.isArray(p.favouriteTags) || p.favouriteTags.some((tag: any) => typeof tag !== 'string'))) throw new Error('Backup profile "' + p.name + '" contains invalid favourite tags.')
+  for (const key of ['deferredQuestionIds','groups','exams','imports']) if (p[key] !== undefined && !Array.isArray(p[key])) throw new Error('Backup profile "' + p.name + '" contains invalid ' + key + '.')
+ }
+ const activeProfileId = typeof src.activeProfileId === 'string' && ids.has(src.activeProfileId) ? src.activeProfileId : src.profiles[0].id
+ return {format:'freequiz/backup-v1',backupVersion:1,exportedAt:typeof src.exportedAt === 'string' ? src.exportedAt : new Date(0).toISOString(),activeProfileId,profiles:src.profiles as Profile[]}
+}
 export function masteryFor(attempts: Attempt[], id: string): Mastery {
  const history = attempts.filter(a => a.questionId === id).sort((a,b) => b.at.localeCompare(a.at))
  if (!history.length) return 'new'
