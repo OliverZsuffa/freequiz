@@ -1,7 +1,7 @@
 # Request 011 implementation plan
 
 ## Status
-Approved by Oliver on 2026-10-26. Implementation in progress.
+Implemented and merged to main on 2026-10-26. Main-branch deployment workflow #184 succeeded; an independent rendered-page smoke test was not completed.
 
 ## Goal
 Make profile transfer lossless, separate it from question-bank sharing, and make long import filenames and tags readable in the Questions workspace filters on desktop and mobile.
