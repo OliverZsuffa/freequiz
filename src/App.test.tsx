@@ -460,6 +460,17 @@ describe('Request 013 mobile-first workflow', () => {
     expect(screen.getAllByRole('checkbox', { name: /Geometry/i }).length).toBeGreaterThan(0)
   })
 
+  it('shows a mixed state when only some motivation features are enabled', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
+    fireEvent.click(screen.getByRole('button', { name: /Settings & reminders/i }))
+    fireEvent.click(screen.getByRole('checkbox', { name: /Activity calendar/i }))
+    const master = screen.getByRole('checkbox', { name: 'Enable all motivation features' })
+    expect(master).toHaveProperty('indeterminate', true)
+    fireEvent.click(master)
+    expect(master).toBeChecked()
+  })
+
   it('warns before leaving an exam without submitting', () => {
     const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
     render(<App />)
