@@ -122,3 +122,15 @@ Implementation is available in Pull Request #8 and is awaiting merge into `main`
 
 ## Request 009 verification
 PR #9 adds multi-select library filters, practice favourites, and profile-level deferred markers. Practice deferral skips without recording an answer; exam deferral marks the question without advancing. Workflow run [40107477903](https://github.com/OliverZsuffa/freequiz/actions/runs/40107477903) passed all 48 tests, TypeScript checking, production build, Pages configuration, and artifact upload. The PR remains unmerged, so deployment and manual desktop/mobile/offline checks are outstanding.
+
+
+## Request 011 implementation
+
+Request 011 separates question-bank exports from full-profile backups and adds accessible long-label filters.
+
+- Full profile backup exports the active profile's full stored data, including attempts, question favourites, deferred state, groups, exam sessions, import batches, original filenames/source identity, profile-specific tag favourites, and unknown future-compatible fields. A separate action backs up all profiles. The backup includes the active profile ID and a version marker.
+- Backup restore validates every profile before applying anything and recognises backup files separately from question-bank JSON. It creates new profile copies, leaves existing profiles untouched, adjusts colliding profile IDs/names, and retains question/attempt/import/group/exam IDs and cross-references.
+- Question-only export includes questions and the section ancestors needed by them, but excludes learning history, exam sessions, profile configuration, and question-level import-batch links. It remains compatible with the normal question-bank preview and merge path.
+- Tag filters are searchable; starring a tag persists on its profile and moves it to the top of the list. Import-source and tag pickers use wrapping labels and individually removable selected chips for long filenames/tags.
+- Regression coverage was added for backup validation and future fields, question-only export boundaries, starred-tag ordering/persistence, and restoring progress/source attribution. CI and deployment status must be recorded after the workflow completes; these code changes alone are not evidence of a passing build or a live deployment.
+
