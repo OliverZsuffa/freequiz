@@ -46,6 +46,14 @@ export function parseBackup(raw: unknown): FullProfileBackup {
   if (p.sections.some((s: any) => !s || typeof s.id !== 'string' || typeof s.name !== 'string' || !(s.parentId === null || typeof s.parentId === 'string'))) {
    throw new Error('Backup profile "' + p.name + '" contains an invalid section.')
   }
+  const questionIds = new Set<string>()
+  for (const q of p.questions) {
+   if (!q || typeof q.id !== 'string' || !q.id || !Array.isArray(q.options) || q.options.some((o: any) => !o || typeof o.id !== 'string' || typeof o.text !== 'string')) {
+    throw new Error('Backup profile "' + p.name + '" contains an invalid question.')
+   }
+   if (questionIds.has(q.id)) throw new Error('Backup profile "' + p.name + '" contains duplicate question IDs.')
+   questionIds.add(q.id)
+  }
   parseImport({sections:p.sections,questions:p.questions})
   if (p.attempts.some((a: any) => !a || typeof a.id !== 'string' || typeof a.questionId !== 'string' || typeof a.at !== 'string' || !Array.isArray(a.selectedOptionIds) || typeof a.correct !== 'boolean')) {
    throw new Error('Backup profile "' + p.name + '" contains an invalid learning attempt.')
