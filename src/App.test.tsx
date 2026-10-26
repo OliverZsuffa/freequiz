@@ -244,7 +244,7 @@ describe('Request 009 practice controls', () => {
   it('allows toggling a favourite during practice after answering', () => {
     render(<App />)
     fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
-    fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
+    fireEvent.click(screen.getAllByRole('button', { name: /Start practice/i })[0])
     const option = document.querySelector('.answer-option')
     expect(option).not.toBeNull()
     fireEvent.click(option as Element)
