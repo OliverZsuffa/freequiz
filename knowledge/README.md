@@ -134,3 +134,12 @@ Request 011 separates question-bank exports from full-profile backups and adds a
 - Tag filters are searchable; starring a tag persists on its profile and moves it to the top of the list. Import-source and tag pickers use wrapping labels and individually removable selected chips for long filenames/tags.
 - Regression coverage was added for backup validation and future fields, question-only export boundaries, starred-tag ordering/persistence, and restoring progress/source attribution. Pull-request workflow [40381683446](https://github.com/OliverZsuffa/freequiz/actions/runs/40381683446) passed all 59 tests across 2 test files, TypeScript checking, the production build, Pages configuration, and artifact upload. After merge, main-branch workflow [40382093307](https://github.com/OliverZsuffa/freequiz/actions/runs/40382093307) passed the build and GitHub Pages deployment. An independent rendered-page visual smoke test was not completed.
 
+
+
+## Weekly question sharing and privacy
+
+Use **Export questions** from the Questions workspace to share a question bank. This produces a `freequiz/questions-v1` content-only file with the relevant section hierarchy and stable question/option IDs. It does not include practice attempts, exam history, favourites, deferred markers, groups, app settings, or profile backup data. Use **Full profile backup** or **Backup all profiles** only for a complete restore/migration; those files contain private progress and should not be shared as question packs.
+
+Recipients should import a question-only file and choose **Merge into profile**. The preview shows how many question IDs are new, already present, and how many sections will be added. Re-importing a pack is safe for distributing new questions: existing question IDs are skipped and the recipient's local progress remains local. The current merge contract does **not** update the content of a question with an ID that already exists. A future content-update workflow must be explicit, previewed, and must never import the sender's progress.
+
+The Learning timeline's **Export history** exports only the active profile's history and the question identifiers/prompts needed to interpret it; it is not a full profile backup. The Study view's primary **Start practice** action follows the visible session setup; **Due for review** and **Needs practice** remain separate shortcuts.

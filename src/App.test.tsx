@@ -200,8 +200,9 @@ describe('Request 006 import history', () => {
     }) } })
     fireEvent.click(screen.getByRole('button', { name: /Validate and preview/i }))
     fireEvent.click(screen.getByRole('button', { name: /Merge into profile/i }))
-    expect(screen.getByRole('option', { name: 'Deep root / Child / Grandchild / Leaf' })).toBeInTheDocument()
-    fireEvent.change(screen.getByLabelText('Filter section'), { target: { value: 'deep-root' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Filter section' }))
+    expect(screen.getByRole('checkbox', { name: 'Deep root / Child / Grandchild / Leaf' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Deep root' }))
     expect(screen.getAllByText('Question in a deeply nested section?').length).toBeGreaterThan(0)
   })
 
@@ -230,9 +231,11 @@ describe('Request 009 multi-select filters', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
     fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
-    expect(screen.getByLabelText('Filter section')).toHaveProperty('multiple', true)
-    expect(screen.getByLabelText('Filter answer types')).toHaveProperty('multiple', true)
-    expect(screen.getByLabelText('Filter provenance')).toHaveProperty('multiple', true)
+    expect(screen.getByRole('button', { name: 'Filter section' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Filter answer types' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Filter provenance' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Filter answer types' }))
+    expect(screen.getByRole('group', { name: 'Answer type options' })).toBeInTheDocument()
     expect(screen.getByLabelText('Search import sources')).toBeInTheDocument(); expect(screen.getByRole('group', { name: 'Available import sources' })).toBeInTheDocument()
   })
 })
@@ -244,7 +247,7 @@ describe('Request 009 practice controls', () => {
   it('allows toggling a favourite during practice after answering', () => {
     render(<App />)
     fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
-    fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
+    fireEvent.click(screen.getAllByRole('button', { name: /Start practice/i })[0])
     const option = document.querySelector('.answer-option')
     expect(option).not.toBeNull()
     fireEvent.click(option as Element)
@@ -324,8 +327,9 @@ describe('Request 010 unified workspace and guidance', () => {
     expect(localStorage.getItem('freequiz-tutorial-completed')).toBe('true')
   })
 
-  it('shows the activity calendar and question-bank mastery goals on the home page', () => {
+  it('keeps detailed activity and mastery goals available behind a secondary disclosure', () => {
     render(<App />)
+    fireEvent.click(screen.getByText('Progress, goals & sections'))
     expect(screen.getByRole('heading', { name: 'Last 7 days' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Mastery, not just activity' })).toBeInTheDocument()
     expect(screen.getByText(/Bank-relative target/i)).toBeInTheDocument()
@@ -403,7 +407,7 @@ describe('Request 010 question metadata filters and bulk actions', () => {
     fireEvent.change(screen.getByLabelText('Question bank or full profile backup (JSON)'), { target: { value: JSON.stringify(backup) } })
     fireEvent.click(screen.getByRole('button', { name: /Validate and preview/i }))
     expect(screen.getByText('Full profile backup validated')).toBeInTheDocument()
-    expect(screen.getByText(/This is a full backup, not a question bank/)).toBeInTheDocument()
+    expect(screen.getByText(/This is a full profile backup/)).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Restore as new profile copies' }))
     await act(async () => { await new Promise(resolve => setTimeout(resolve, 0)) })
     const saved = JSON.parse(localStorage.getItem('main') || '{}')
@@ -416,4 +420,64 @@ describe('Request 010 question metadata filters and bulk actions', () => {
     expect(restored.futureField).toEqual({ preserved: true })
   })
 
+})
+
+
+describe('Request 013 mobile-first workflow', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
+
+  it('keeps Progress directly available and makes the More menu reachable', () => {
+    render(<App />)
+    expect(screen.getByRole('button', { name: 'Progress' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
+    expect(screen.getByRole('button', { name: /Import \/ export/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Export questions to share/i })).toBeInTheDocument()
+  })
+
+  it('starts ordinary practice from the visible setup instead of only due questions', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
+    expect(screen.getByRole('heading', { name: 'One question at a time.' })).toBeInTheDocument()
+    expect(screen.getByText(/Question 1 of 4/)).toBeInTheDocument()
+  })
+
+  it('shows the question section explicitly and explains validation errors', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    fireEvent.click(screen.getByRole('button', { name: /New question/i }))
+    expect(screen.getByLabelText('Question section')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Save question/i }))
+    expect(screen.getByRole('alert')).toHaveTextContent(/Enter a question before saving/i)
+  })
+
+  it('uses touch-friendly checkbox multi-select filters rather than native multiple-select controls', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    const sectionFilter = screen.getByRole('button', { name: 'Filter section' })
+    fireEvent.click(sectionFilter)
+    expect(screen.getByRole('group', { name: 'Sections options' })).toBeInTheDocument()
+    expect(screen.getAllByRole('checkbox', { name: /Geometry/i }).length).toBeGreaterThan(0)
+  })
+
+  it('shows a mixed state when only some motivation features are enabled', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
+    fireEvent.click(screen.getByRole('button', { name: /Settings & reminders/i }))
+    fireEvent.click(screen.getByRole('checkbox', { name: /Activity calendar/i }))
+    const master = screen.getByRole('checkbox', { name: 'Enable all motivation features' })
+    expect(master).toHaveProperty('indeterminate', true)
+    fireEvent.click(master)
+    expect(master).toBeChecked()
+  })
+
+  it('warns before leaving an exam without submitting', () => {
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
+    render(<App />)
+    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Exit session/i }))
+    expect(confirm).toHaveBeenCalledWith(expect.stringMatching(/Exit this exam without submitting/i))
+    expect(screen.getByRole('heading', { name: 'One question at a time.' })).toBeInTheDocument()
+  })
 })
