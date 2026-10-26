@@ -63,3 +63,39 @@ Fix the reported desktop and phone UI regressions without removing existing feat
 - Changing question data, import/export formats, answer checking, study progress, or persistence contracts.
 - Broad global CSS changes without evidence of the cause.
 - Dependency upgrades unrelated to these UI defects.
+
+
+## 7. Legal information: Impressum and privacy notice
+
+### Initial legal assessment for the current Freequiz deployment
+- Freequiz is a publicly available, ongoing website hosted on GitHub Pages and is not merely a private page for personal/family use. German law can require at least provider identification under § 18(1) Medienstaatsvertrag (MStV); if the offer qualifies as a businesslike digital service, the additional information in § 5 DDG applies. Whether every DDG item applies depends on the actual operator and activity. Do not assume that a free-to-use site is automatically exempt.
+- Add a clearly labelled **Impressum** page and a persistent, plainly named footer link. The link must be easy to recognise, directly reachable, and continuously available; it should not be buried in a deep menu. The page must not be published with invented or blank legal details.
+- Depending on the applicable classification, provider information includes the operator's full legal name and a serviceable postal address; § 5 DDG also calls for electronic contact information including an email address and any applicable additional details (such as register, regulatory, professional, or tax identifiers). Include only fields that actually apply; do not invent a company, registration, VAT ID, regulator, or editorial-responsibility statement.
+- The site is hosted on GitHub Pages. GitHub's documentation says visitor IP addresses are logged and stored for security. Therefore a privacy notice is appropriate and should accurately describe the hosting provider's processing, rather than claiming that no visitor data is processed.
+- The app's intended architecture stores learning data in the user's browser and does not provide an account or cloud sync. The privacy notice should explain local storage (IndexedDB/localStorage as actually used), that questions and progress are not uploaded to a Freequiz backend, and the limitations of that statement: hosting access logs are separate from app data. Re-inspect the current source and service-worker behavior before finalising the wording.
+- Explain the external Ko-fi link in the privacy notice as a link to a separate provider. Use an ordinary external link, not an embedded widget or remote image/button that loads Ko-fi resources automatically. Explain that Ko-fi's own privacy terms apply after the user follows the link; verify Ko-fi's current privacy information before publishing.
+- The privacy notice should state the controller's identity/contact, purposes and legal bases as applicable, hosting/recipients, retention information to the extent known, data-subject rights, and the right to complain to the competent data-protection authority. Confirm actual retention and processing details with the hosting provider; do not guess at log retention periods or promise data deletion that Freequiz cannot perform.
+- Do not add analytics, tracking, third-party fonts, advertising scripts, or cookie banners as part of this work. Review cookies and browser storage actually used. Do not state that consent is required or unnecessary for every storage operation without assessing the applicable rules and purpose.
+- This is a code/documentation implementation plan, not a legal opinion. The operator must verify the final facts and published legal identity before deployment. A public-facing Impressum cannot be safely completed until the operator supplies and approves the details to publish.
+
+### Legal source references to use during implementation
+- § 5 DDG (official consolidated federal law): https://www.gesetze-im-internet.de/ddg/__5.html
+- § 18 MStV (official Bavarian law portal): https://www.gesetze-bayern.de/Content/Document/MStV-18
+- Bavarian public guidance on website Impressum obligations: https://verwaltung.bund.de/leistungsverzeichnis/DE/leistung/99000000025492/herausgeber/BY-25492/region/09
+- GDPR, especially Articles 12–14 and data-subject rights: https://eur-lex.europa.eu/eli/reg/2016/679/oj
+- GitHub Pages hosting and visitor IP logging: https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages
+- GitHub privacy statement: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
+
+## 8. Low-key Ko-fi support link
+- Add a single **Support Freequiz on Ko-fi** link/button in the persistent footer or equivalent secondary-information area, beside Impressum and Privacy. It should be easy to find but visually secondary: no modal, pop-up, nag, repeated prompt, animation, or interruption of study.
+- Use a normal external link that opens Ko-fi in a new tab/window with appropriate safe link attributes; do not embed Ko-fi content or load third-party resources before a user clicks.
+- Keep the control compact and consistent with the existing accent/theme system; it must remain legible in light/dark mode and on mobile and desktop.
+- Do not hard-code a guessed URL. The operator must supply the exact Ko-fi page URL before the link is wired up.
+- Test link presence, target URL, keyboard access, accessible label, and footer layout at phone and desktop widths. Verify that Ko-fi is never contacted merely by loading Freequiz.
+
+## Additional release acceptance criteria
+- Impressum and privacy notice are available through clear, persistent links and remain accessible on mobile and desktop.
+- The Impressum contains only verified, applicable operator details and is not published with placeholders.
+- The privacy notice accurately distinguishes local browser-held learning data from GitHub Pages hosting logs and the optional external Ko-fi destination.
+- The Ko-fi link is visible but non-intrusive, uses the operator-provided URL, and does not load third-party resources until clicked.
+- Update the Knowledge Base and tester checklist with the legal pages, external-link behavior, and any remaining verification limits.
