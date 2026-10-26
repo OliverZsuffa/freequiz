@@ -432,7 +432,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   .library-toolbar{align-items:stretch;gap:10px}
   .tag-picker{order:0;flex:1 1 100%;min-width:0}
   .library-toolbar>.multi-select{flex:1 1 100%;min-width:0}
-  .library-toolbar>.search-field{order:4;flex:1 1 100%;min-width:0}
   .library-toolbar>.button{order:5;justify-content:center}
   .filter-picker-options{max-height:180px;overflow-y:auto}
 }
@@ -444,3 +443,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .export-option-grid article p{margin:7px 0 0;color:var(--muted);font-size:12px;line-height:1.55}
 .export-option-grid .button{white-space:normal;text-align:left}
 @media(max-width:760px){.export-option-grid{grid-template-columns:1fr}.export-option-grid article{align-items:stretch}.export-option-grid article .button{justify-content:center}}
+
+.library-general-search{margin:0 0 14px;max-width:100%}.library-general-search .search-field{width:100%;min-width:0}
+@media(max-width:760px){.library-general-search{margin-bottom:12px}.library-general-search .search-field{width:100%}}
