@@ -69,6 +69,17 @@ The canonical format is `freequiz/questions-v1`.
 
 Correct answers reference option IDs. `answerMode` can be `single`, `exactly-n`, or `select-all`. Older files without `answerMode` remain supported: one correct ID defaults to `single`, multiple IDs default to `select-all`. Exactly-N is never guessed for older files. Option count is variable, with at least two options. A simple question array is also accepted, with an integer `answer` index or string `answer` option ID. The optional `provenance` field accepts `AI-Generated` or `AI-Extracted`; unsupported values are ignored. Provenance is kept separately from ordinary editable `tags`, and legacy questions without provenance remain valid.
 
+## Exporting, restoring, and tag favourites
+
+The Questions workspace has two distinct exports:
+
+- **Export questions** creates a merge-friendly question bank. It contains question content, answer modes, explanations, tags, AI provenance, and only the section ancestors needed by those questions. It does not include learning attempts, exam history, question favourites, deferred state, or profile settings. Import it through the normal preview and merge flow.
+- **Full profile backup** exports the active profile, including its original question IDs, section tree, source/import history and filenames, attempts, favourites, deferred questions, groups, exam sessions, and any additional profile fields. **Backup all profiles** exports every profile in one file.
+
+To restore a full backup, open **Menu → Import / export**, paste or select the backup JSON, then choose **Validate and preview**. Freequiz recognises the backup format separately from a question bank. **Restore as new profile copies** keeps existing profiles unchanged; if a profile ID or name collides, the restored profile's ID and/or name is adjusted while question and learning-history IDs are preserved. Validation happens before the restore, so an invalid backup is not partially applied. Older freequiz/backup-v1 files without the newer metadata remain accepted when their profile data is valid.
+
+In Questions filters, search tags by name and star frequently used tags. Starred tags appear first and their starred state is stored with the profile. Long tags and import filenames wrap in the searchable filter lists and selected chips, which can be removed individually.
+
 ## Data and privacy
 
 Browser storage is not cloud sync. Export a backup regularly, especially before clearing browser storage or moving devices. The AI prompt feature does not send anything by itself. If you paste material into an external model, that model's privacy terms apply.

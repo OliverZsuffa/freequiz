@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildAiPrompt, dueForReview, isCorrect, masteryFor, parseImport, type Attempt } from './domain'
+import { buildAiPrompt, dueForReview, exportQuestions, isCorrect, masteryFor, parseBackup, parseImport, demoProfile, type Attempt } from './domain'
 const a=(correct:boolean,at:string):Attempt=>({id:at,questionId:'q',at,selectedOptionIds:[],correct})
 describe('mastery states',()=>{it('marks untouched questions new',()=>expect(masteryFor([],'q')).toBe('new'));it('uses one attempt for learning and needs work',()=>{expect(masteryFor([a(true,'2026-01-01')],'q')).toBe('learning');expect(masteryFor([a(false,'2026-01-01')],'q')).toBe('needs-work')});it('requires two recent correct answers for known',()=>expect(masteryFor([a(true,'2026-01-02'),a(true,'2026-01-01')],'q')).toBe('known'));it('marks two recent incorrect answers weak',()=>expect(masteryFor([a(false,'2026-01-02'),a(false,'2026-01-01')],'q')).toBe('weak'))})
 describe('answer and review helpers',()=>{it('checks exact multi select matches',()=>{expect(isCorrect(['a','b'],['b','a'])).toBe(true);expect(isCorrect(['a'],['a','b'])).toBe(false)});it('makes unseen questions due immediately',()=>expect(dueForReview([],'q')).toBe(true));it('makes incorrect answers due immediately',()=>expect(dueForReview([a(false,new Date().toISOString())],'q')).toBe(true))})
@@ -142,4 +142,55 @@ describe('Request 006 AI prompt quality', () => {
     expect(parsed.sections).toEqual([])
     expect(parsed.questions[0].sectionId).toBe(existingSection.id)
   })
+
+describe('backup and question-only exports', () => {
+  it('keeps the full profile and future fields when validating a backup', () => {
+    const profile = {
+      ...demoProfile,
+      attempts: [a(true, '2026-10-01T10:00:00.000Z')],
+      favourites: ['q1'],
+      deferredQuestionIds: ['q2'],
+      favouriteTags: ['exam'],
+      groups: [{ id: 'g1', name: 'Review', questionIds: ['q1'] }],
+      exams: [{ id: 'e1', at: '2026-10-02T10:00:00.000Z', source: 'all', timeLimitSeconds: 600, durationSeconds: 120, responses: [], score: 100 }],
+      imports: [{ id: 'i1', name: 'original.json', at: '2026-10-01T09:00:00.000Z', source: 'json', addedQuestionIds: ['q1'], sections: [], questions: [], sourceFileName: 'original.json', sourceIdentity: 'original.json' }],
+      customFutureField: { retained: true }
+    } as any
+    const backup = parseBackup({ format: 'freequiz/backup-v1', exportedAt: '2026-10-03T00:00:00.000Z', activeProfileId: profile.id, profiles: [profile] })
+    expect(backup.activeProfileId).toBe(profile.id)
+    expect(backup.profiles[0]).toEqual(profile)
+    expect((backup.profiles[0] as any).customFutureField).toEqual({ retained: true })
+    expect(backup.profiles[0].imports?.[0].sourceFileName).toBe('original.json')
+  })
+
+  it('rejects malformed full backups before any restore can occur', () => {
+    expect(() => parseBackup({ format: 'freequiz/backup-v1', profiles: [] })).toThrow(/at least one profile/i)
+    expect(() => parseBackup({ format: 'freequiz/backup-v1', backupVersion: 99, profiles: [{ ...demoProfile }] })).toThrow(/version is not supported/i)
+    expect(() => parseBackup({ format: 'freequiz/backup-v1', profiles: [{ id: 'x', name: 'Broken', sections: [], questions: [], attempts: 'not-an-array' }] })).toThrow(/missing required profile data/i)
+    expect(() => parseBackup({ format: 'freequiz/backup-v1', profiles: [{ ...demoProfile }, { ...demoProfile }] })).toThrow(/duplicate profile IDs/i)
+    expect(() => parseBackup({ format: 'freequiz/backup-v1', profiles: [{ ...demoProfile, questions: [...demoProfile.questions, { ...demoProfile.questions[0] }] }] })).toThrow(/duplicate question IDs/i)
+  })
+
+  it('exports question content and section ancestors without learning state or import links', () => {
+    const profile = {
+      ...demoProfile,
+      attempts: [a(true, '2026-10-01T10:00:00.000Z')],
+      favourites: ['q1'],
+      deferredQuestionIds: ['q1'],
+      groups: [{ id: 'g1', name: 'Review', questionIds: ['q1'] }],
+      exams: [{ id: 'e1', at: '2026-10-02T10:00:00.000Z', source: 'all', timeLimitSeconds: 600, durationSeconds: 120, responses: [], score: 100 }],
+      questions: demoProfile.questions.map(q => ({ ...q, sourceImportId: 'i1', sourceFileName: 'source.json' }))
+    }
+    const exported = exportQuestions(profile)
+    expect(exported.format).toBe('freequiz/questions-v1')
+    expect(exported.questions).toHaveLength(profile.questions.length)
+    expect(exported.questions[0]).not.toHaveProperty('sourceImportId')
+    expect(exported.questions[0].sourceFileName).toBe('source.json')
+    expect(exported.sections.length).toBeGreaterThan(0)
+    expect(exported).not.toHaveProperty('attempts')
+    expect(exported).not.toHaveProperty('favourites')
+    expect(exported).not.toHaveProperty('exams')
+  })
+})
+
 })

@@ -375,3 +375,27 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .goal-settings-grid .setting-row{border:1px solid var(--border);padding:10px;border-radius:10px}
 @media(max-width:900px){.help-page .feedback-panel{grid-template-columns:1fr}.feedback-actions{flex-direction:row;flex-wrap:wrap}.feedback-actions>*{flex:1 1 160px}}
 @media(max-width:700px){.library-toolbar{top:0}.bulk-selection-summary{top:70px;align-items:flex-start;flex-direction:column}.selection-actions{width:100%}.selection-actions .button{flex:1 1 125px}.library-handoff,.tutorial-nudge{align-items:flex-start;flex-direction:column}.home-activity-panel,.home-goals-panel{padding:14px}.home-activity-heatmap{gap:2px}.guide-grid,.goal-settings-grid{grid-template-columns:1fr}.tutorial-dialog{padding:19px}.tutorial-actions{justify-content:stretch}.tutorial-actions .button{flex:1 1 130px}.feedback-actions{flex-direction:column}}
+
+
+/* Searchable multi-select filters keep long tags and source filenames readable. */
+.filter-picker{display:flex;flex-direction:column;gap:6px;min-width:0;width:100%;max-width:100%;font-size:12px}
+.filter-picker>label{display:flex;flex-direction:column;gap:6px;min-width:0;font-size:12px}
+.filter-picker>label input{width:100%;min-width:0;padding:8px 9px;border:1px solid var(--border);border-radius:8px;background:var(--panel2);color:var(--text)}
+.filter-picker-options{display:flex;flex-direction:column;gap:2px;max-height:180px;min-width:0;max-width:100%;overflow:auto;padding:4px;border:1px solid var(--border);border-radius:8px;background:var(--panel)}
+.filter-picker-option{display:flex;align-items:flex-start;gap:6px;min-width:0;max-width:100%;padding:4px;border-radius:6px}
+.filter-picker-option:hover{background:var(--panel2)}
+.filter-option-label{display:flex;align-items:flex-start;gap:7px;flex:1;min-width:0;max-width:100%;cursor:pointer;white-space:normal}
+.filter-option-label input{flex:0 0 auto;margin-top:3px}
+.filter-option-label span{display:block;flex:1;min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;word-break:break-word;line-height:1.4}
+.tag-star{display:grid;place-items:center;flex:0 0 26px;width:26px;height:26px;padding:0;border:1px solid transparent;border-radius:6px;background:transparent;color:var(--muted)}
+.tag-star:hover,.tag-star:focus-visible{background:var(--panel2);border-color:var(--border);color:var(--yellow)}
+.tag-star.is-starred{color:var(--yellow)}
+.filter-picker-empty{padding:8px}
+.filter-picker-selected{display:flex;flex-wrap:wrap;gap:5px;min-width:0;max-width:100%}
+.filter-chip{display:inline-flex;align-items:center;gap:4px;min-width:0;max-width:100%;padding:4px 6px;border:1px solid var(--border);border-radius:7px;background:var(--panel2);color:var(--text)}
+.filter-chip>span{display:block;min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;word-break:break-word;line-height:1.35}
+.filter-chip button{display:grid;place-items:center;flex:0 0 20px;width:20px;height:20px;padding:0;border:0;border-radius:4px;background:transparent;color:var(--muted)}
+.filter-chip button:hover{background:var(--border);color:var(--text)}
+.backup-preview .preview-questions>div{min-width:0}
+.backup-preview .preview-questions strong,.backup-preview .preview-questions small{overflow-wrap:anywhere;word-break:break-word;white-space:normal}
+@media(max-width:700px){.filter-picker-options{max-height:150px}.filter-picker-selected{gap:4px}.filter-chip{max-width:100%}}
