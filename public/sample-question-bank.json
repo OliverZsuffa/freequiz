@@ -1,0 +1,222 @@
+{
+  "format": "freequiz/questions-v1",
+  "sections": [
+    {
+      "id": "learning",
+      "name": "Learning strategies",
+      "parentId": null
+    },
+    {
+      "id": "memory",
+      "name": "Memory and retrieval",
+      "parentId": "learning"
+    },
+    {
+      "id": "logic",
+      "name": "Logic",
+      "parentId": null
+    },
+    {
+      "id": "conditional-reasoning",
+      "name": "Conditional reasoning",
+      "parentId": "logic"
+    }
+  ],
+  "questions": [
+    {
+      "id": "sample-retrieval-01",
+      "prompt": "Which activity most directly practises retrieval?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Rereading a paragraph"
+        },
+        {
+          "id": "b",
+          "text": "Answering a question from memory"
+        },
+        {
+          "id": "c",
+          "text": "Highlighting every definition"
+        },
+        {
+          "id": "d",
+          "text": "Copying notes word for word"
+        }
+      ],
+      "correctOptionIds": [
+        "b"
+      ],
+      "answerMode": "single",
+      "sectionId": "memory",
+      "explanation": "Retrieval practice means trying to recall information from memory before checking the answer.",
+      "tags": [
+        "learning",
+        "retrieval practice"
+      ]
+    },
+    {
+      "id": "sample-retrieval-02",
+      "prompt": "Select exactly two examples of retrieval practice.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Writing everything you remember on a blank page"
+        },
+        {
+          "id": "b",
+          "text": "Rereading the same page three times"
+        },
+        {
+          "id": "c",
+          "text": "Answering flashcards without looking at the back"
+        },
+        {
+          "id": "d",
+          "text": "Highlighting a chapter"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c"
+      ],
+      "answerMode": "exactly-n",
+      "sectionId": "memory",
+      "explanation": "Both activities require recalling information before checking it.",
+      "tags": [
+        "learning",
+        "retrieval practice"
+      ]
+    },
+    {
+      "id": "sample-spacing-01",
+      "prompt": "A student reviews a topic today and again several days later. Which strategy is this?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Interleaving"
+        },
+        {
+          "id": "b",
+          "text": "Spaced practice"
+        },
+        {
+          "id": "c",
+          "text": "Massed practice"
+        },
+        {
+          "id": "d",
+          "text": "Passive copying"
+        }
+      ],
+      "correctOptionIds": [
+        "b"
+      ],
+      "answerMode": "single",
+      "sectionId": "memory",
+      "explanation": "Spaced practice distributes study sessions over time instead of concentrating them in one block.",
+      "tags": [
+        "learning",
+        "spacing"
+      ]
+    },
+    {
+      "id": "sample-logic-01",
+      "prompt": "All glips are glops. No glops are blue. Which statement must be true?",
+      "options": [
+        {
+          "id": "a",
+          "text": "No glips are blue"
+        },
+        {
+          "id": "b",
+          "text": "All blue things are glips"
+        },
+        {
+          "id": "c",
+          "text": "Some glips exist"
+        },
+        {
+          "id": "d",
+          "text": "All glops are glips"
+        }
+      ],
+      "correctOptionIds": [
+        "a"
+      ],
+      "answerMode": "single",
+      "sectionId": "logic",
+      "explanation": "Every glip is a glop, and no glop is blue, so no glip can be blue. The premises do not establish that any glips exist.",
+      "tags": [
+        "logic",
+        "deduction"
+      ]
+    },
+    {
+      "id": "sample-conditional-01",
+      "prompt": "Which two statements are logically equivalent to 'If P, then Q'?",
+      "options": [
+        {
+          "id": "a",
+          "text": "If not Q, then not P"
+        },
+        {
+          "id": "b",
+          "text": "If Q, then P"
+        },
+        {
+          "id": "c",
+          "text": "If not P, then not Q"
+        },
+        {
+          "id": "d",
+          "text": "Not P or Q"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "d"
+      ],
+      "answerMode": "select-all",
+      "sectionId": "conditional-reasoning",
+      "explanation": "The contrapositive and the disjunction not-P-or-Q are equivalent to the original conditional. The converse and inverse are not equivalent in general.",
+      "tags": [
+        "logic",
+        "conditionals"
+      ]
+    },
+    {
+      "id": "sample-evidence-01",
+      "prompt": "Which two features strengthen the design of a controlled experiment?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Random assignment where appropriate"
+        },
+        {
+          "id": "b",
+          "text": "Changing several variables at once without recording them"
+        },
+        {
+          "id": "c",
+          "text": "A suitable control condition"
+        },
+        {
+          "id": "d",
+          "text": "Choosing the conclusion before collecting data"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c"
+      ],
+      "answerMode": "exactly-n",
+      "sectionId": "learning",
+      "explanation": "Random assignment can reduce systematic group differences, and a suitable control condition helps isolate the effect being studied.",
+      "tags": [
+        "reasoning",
+        "experiments"
+      ]
+    }
+  ]
+}

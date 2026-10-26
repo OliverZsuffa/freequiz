@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { readFileSync } from 'node:fs'
 import { buildAiPrompt, dueForReview, exportQuestions, isCorrect, masteryFor, parseBackup, parseImport, demoProfile, type Attempt } from './domain'
 const a=(correct:boolean,at:string):Attempt=>({id:at,questionId:'q',at,selectedOptionIds:[],correct})
 describe('mastery states',()=>{it('marks untouched questions new',()=>expect(masteryFor([],'q')).toBe('new'));it('uses one attempt for learning and needs work',()=>{expect(masteryFor([a(true,'2026-01-01')],'q')).toBe('learning');expect(masteryFor([a(false,'2026-01-01')],'q')).toBe('needs-work')});it('requires two recent correct answers for known',()=>expect(masteryFor([a(true,'2026-01-02'),a(true,'2026-01-01')],'q')).toBe('known'));it('marks two recent incorrect answers weak',()=>expect(masteryFor([a(false,'2026-01-02'),a(false,'2026-01-01')],'q')).toBe('weak'))})
@@ -193,4 +194,16 @@ describe('backup and question-only exports', () => {
   })
 })
 
+})
+
+
+describe('public sample question bank',()=>{
+ it('is valid under the normal question-bank parser and covers nested sections and answer modes',()=>{
+  const raw=JSON.parse(readFileSync(new URL('../public/sample-question-bank.json',import.meta.url),'utf8'))
+  const parsed=parseImport(raw)
+  expect(parsed.questions).toHaveLength(6)
+  expect(parsed.sections.some(section=>section.parentId!==null)).toBe(true)
+  expect(new Set(parsed.questions.map(question=>question.answerMode??(question.correctOptionIds.length>1?'select-all':'single')))).toEqual(new Set(['single','exactly-n','select-all']))
+  expect(parsed.questions.every(question=>question.options.length>=2&&question.correctOptionIds.every(id=>question.options.some(option=>option.id===id)))).toBe(true)
+ })
 })
