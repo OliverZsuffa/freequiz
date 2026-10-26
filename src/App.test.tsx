@@ -417,3 +417,52 @@ describe('Request 010 question metadata filters and bulk actions', () => {
   })
 
 })
+
+
+describe('Request 013 mobile-first workflow', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
+
+  it('keeps Progress directly available and makes the More menu reachable', () => {
+    render(<App />)
+    expect(screen.getByRole('button', { name: 'Progress' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Menu \/ More/i }))
+    expect(screen.getByRole('button', { name: /Import \/ export/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Export questions to share/i })).toBeInTheDocument()
+  })
+
+  it('starts ordinary practice from the visible setup instead of only due questions', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
+    expect(screen.getByRole('heading', { name: 'One question at a time.' })).toBeInTheDocument()
+    expect(screen.getByText(/Question 1 of 4/)).toBeInTheDocument()
+  })
+
+  it('shows the question section explicitly and explains validation errors', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    fireEvent.click(screen.getByRole('button', { name: /New question/i }))
+    expect(screen.getByLabelText('Question section')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Save question/i }))
+    expect(screen.getByRole('alert')).toHaveTextContent(/Enter a question before saving/i)
+  })
+
+  it('uses touch-friendly checkbox multi-select filters rather than native multiple-select controls', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    const sectionFilter = screen.getByRole('button', { name: 'Filter section' })
+    fireEvent.click(sectionFilter)
+    expect(screen.getByRole('group', { name: 'Sections options' })).toBeInTheDocument()
+    expect(screen.getByRole('checkbox', { name: /Geometry/i })).toBeInTheDocument()
+  })
+
+  it('warns before leaving an exam without submitting', () => {
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
+    render(<App />)
+    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Exit session/i }))
+    expect(confirm).toHaveBeenCalledWith(expect.stringMatching(/Exit this exam without submitting/i))
+    expect(screen.getByRole('heading', { name: 'One question at a time.' })).toBeInTheDocument()
+  })
+})
