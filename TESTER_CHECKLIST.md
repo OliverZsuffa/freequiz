@@ -63,3 +63,15 @@ Please report blockers first. Do not include private question banks, full backup
 - Most confusing part:
 - Most useful part:
 - Other reproducible bugs:
+
+
+## 8. Responsive filters, legal links, and appearance
+- [ ] On desktop and a narrow desktop window, filter controls form a readable grid without clipping or squeezing labels.
+- [ ] On a phone, the import-source picker remains inside the viewport; source names are visible and selected values remain usable.
+- [ ] Open More on a phone and verify every item is reachable by scrolling, with no overlap with browser chrome or bottom navigation.
+- [ ] Verify general question search matches prompts, options, explanations, sections, and source metadata, but does not match a question solely because a tag contains the query. Use the dedicated Tags picker for tag search.
+- [ ] Check all four accent colours in light and dark appearance, including Start practice, after switching appearance and reloading.
+- [ ] Confirm accent and light/dark controls are visible together on mobile.
+- [ ] Confirm Impressum and Privacy links remain visible in the footer on phone and desktop.
+- [ ] Verify Ko-fi is a plain external link and no Ko-fi resource is loaded before clicking. The link should be present only when `kofiUrl` is configured.
+- [ ] Before production deployment, fill and verify the required fields in `public/legal-info.json`; do not deploy placeholder legal details.
