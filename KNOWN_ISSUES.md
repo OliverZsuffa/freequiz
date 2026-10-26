@@ -10,3 +10,8 @@ This list contains verified product limitations, not unconfirmed bug reports.
 - **Question deletion is not available:** individual questions can be edited and bulk-managed, but there is no dedicated delete action in the current editor.
 
 If you find a reproducible bug, report the steps, expected behavior, actual behavior, and browser/device. Do not include private question banks, full backups, or personal learning history in a report.
+
+
+## Release follow-up: dependency audit
+
+As of 2026-10-26, GitHub Actions `npm install` reported **6 audit vulnerabilities: 3 moderate, 1 high, and 2 critical**. The available workflow log only reported aggregate counts and did not identify affected packages. This is an unresolved dependency-audit follow-up, not a confirmed exploitable runtime issue. Inspect `npm audit` details, distinguish production dependencies from build/test-only dependencies, and assess compatibility before updating. Do not use `npm audit fix --force` without a reviewed plan and regression testing.

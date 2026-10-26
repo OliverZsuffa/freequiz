@@ -152,3 +152,15 @@ The Learning timeline's **Export history** exports only the active profile's his
 - Main-branch workflow [40395013536](https://github.com/OliverZsuffa/freequiz/actions/runs/40395013536) passed build and GitHub Pages deployment.
 - Manual phone/desktop viewport checks, keyboard/screen-reader checks, and offline/PWA smoke tests have not been performed in this environment. Do not infer these passed from CI.
 - A small public sample bank is available at `public/sample-question-bank.json`; the README links to its deployed URL. The sample is validated by a domain-level test using the same import parser.
+
+
+## Request 015 execution record (2026-10-26)
+
+- **Phase 0, baseline:** the latest pre-change main workflow [40388556021](https://github.com/OliverZsuffa/freequiz/actions/runs/40388556021) passed the existing test, TypeScript, build, and deployment workflow.
+- **Phase 1, known bugs:** completed in [PR #18](https://github.com/OliverZsuffa/freequiz/pull/18). Pull-request workflow [40394870333](https://github.com/OliverZsuffa/freequiz/actions/runs/40394870333) passed; main deployment [40395013536](https://github.com/OliverZsuffa/freequiz/actions/runs/40395013536) passed.
+- **Phases 2–3, automated data/study regression coverage:** existing tests cover question-only export boundaries, backup validation/restore with progress and source history, practice, favourite/defer, exam separation, filters, and profile behavior. The sample bank is parsed by the same import parser in a regression test. The docs/sample PR workflow [40395545334](https://github.com/OliverZsuffa/freequiz/actions/runs/40395545334) passed 67 tests, TypeScript checking, and production build.
+- **Phase 4, manual verification:** not completed here. Real phone/desktop viewport checks, keyboard/screen-reader checks, PWA install/offline smoke testing, and a real cross-device round trip still need a human/browser environment.
+- **Phase 5, tester preparation:** completed in [PR #19](https://github.com/OliverZsuffa/freequiz/pull/19): README getting-started guide, public sample bank, `KNOWN_ISSUES.md`, and corrected backup documentation.
+- **Phase 6, 3–5-person trial:** pending. `TESTER_CHECKLIST.md` provides the tasks and a privacy-safe feedback template; the user must invite testers and collect results.
+- **Phase 7, automated release checks:** main build and deployment passed in [workflow 40395706878](https://github.com/OliverZsuffa/freequiz/actions/runs/40395706878). The workflow's `npm install` reported 6 audit vulnerabilities (3 moderate, 1 high, 2 critical). The workflow log did not enumerate affected packages; review the audit details before wider release and do not apply force-upgrades without assessing compatibility.
+- **Release status:** suitable for a small, supervised test only after the outstanding dependency-audit review and hands-on checks are considered. Do not describe the app as fully release-ready until manual checks and the external trial are complete.
