@@ -406,3 +406,41 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .mobile-bottom-nav{display:none}@media(max-width:760px){.mobile-bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:45;display:flex;align-items:stretch;justify-content:space-around;gap:3px;padding:7px 8px calc(7px + env(safe-area-inset-bottom));background:var(--sidebar);border-top:1px solid var(--border);box-shadow:0 -8px 24px #0002}.mobile-bottom-nav button{display:flex;flex:1 1 0;min-width:0;min-height:46px;align-items:center;justify-content:center;flex-direction:column;gap:3px;border:0;border-radius:9px;background:transparent;color:var(--muted);font-size:10px;font-weight:600}.mobile-bottom-nav button.active{background:var(--panel2);color:var(--accent)}.mobile-bottom-nav button svg{flex-shrink:0}.content{padding-bottom:calc(90px + env(safe-area-inset-bottom))}.global-menu{position:fixed;right:12px;top:auto;bottom:calc(68px + env(safe-area-inset-bottom));max-width:calc(100vw - 24px);max-height:60vh;overflow:auto}.top-actions .button-quiet{display:inline-flex}}
 /* Progressive disclosure for secondary home-screen panels. */
 .home-secondary-details{margin:18px 0;border:1px solid var(--border);border-radius:12px;background:var(--panel)}.home-secondary-details>summary{display:flex;align-items:center;justify-content:space-between;min-height:48px;padding:12px 15px;cursor:pointer;color:var(--text);font-size:12px;font-weight:650;list-style:none}.home-secondary-details>summary::-webkit-details-marker{display:none}.home-secondary-details>summary:after{content:'+';font-size:18px;color:var(--accent)}.home-secondary-details[open]>summary:after{content:'−'}.home-secondary-details[open]>section{margin:0;border:0;border-top:1px solid var(--border);border-radius:0}.home-secondary-details[open]>section:first-of-type{border-top:0}.mastery-definition{font-size:11px;line-height:1.5;color:var(--muted);margin:0 0 10px}.home-secondary-details .section-overview{padding:17px}
+
+/* Request 014: keep menus reachable on short viewports without changing other overlays. */
+.global-menu,.tools-menu{
+  max-height:min(70vh,520px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable;
+}
+@media(max-width:760px){
+  .global-menu,.tools-menu{
+    z-index:60;
+    width:min(320px,calc(100vw - 20px));
+    min-width:0;
+    max-height:calc(100dvh - 86px - env(safe-area-inset-bottom));
+    overflow-y:auto;
+    overscroll-behavior:contain;
+  }
+  .multi-select-popover{
+    z-index:60;
+    bottom:calc(68px + env(safe-area-inset-bottom));
+    max-height:min(55dvh,calc(100dvh - 110px - env(safe-area-inset-bottom)));
+    overscroll-behavior:contain;
+  }
+  .library-toolbar{align-items:stretch;gap:10px}
+  .tag-picker{order:0;flex:1 1 100%;min-width:0}
+  .library-toolbar>.multi-select{flex:1 1 100%;min-width:0}
+  .library-toolbar>.search-field{order:4;flex:1 1 100%;min-width:0}
+  .library-toolbar>.button{order:5;justify-content:center}
+  .filter-picker-options{max-height:180px;overflow-y:auto}
+}
+.export-options{margin:0 0 18px}
+.export-options>.muted{max-width:760px;line-height:1.6}
+.export-option-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.export-option-grid article{display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:14px;padding:14px;border:1px solid var(--border);border-radius:10px;min-width:0}
+.export-option-grid article strong{font-size:13px}
+.export-option-grid article p{margin:7px 0 0;color:var(--muted);font-size:12px;line-height:1.55}
+.export-option-grid .button{white-space:normal;text-align:left}
+@media(max-width:760px){.export-option-grid{grid-template-columns:1fr}.export-option-grid article{align-items:stretch}.export-option-grid article .button{justify-content:center}}
