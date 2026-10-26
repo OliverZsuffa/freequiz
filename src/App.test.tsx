@@ -295,7 +295,7 @@ describe('Request 010 unified workspace and guidance', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     expect(screen.getByLabelText('Search questions')).toBeInTheDocument()
-    expect(screen.getByLabelText('Filter tags')).toBeInTheDocument()
+    expect(screen.getByLabelText('Search tags')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Select all matching/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Practise matches/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Exam \(/i })).toBeInTheDocument()
