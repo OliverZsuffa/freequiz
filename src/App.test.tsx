@@ -407,7 +407,7 @@ describe('Request 010 question metadata filters and bulk actions', () => {
     fireEvent.change(screen.getByLabelText('Question bank or full profile backup (JSON)'), { target: { value: JSON.stringify(backup) } })
     fireEvent.click(screen.getByRole('button', { name: /Validate and preview/i }))
     expect(screen.getByText('Full profile backup validated')).toBeInTheDocument()
-    expect(screen.getByText(/This is a full backup, not a question bank/)).toBeInTheDocument()
+    expect(screen.getByText(/This is a full profile backup/)).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Restore as new profile copies' }))
     await act(async () => { await new Promise(resolve => setTimeout(resolve, 0)) })
     const saved = JSON.parse(localStorage.getItem('main') || '{}')
