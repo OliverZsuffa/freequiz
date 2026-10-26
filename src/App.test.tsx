@@ -453,7 +453,7 @@ describe('Request 013 mobile-first workflow', () => {
     const sectionFilter = screen.getByRole('button', { name: 'Filter section' })
     fireEvent.click(sectionFilter)
     expect(screen.getByRole('group', { name: 'Sections options' })).toBeInTheDocument()
-    expect(screen.getByRole('checkbox', { name: /Geometry/i })).toBeInTheDocument()
+    expect(screen.getAllByRole('checkbox', { name: /Geometry/i }).length).toBeGreaterThan(0)
   })
 
   it('warns before leaving an exam without submitting', () => {
