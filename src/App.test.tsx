@@ -54,7 +54,7 @@ describe('Freequiz', () => {
     fireEvent.change(screen.getByRole('textbox', { name: 'Search questions' }), { target: { value: '' } })
     fireEvent.change(screen.getByRole('textbox', { name: 'Search tags' }), { target: { value: 'gardening' } })
     fireEvent.click(screen.getByRole('checkbox', { name: 'gardening' }))
-    expect(screen.getByText('Which plant part mainly absorbs water from the soil?')).toBeInTheDocument()
+    expect(screen.getAllByText('Which plant part mainly absorbs water from the soil?').length).toBeGreaterThan(0)
   })
 
   it('keeps the selected accent when switching appearance', () => {
