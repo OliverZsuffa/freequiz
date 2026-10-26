@@ -2,7 +2,7 @@
 
 ## Status
 
-**Approved for implementation.** The current implementation is in [PR #17](https://github.com/OliverZsuffa/freequiz/pull/17). Automated checks passed on the preceding implementation commit; the latest UI/documentation refinements are running through CI. Manual physical-device and screen-reader QA still needs to be performed before claiming full release validation.
+**Implemented and deployed.** The implementation was merged in [PR #17](https://github.com/OliverZsuffa/freequiz/pull/17). TypeScript checking, the automated test suite, the production build, and the GitHub Pages deployment all passed. Manual physical-device and screen-reader QA still needs to be performed before claiming full release validation.
 
 This plan consolidates every finding in Request 012 with the requirements that mobile users receive first-class support, the everyday interface stay minimal, and weekly question-bank updates be shareable without exposing personal learning progress. This is a refinement of the existing app, not a feature-removal or visual-rewrite project.
 
