@@ -324,8 +324,9 @@ describe('Request 010 unified workspace and guidance', () => {
     expect(localStorage.getItem('freequiz-tutorial-completed')).toBe('true')
   })
 
-  it('shows the activity calendar and question-bank mastery goals on the home page', () => {
+  it('keeps detailed activity and mastery goals available behind a secondary disclosure', () => {
     render(<App />)
+    fireEvent.click(screen.getByText('Progress, goals & sections'))
     expect(screen.getByRole('heading', { name: 'Last 7 days' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Mastery, not just activity' })).toBeInTheDocument()
     expect(screen.getByText(/Bank-relative target/i)).toBeInTheDocument()
