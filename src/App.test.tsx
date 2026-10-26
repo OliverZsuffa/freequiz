@@ -14,12 +14,29 @@ describe('Freequiz', () => {
     expect(screen.queryByText('Good to have you here.')).not.toBeInTheDocument()
   })
 
-  it('opens the import assistant', () => {
+  it('shows import and clearly separated export options on the Import / export destination', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
     fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
     expect(screen.getByText('Import a question bank')).toBeInTheDocument()
     expect(screen.getByText('Prepare questions with AI')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Export or back up' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Export questions$/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Back up this profile/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Back up all profiles/i })).toBeInTheDocument()
+    expect(screen.getByText(/No attempts, exam results, favourites, or deferred state/i)).toBeInTheDocument()
+  })
+
+  it('places tag search before metadata and general question search in the library', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    const tagSearch = screen.getByRole('textbox', { name: 'Search tags' })
+    fireEvent.click(screen.getByText('More filters and sorting'))
+    const provenance = screen.getByRole('button', { name: /Provenance/i })
+    const generalSearch = screen.getByRole('textbox', { name: 'Search questions' })
+    expect(tagSearch.compareDocumentPosition(provenance) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(provenance.compareDocumentPosition(generalSearch) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 
   it('persists the selected appearance', () => {
