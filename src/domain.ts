@@ -32,6 +32,7 @@ export function exportQuestions(profile: Profile) {
 }
 export function parseBackup(raw: unknown): FullProfileBackup {
  const src = raw as any
+ if (src && src.format === 'freequiz/backup-v1' && src.backupVersion !== undefined && src.backupVersion !== 1) throw new Error('This Freequiz backup version is not supported.')
  if (!src || src.format !== 'freequiz/backup-v1' || !Array.isArray(src.profiles) || src.profiles.length === 0) {
   throw new Error('Expected a full Freequiz profile backup with at least one profile.')
  }
