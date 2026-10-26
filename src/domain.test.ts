@@ -142,4 +142,53 @@ describe('Request 006 AI prompt quality', () => {
     expect(parsed.sections).toEqual([])
     expect(parsed.questions[0].sectionId).toBe(existingSection.id)
   })
+
+describe('backup and question-only exports', () => {
+  it('keeps the full profile and future fields when validating a backup', () => {
+    const profile = {
+      ...demoProfile,
+      attempts: [a(true, '2026-10-01T10:00:00.000Z')],
+      favourites: ['q1'],
+      deferredQuestionIds: ['q2'],
+      favouriteTags: ['exam'],
+      groups: [{ id: 'g1', name: 'Review', questionIds: ['q1'] }],
+      exams: [{ id: 'e1', at: '2026-10-02T10:00:00.000Z', source: 'all', timeLimitSeconds: 600, durationSeconds: 120, responses: [], score: 100 }],
+      imports: [{ id: 'i1', name: 'original.json', at: '2026-10-01T09:00:00.000Z', source: 'json', addedQuestionIds: ['q1'], sections: [], questions: [], sourceFileName: 'original.json', sourceIdentity: 'original.json' }],
+      customFutureField: { retained: true }
+    } as any
+    const backup = parseBackup({ format: 'freequiz/backup-v1', exportedAt: '2026-10-03T00:00:00.000Z', activeProfileId: profile.id, profiles: [profile] })
+    expect(backup.activeProfileId).toBe(profile.id)
+    expect(backup.profiles[0]).toEqual(profile)
+    expect((backup.profiles[0] as any).customFutureField).toEqual({ retained: true })
+    expect(backup.profiles[0].imports?.[0].sourceFileName).toBe('original.json')
+  })
+
+  it('rejects malformed full backups before any restore can occur', () => {
+    expect(() => parseBackup({ format: 'freequiz/backup-v1', profiles: [] })).toThrow(/at least one profile/i)
+    expect(() => parseBackup({ format: 'freequiz/backup-v1', profiles: [{ id: 'x', name: 'Broken', sections: [], questions: [], attempts: 'not-an-array' }] })).toThrow(/missing required profile data/i)
+    expect(() => parseBackup({ format: 'freequiz/backup-v1', profiles: [{ ...demoProfile }, { ...demoProfile }] })).toThrow(/duplicate profile IDs/i)
+  })
+
+  it('exports question content and section ancestors without learning state or import links', () => {
+    const profile = {
+      ...demoProfile,
+      attempts: [a(true, '2026-10-01T10:00:00.000Z')],
+      favourites: ['q1'],
+      deferredQuestionIds: ['q1'],
+      groups: [{ id: 'g1', name: 'Review', questionIds: ['q1'] }],
+      exams: [{ id: 'e1', at: '2026-10-02T10:00:00.000Z', source: 'all', timeLimitSeconds: 600, durationSeconds: 120, responses: [], score: 100 }],
+      questions: demoProfile.questions.map(q => ({ ...q, sourceImportId: 'i1', sourceFileName: 'source.json' }))
+    }
+    const exported = exportQuestions(profile)
+    expect(exported.format).toBe('freequiz/questions-v1')
+    expect(exported.questions).toHaveLength(profile.questions.length)
+    expect(exported.questions[0]).not.toHaveProperty('sourceImportId')
+    expect(exported.questions[0].sourceFileName).toBe('source.json')
+    expect(exported.sections.length).toBeGreaterThan(0)
+    expect(exported).not.toHaveProperty('attempts')
+    expect(exported).not.toHaveProperty('favourites')
+    expect(exported).not.toHaveProperty('exams')
+  })
+})
+
 })
