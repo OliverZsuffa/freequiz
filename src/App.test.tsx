@@ -39,6 +39,12 @@ describe('Freequiz', () => {
     expect(provenance.compareDocumentPosition(generalSearch) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 
+  it('keeps appearance controls visible beside each other', () => {
+    render(<App />)
+    expect(screen.getByRole('combobox', { name: 'Accent colour' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Light appearance/i })).toBeInTheDocument()
+  })
+
   it('persists the selected appearance', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Light appearance/i }))
