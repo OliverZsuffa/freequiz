@@ -199,7 +199,7 @@ describe('backup and question-only exports', () => {
 
 describe('public sample question bank',()=>{
  it('is valid under the normal question-bank parser and covers nested sections and answer modes',()=>{
-  const raw=JSON.parse(readFileSync(new URL('../public/sample-question-bank.json',import.meta.url),'utf8'))
+  const raw=JSON.parse(readFileSync('public/sample-question-bank.json','utf8'))
   const parsed=parseImport(raw)
   expect(parsed.questions).toHaveLength(6)
   expect(parsed.sections.some(section=>section.parentId!==null)).toBe(true)
