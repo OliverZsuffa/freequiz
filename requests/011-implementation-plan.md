@@ -1,7 +1,7 @@
 # Request 011 implementation plan
 
 ## Status
-Awaiting Oliver's approval. Planning only; no application code changes are included in this request.
+Approved by Oliver on 2026-10-26. Implementation in progress.
 
 ## Goal
 Make profile transfer lossless, separate it from question-bank sharing, and make long import filenames and tags readable in the Questions workspace filters on desktop and mobile.
@@ -34,7 +34,9 @@ Keep a separate **Questions export** for sharing or adding content to an existin
 - Importing it into an existing profile adds eligible questions under the existing duplicate handling and section-reference rules; it must not reset or overwrite existing progress.
 - Name the two export types distinctly in the UI and filenames, with short descriptions that explain their purpose.
 
-### 3. Long filter labels
+### 3. Tag favourites and long filter labels
+Add a way to star/favourite tags in the Questions workspace so frequently used tags appear at the top of the tag search and selection list. Persist starred tags across sessions as profile data, and include them in full profile backups. Keep the interaction compact and consistent with the minimal UI.
+
 Improve the import-filename and tag filter controls in the Questions workspace.
 
 - Long labels must remain identifiable and accessible; do not permanently truncate the only visible copy of a filename or tag.
@@ -42,6 +44,7 @@ Improve the import-filename and tag filter controls in the Questions workspace.
 - Selected values should remain legible and individually removable. If compact chips are needed, expose the complete label on focus/hover and provide an accessible way to inspect it on touch devices.
 - Preserve the existing multi-select behaviour and filter semantics. Avoid making the page substantially taller or cluttered for ordinary short labels.
 - Check both narrow mobile layouts and desktop layouts, including very long single-word names and labels with spaces.
+- Provide a searchable tag picker with a clear star/unstar action; starred tags appear first (then unstarred tags alphabetically), and starred state survives reloads and backup/restore.
 
 ## Implementation phases
 
@@ -57,7 +60,8 @@ Improve the import-filename and tag filter controls in the Questions workspace.
    - Restore the complete profile atomically after validation.
    - Handle profile identity/name collisions explicitly and protect existing data with confirmation where replacement is available.
    - Ensure progress, import/source attribution, and all cross-references survive round-trip serialization.
-4. **Improve filter label layout**
+4. **Tag favourites and improve filter label layout**
+   - Add profile-persisted tag favourites and order starred tags first in a searchable tag picker.
    - Refactor import-filename/tag controls and selected filter values with responsive, accessible long-label handling.
    - Preserve current selection, filtering, and removal behavior.
 5. **Tests and verification**
@@ -65,6 +69,7 @@ Improve the import-filename and tag filter controls in the Questions workspace.
    - Verify restored profile data is equivalent to the exported profile, apart from any explicitly necessary profile-level collision handling.
    - Test invalid/partial backups, legacy question-bank files, duplicate question IDs, and failed restore without data loss.
    - Test that questions-only export excludes progress and that importing it merges content without changing existing attempts/favourites/deferred/exam history.
+   - Test starring/un-starring tags, starred-first search ordering, persistence, and inclusion in full backup restore.
    - Add responsive/accessibility regression checks for long filenames/tags, keyboard focus, selected-chip removal, narrow widths, and labels without spaces.
    - Run the full test suite, TypeScript checks, production build, and deployment workflow; manually inspect the live UI on a narrow/mobile viewport where available.
 6. **Documentation**
@@ -77,6 +82,7 @@ Improve the import-filename and tag filter controls in the Questions workspace.
 - Questions-only export contains transferable question content but no learning history, and can be merged into an existing profile without disturbing that profile's progress.
 - Existing question-bank imports remain compatible.
 - Long import filenames and tags can be understood and selected/removed on mobile and desktop without being irretrievably cut off or causing horizontal overflow.
+- Tags can be starred; starred tags appear at the top of the searchable tag picker and remain starred after reload and full backup/restore.
 - Tests, type checks, production build, and deployment checks pass.
 
 ## Out of scope
@@ -86,4 +92,4 @@ Improve the import-filename and tag filter controls in the Questions workspace.
 - Changing the existing duplicate-question policy unless required to prevent data loss during restore.
 
 ## Approval gate
-No application code changes until Oliver explicitly approves this plan.
+Approval received on 2026-10-26. Implementation is authorized.
