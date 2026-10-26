@@ -1,7 +1,7 @@
 # Request 016: Responsive filters, mobile menus, and theme consistency
 
 ## Status
-**Plan proposed — awaiting explicit approval. No application code changes are authorized yet.**
+**Approved for implementation by Oliver on 2026-10-26. Implementation is starting on a separate branch; no application code changes have been merged to `main`.**
 
 ## Goal
 Fix the reported desktop and phone UI regressions without removing existing features or introducing a broad redesign. Keep the interface minimal, readable, and consistent with the selected accent colour in both appearance modes.
@@ -99,3 +99,16 @@ Fix the reported desktop and phone UI regressions without removing existing feat
 - The privacy notice accurately distinguishes local browser-held learning data from GitHub Pages hosting logs and the optional external Ko-fi destination.
 - The Ko-fi link is visible but non-intrusive, uses the operator-provided URL, and does not load third-party resources until clicked.
 - Update the Knowledge Base and tester checklist with the legal pages, external-link behavior, and any remaining verification limits.
+
+
+## 9. Single editable legal-information configuration
+
+- Keep all operator-specific values in one documented JSON file at `public/legal-info.json`, so the operator can edit the file in the repository and run the existing deployment workflow.
+- Fields: `name`, `address`, `email`, `additionalContact`, `vatId`, `registerDetails`, and `kofiUrl`. Use empty strings for optional fields that do not apply. Add comments/instructions in a companion README or adjacent configuration documentation because strict JSON does not support comments.
+- The configuration file is publicly served by GitHub Pages and is therefore readable by anyone. It must contain only details intended for public disclosure. Never put passwords, tokens, or other secrets in it.
+- Both legal pages and the footer Ko-fi link must use this single source of truth; avoid duplicating contact details in React source.
+- Add validation to the build/deploy process for required fields. The app should not silently publish placeholder legal identity. If required values are not configured, the build should fail with a clear message or the legal pages should be explicitly marked as not ready and deployment blocked. Decide and document the least brittle implementation after inspecting the existing GitHub Actions workflow.
+- Do not require a Ko-fi URL to build the rest of the app, but render no broken or guessed link when it is blank. Add a validation rule for a non-empty Ko-fi URL if one is supplied (must be HTTPS and a valid URL).
+- The privacy notice body should remain source-controlled, reviewed text based on verified app/hosting behavior; only operator-specific details belong in the JSON file.
+- Include a short README explaining how to edit the JSON and run the existing deployment process, which fields are required, which are optional, and that all populated values become public.
+- Never invent the operator's details or publish placeholder values. Since the actual name, postal address, email, and Ko-fi URL have not been provided, use clearly empty fields and ensure release/deployment validation prevents incomplete legal pages from going live.
