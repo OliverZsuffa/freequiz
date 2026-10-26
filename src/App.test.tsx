@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 
@@ -359,4 +359,61 @@ describe('Request 010 question metadata filters and bulk actions', () => {
     fireEvent.click(screen.getByRole('button', { name: /Undo favourite questions/i }))
     expect(screen.getAllByRole('button', { name: /Favourite/i }).length).toBeGreaterThanOrEqual(4)
   })
+
+  it('stars tags, prioritises them in the searchable picker, and persists the preference', async () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    const picker = screen.getByRole('group', { name: 'Available tags' })
+    fireEvent.click(screen.getByRole('button', { name: 'Star tag gardening' }))
+    expect(screen.getByRole('button', { name: 'Unstar tag gardening' })).toHaveAttribute('aria-pressed', 'true')
+    expect(within(picker).getAllByRole('checkbox')[0].closest('label')).toHaveTextContent('gardening')
+    fireEvent.change(screen.getByLabelText('Search tags'), { target: { value: 'angle' } })
+    expect(screen.getByRole('button', { name: 'Unstar tag gardening' })).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Star tag angles' })).toBeInTheDocument()
+    await act(async () => { await new Promise(resolve => setTimeout(resolve, 0)) })
+    const saved = JSON.parse(localStorage.getItem('main') || '{}')
+    expect(saved.profiles?.[0]?.favouriteTags).toContain('gardening')
+  })
+
+  it('restores a validated full backup as a separate profile without losing progress or source history', async () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Import / export' }))
+    const backup = {
+      format: 'freequiz/backup-v1',
+      backupVersion: 1,
+      exportedAt: '2026-10-26T12:00:00.000Z',
+      activeProfileId: 'profile-demo',
+      profiles: [{
+        id: 'profile-demo',
+        name: 'Demo library',
+        sections: [{ id: 's1', name: 'Original section', parentId: null }],
+        questions: [{ id: 'q1', prompt: 'A preserved question?', options: [{ id: 'a', text: 'Yes' }, { id: 'b', text: 'No' }], correctOptionIds: ['a'], sectionId: 's1', tags: ['important'], sourceFileName: 'lecture-original.json', sourceImportId: 'i1' }],
+        attempts: [{ id: 'attempt-1', questionId: 'q1', at: '2026-10-25T10:00:00.000Z', selectedOptionIds: ['a'], correct: true }],
+        favourites: ['q1'],
+        favouriteTags: ['important'],
+        deferredQuestionIds: ['q1'],
+        groups: [{ id: 'g1', name: 'Review', questionIds: ['q1'] }],
+        exams: [{ id: 'e1', at: '2026-10-25T11:00:00.000Z', source: 'all', timeLimitSeconds: 600, durationSeconds: 120, responses: [{ questionId: 'q1', selectedOptionIds: ['a'], correct: true }], score: 100 }],
+        imports: [{ id: 'i1', name: 'Original import', at: '2026-10-25T09:00:00.000Z', source: 'json', addedQuestionIds: ['q1'], sections: [{ id: 's1', name: 'Original section', parentId: null }], questions: [], sourceFileName: 'lecture-original.json', sourceIdentity: 'lecture-original.json' }],
+        futureField: { preserved: true }
+      }]
+    }
+    fireEvent.change(screen.getByLabelText('Question bank or full profile backup (JSON)'), { target: { value: JSON.stringify(backup) } })
+    fireEvent.click(screen.getByRole('button', { name: /Validate and preview/i }))
+    expect(screen.getByText('Full profile backup validated')).toBeInTheDocument()
+    expect(screen.getByText(/This is a full backup, not a question bank/)).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Restore as new profile copies' }))
+    await act(async () => { await new Promise(resolve => setTimeout(resolve, 0)) })
+    const saved = JSON.parse(localStorage.getItem('main') || '{}')
+    expect(saved.profiles).toHaveLength(2)
+    const restored = saved.profiles.find((p: any) => p.name === 'Demo library (restored)')
+    expect(restored.attempts).toEqual(backup.profiles[0].attempts)
+    expect(restored.imports[0].sourceFileName).toBe('lecture-original.json')
+    expect(restored.questions[0].sourceFileName).toBe('lecture-original.json')
+    expect(restored.favouriteTags).toEqual(['important'])
+    expect(restored.futureField).toEqual({ preserved: true })
+  })
+
 })
