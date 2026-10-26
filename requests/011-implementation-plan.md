@@ -9,7 +9,7 @@ Make profile transfer lossless, separate it from question-bank sharing, and make
 ## Requirements
 
 ### 1. Full profile backup: exact restore
-Add a clearly labelled **Full profile backup** export/import path for moving a profile between devices.
+Add a clearly labelled **Full profile backup** export/import path for moving the active profile between devices, while retaining a separate **Backup all profiles** action for the existing multi-profile backup use case.
 
 The backup must preserve the complete profile state, including:
 - Profile name and profile-specific settings/metadata.
@@ -77,7 +77,8 @@ Improve the import-filename and tag filter controls in the Questions workspace.
    - Record verification and any limits in the Knowledge Base.
 
 ## Acceptance criteria
-- A full backup can be exported from one device and restored on another without losing profile data, original source/import attribution, attempts, exam history, favourites, deferred state, groups, or derived mastery/statistics.
+- A full backup of the active profile can be exported from one device and restored on another without losing profile data, original source/import attribution, attempts, exam history, favourites, deferred state, groups, or derived mastery/statistics.
+- The all-profiles backup remains available and records which profile was active at export time.
 - Restoring a backup does not silently overwrite an existing profile or partially mutate data on failure.
 - Questions-only export contains transferable question content but no learning history, and can be merged into an existing profile without disturbing that profile's progress.
 - Existing question-bank imports remain compatible.
