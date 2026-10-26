@@ -164,3 +164,12 @@ The Learning timeline's **Export history** exports only the active profile's his
 - **Phase 6, 3–5-person trial:** pending. `TESTER_CHECKLIST.md` provides the tasks and a privacy-safe feedback template; the user must invite testers and collect results.
 - **Phase 7, automated release checks:** main build and deployment passed in [workflow 40395706878](https://github.com/OliverZsuffa/freequiz/actions/runs/40395706878). The workflow's `npm install` reported 6 audit vulnerabilities (3 moderate, 1 high, 2 critical). The workflow log did not enumerate affected packages; review the audit details before wider release and do not apply force-upgrades without assessing compatibility.
 - **Release status:** suitable for a small, supervised test only after the outstanding dependency-audit review and hands-on checks are considered. Do not describe the app as fully release-ready until manual checks and the external trial are complete.
+
+
+## Request 016 implementation status
+- The approved implementation is in progress on branch `implement/016-responsive-legal-release`; see the associated implementation PR for the current diff and automated checks.
+- The desktop filter toolbar is being changed to a structured grid while preserving the mobile ordering. The general text search intentionally excludes tags; the dedicated searchable tag picker remains the only tag-search path.
+- Appearance controls are visible together in the top bar, and primary buttons use the selected accent in both light and dark modes.
+- Legal pages read operator-specific values from `public/legal-info.json`. That file is public when deployed. Required legal identity fields must be filled by the operator before production deployment; the deployment workflow validates the configuration and will stop if required values are missing. The optional Ko-fi link is shown only when a valid URL is configured.
+- Privacy text distinguishes browser-local learning data from GitHub Pages hosting logs and describes the optional external Ko-fi destination. It must be reviewed by the operator against actual details before deployment.
+- Manual real-device verification has not yet been performed.
