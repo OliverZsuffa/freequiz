@@ -54,7 +54,7 @@ Freequiz is a private, client side only progressive web app for organising and p
 - Historical mastery trends use the current question bank, so deleted questions are excluded.
 - Reminder checks run only while the app is open; reliable closed-app delivery requires supported push infrastructure.
 - Review scheduling remains a simple heuristic without configurable policy.
-- Full backup export includes all profiles, but importing a backup does not restore all profile metadata, histories, favourites, groups, or exams; import currently applies question-bank content to the active profile.
+- Full-profile backup restore is implemented: it validates every profile before mutation, creates separate profile copies, preserves progress and source history, and adjusts colliding profile IDs/names. Automated regression coverage exists; a full real-device cross-browser round trip remains part of manual release verification.
 - Edited questions keep their IDs. If an option's text changes, its old option ID may no longer be retained, so older attempts referencing that option are historical events rather than a snapshot of the old question wording.
 - PWA caching has not had a manual browser/device/offline smoke test. Optional external fonts may not load offline.
 - Browser persistence does not synchronise across devices.
@@ -143,3 +143,12 @@ Use **Export questions** from the Questions workspace to share a question bank. 
 Recipients should import a question-only file and choose **Merge into profile**. The preview shows how many question IDs are new, already present, and how many sections will be added. Re-importing a pack is safe for distributing new questions: existing question IDs are skipped and the recipient's local progress remains local. The current merge contract does **not** update the content of a question with an ID that already exists. A future content-update workflow must be explicit, previewed, and must never import the sender's progress.
 
 The Learning timeline's **Export history** exports only the active profile's history and the question identifiers/prompts needed to interpret it; it is not a full profile backup. The Study view's primary **Start practice** action follows the visible session setup; **Due for review** and **Needs practice** remain separate shortcuts.
+
+
+## Request 014 verification (2026-10-26)
+
+- Implemented and merged in [PR #18](https://github.com/OliverZsuffa/freequiz/pull/18): mobile menu/popover scrolling and stacking, tag-first filter ordering with metadata before general search, and clear import/export destination actions.
+- Added regression coverage for export-action discoverability and filter order. Pull-request workflow [40394870333](https://github.com/OliverZsuffa/freequiz/actions/runs/40394870333) passed the test suite, TypeScript checking, and production build.
+- Main-branch workflow [40395013536](https://github.com/OliverZsuffa/freequiz/actions/runs/40395013536) passed build and GitHub Pages deployment.
+- Manual phone/desktop viewport checks, keyboard/screen-reader checks, and offline/PWA smoke tests have not been performed in this environment. Do not infer these passed from CI.
+- A small public sample bank is available at `public/sample-question-bank.json`; the README links to its deployed URL. The sample is validated by a domain-level test using the same import parser.

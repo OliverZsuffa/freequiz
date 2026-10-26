@@ -4,6 +4,18 @@ Freequiz is a client side only, installable quiz app for building question banks
 
 **Privacy first:** questions, profiles, and attempts stay in your browser. There is no account, backend, analytics, or AI API integration. AI assistance creates a prompt for a model you choose, then validates the JSON you paste back.
 
+
+## Getting started
+
+1. Open [Freequiz](https://oliverzsuffa.github.io/freequiz/) and choose **More → Import / export**.
+2. Download the [sample question bank](https://oliverzsuffa.github.io/freequiz/sample-question-bank.json), then select the JSON file in Freequiz. Choose **Validate and preview**, check the counts, and select **Merge into profile**.
+3. Go to **Study**, choose your source and session type, then select **Start practice**. Practice gives feedback after each answer.
+4. During practice, use **Favourite** to keep a question handy or **Defer** to mark it for later and skip it without recording an answer. Timed exams use a separate result history.
+5. To share questions, use **Export questions to share**. This contains question content and required sections, not your personal learning progress.
+6. Before changing devices or clearing browser/site data, use **Full profile backup** (or **Backup all profiles**) and keep the file somewhere safe. Restore it on the other device using **Import / export → Validate and preview → Restore as new profile copies**.
+
+Freequiz stores your profiles and progress in this browser. It does not have accounts or automatic cross-device sync. A full backup contains private study history; do not share it as a question pack. Reminder checks happen while the app is open, and closed-app delivery is not guaranteed.
+
 ## Features
 
 - Multiple profiles with independent question banks and practice history
@@ -86,4 +98,4 @@ Browser storage is not cloud sync. Export a backup regularly, especially before 
 
 ## Status
 
-Request 006 and AI prompt reliability Request 007 are merged. PR #6 passed 40 tests, TypeScript checking, production build, Pages configuration, and artifact upload. The push-triggered main deployment and live app were not independently verified; manual browser, mobile, and offline checks remain outstanding.
+Request 014 was implemented in [PR #18](https://github.com/OliverZsuffa/freequiz/pull/18) and merged on 2026-10-26. Its pull-request checks passed in [workflow run 40394870333](https://github.com/OliverZsuffa/freequiz/actions/runs/40394870333), and the main-branch build and GitHub Pages deployment passed in [workflow run 40395013536](https://github.com/OliverZsuffa/freequiz/actions/runs/40395013536). The new menu/filter/export behavior still needs hands-on phone and desktop verification; automated tests do not prove actual viewport geometry, screen-reader behavior, or offline operation.
