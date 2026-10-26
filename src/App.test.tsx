@@ -94,7 +94,7 @@ describe('AI prompt UI and editable tags', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
     fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
-    fireEvent.change(screen.getByLabelText('Question bank (JSON)'), { target: { value: JSON.stringify({
+    fireEvent.change(screen.getByLabelText('Question bank or full profile backup (JSON)'), { target: { value: JSON.stringify({
       format: 'freequiz/questions-v1', sections: [], questions: [{
         id: 'source-question', prompt: 'Imported question?', options: [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }],
         correctOptionIds: ['a'], answerMode: 'single', sectionId: null, explanation: '', tags: ['old-tag'], provenance: 'AI-Generated'
@@ -124,7 +124,7 @@ describe('Request 006 import history', () => {
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
     fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
     fireEvent.change(screen.getByLabelText('Import name'), { target: { value: 'Lecture 3' } })
-    fireEvent.change(screen.getByLabelText('Question bank (JSON)'), { target: { value: JSON.stringify({
+    fireEvent.change(screen.getByLabelText('Question bank or full profile backup (JSON)'), { target: { value: JSON.stringify({
       format: 'freequiz/questions-v1',
       sections: [{ id: 'batch-topic', name: 'Batch topic', parentId: null }],
       questions: [{ id: 'batch-q1', prompt: 'What is import history?', options: [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }], correctOptionIds: ['a'], sectionId: 'batch-topic', explanation: 'Test', tags: [] }]
@@ -188,7 +188,7 @@ describe('Request 006 import history', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
     fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
-    fireEvent.change(screen.getByLabelText('Question bank (JSON)'), { target: { value: JSON.stringify({
+    fireEvent.change(screen.getByLabelText('Question bank or full profile backup (JSON)'), { target: { value: JSON.stringify({
       format: 'freequiz/questions-v1',
       sections: [
         { id: 'deep-root', name: 'Deep root', parentId: null },
@@ -368,7 +368,7 @@ describe('Request 010 question metadata filters and bulk actions', () => {
     expect(screen.getByRole('button', { name: 'Unstar tag gardening' })).toHaveAttribute('aria-pressed', 'true')
     expect(within(picker).getAllByRole('checkbox')[0].closest('label')).toHaveTextContent('gardening')
     fireEvent.change(screen.getByLabelText('Search tags'), { target: { value: 'angle' } })
-    expect(screen.getByRole('button', { name: 'Unstar tag gardening' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Unstar tag gardening' })).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Star tag angles' })).toBeInTheDocument()
     await act(async () => { await new Promise(resolve => setTimeout(resolve, 0)) })
     const saved = JSON.parse(localStorage.getItem('main') || '{}')
