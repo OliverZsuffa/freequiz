@@ -92,10 +92,12 @@ To restore a full backup, open **Menu → Import / export**, paste or select the
 
 In Questions filters, search tags by name and star frequently used tags. Starred tags appear first and their starred state is stored with the profile. Long tags and import filenames wrap in the searchable filter lists and selected chips, which can be removed individually.
 
+A practical checklist for testing Freequiz on phones and desktop is available in [TESTER_CHECKLIST.md](TESTER_CHECKLIST.md).
+
 ## Data and privacy
 
 Browser storage is not cloud sync. Export a backup regularly, especially before clearing browser storage or moving devices. The AI prompt feature does not send anything by itself. If you paste material into an external model, that model's privacy terms apply.
 
 ## Status
 
-Request 014 was implemented in [PR #18](https://github.com/OliverZsuffa/freequiz/pull/18) and merged on 2026-10-26. Its pull-request checks passed in [workflow run 40394870333](https://github.com/OliverZsuffa/freequiz/actions/runs/40394870333), and the main-branch build and GitHub Pages deployment passed in [workflow run 40395013536](https://github.com/OliverZsuffa/freequiz/actions/runs/40395013536). The new menu/filter/export behavior still needs hands-on phone and desktop verification; automated tests do not prove actual viewport geometry, screen-reader behavior, or offline operation.
+Request 014 was implemented in [PR #18](https://github.com/OliverZsuffa/freequiz/pull/18) and merged on 2026-10-26. Its pull-request checks passed in [workflow run 40394870333](https://github.com/OliverZsuffa/freequiz/actions/runs/40394870333), and the main-branch build and GitHub Pages deployment passed in [workflow run 40395013536](https://github.com/OliverZsuffa/freequiz/actions/runs/40395013536). The new menu/filter/export behavior still needs hands-on phone and desktop verification; automated tests do not prove actual viewport geometry, screen-reader behavior, or offline operation. The [manual tester checklist](TESTER_CHECKLIST.md) is ready for a small 3–5-person trial. CI also reported 6 dependency audit findings (3 moderate, 1 high, 2 critical); the affected packages still need review before broader release.

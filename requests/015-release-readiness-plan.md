@@ -1,7 +1,7 @@
 # Request 015: Release-readiness plan for sharing Freequiz with testers
 
 ## Status
-**Approved — execution underway.** The initial menu/filter/export fix is merged in PR #18; its CI and main-branch deployment passed. Remaining release-readiness phases continue below. No physical-device or user-testing step is claimed complete. This plan consolidates the known menu/filter issue, import/export discoverability, reliability checks, mobile/desktop/offline QA, and the small amount of preparation needed to let friends and students try Freequiz.
+**Approved — in progress; not yet fully release-ready.** PRs #18 and #19 are merged. Automated tests/builds and both main-branch deployments passed; manual device/accessibility/offline checks, dependency-audit review, and the 3–5-person trial remain outstanding. This plan consolidates the known menu/filter issue, import/export discoverability, reliability checks, mobile/desktop/offline QA, and the small amount of preparation needed to let friends and students try Freequiz.
 
 ## Goal
 Make the current Freequiz app dependable and understandable enough for a small group of friends/students to use on phones and desktop computers, including importing question banks shared as files.
@@ -230,3 +230,17 @@ Collect only actionable feedback: what they tried, what they expected, what happ
 - Implementing all of Request 013 as a side effect.
 - Large onboarding flows, new gamification, or speculative polish.
 - Claiming a test/device/accessibility/offline check passed when it was not actually performed.
+
+
+## Execution log — 2026-10-26
+
+- **Phase 0:** pre-change main workflow [40388556021](https://github.com/OliverZsuffa/freequiz/actions/runs/40388556021) passed.
+- **Phase 1:** complete. [PR #18](https://github.com/OliverZsuffa/freequiz/pull/18) merged; CI [40394870333](https://github.com/OliverZsuffa/freequiz/actions/runs/40394870333) and main deployment [40395013536](https://github.com/OliverZsuffa/freequiz/actions/runs/40395013536) passed.
+- **Phase 2:** automated coverage already verifies question-only export privacy, malformed backup validation, and backup restore preserving progress/source history. The complete real-device/cross-device round trip remains unverified.
+- **Phase 3:** existing automated tests cover practice, favourite/defer, exams, filtering, and profile behavior. These are not substitutes for manual end-to-end use.
+- **Phase 4:** outstanding. The available environment did not provide a browser/device session for visual viewport, assistive technology, PWA install, or offline testing. A direct page fetch through the available browser tool was inaccessible, so no rendered-page smoke test is claimed.
+- **Phase 5:** complete. [PR #19](https://github.com/OliverZsuffa/freequiz/pull/19) added the getting-started guide, public sample bank, parser regression test, and verified known-limitations list. Its workflow [40395545334](https://github.com/OliverZsuffa/freequiz/actions/runs/40395545334) passed 67 tests, TypeScript checking, and production build; main deployment [40395706878](https://github.com/OliverZsuffa/freequiz/actions/runs/40395706878) passed.
+- **Phase 6:** outstanding. Use `TESTER_CHECKLIST.md` with 3–5 friends/students; no external user testing has been performed by this assistant.
+- **Phase 7:** automated checks and deployment passed. The npm install log reports 6 audit findings (3 moderate, 1 high, 2 critical); affected package details still need to be enumerated and assessed. Do not force-upgrade dependencies blindly.
+
+**Current decision:** do not call the app fully release-ready yet. Complete the dependency audit review, run hands-on phone/desktop/accessibility/PWA checks, and obtain feedback from 3–5 people before declaring the release ready.
