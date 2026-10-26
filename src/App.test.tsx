@@ -32,11 +32,11 @@ describe('Freequiz', () => {
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
     fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
     const tagSearch = screen.getByRole('textbox', { name: 'Search tags' })
-    const generalSearch = screen.getByRole('textbox', { name: 'Search questions' })
-    expect(tagSearch.compareDocumentPosition(generalSearch) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     fireEvent.click(screen.getByText('More filters and sorting'))
     const provenance = screen.getByRole('button', { name: /Provenance/i })
+    const generalSearch = screen.getByRole('textbox', { name: 'Search questions' })
     expect(tagSearch.compareDocumentPosition(provenance) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(provenance.compareDocumentPosition(generalSearch) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 
   it('persists the selected appearance', () => {
