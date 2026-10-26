@@ -165,6 +165,7 @@ describe('backup and question-only exports', () => {
 
   it('rejects malformed full backups before any restore can occur', () => {
     expect(() => parseBackup({ format: 'freequiz/backup-v1', profiles: [] })).toThrow(/at least one profile/i)
+    expect(() => parseBackup({ format: 'freequiz/backup-v1', backupVersion: 99, profiles: [{ ...demoProfile }] })).toThrow(/version is not supported/i)
     expect(() => parseBackup({ format: 'freequiz/backup-v1', profiles: [{ id: 'x', name: 'Broken', sections: [], questions: [], attempts: 'not-an-array' }] })).toThrow(/missing required profile data/i)
     expect(() => parseBackup({ format: 'freequiz/backup-v1', profiles: [{ ...demoProfile }, { ...demoProfile }] })).toThrow(/duplicate profile IDs/i)
     expect(() => parseBackup({ format: 'freequiz/backup-v1', profiles: [{ ...demoProfile, questions: [...demoProfile.questions, { ...demoProfile.questions[0] }] }] })).toThrow(/duplicate question IDs/i)
