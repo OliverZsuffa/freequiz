@@ -190,4 +190,4 @@ The Learning timeline's **Export history** exports only the active profile's his
 - The reusable `src/components/QuestionFilters.tsx` serves management and selection modes. Filtering and sorting live in `src/questionFiltering.ts`.
 - Management retains the question list and existing bulk-edit/export actions. Practice and Exam setup reuse the same filters and show a live count only. Starting a session uses the exact filtered set and refuses an invalid count.
 - The panel exposes common filters immediately, keeps specialist filters under one Advanced filters disclosure, shows active filter chips, and clears all filter state without editing questions.
-- Automated verification is recorded on PR #28. Real-device visual review is not claimed complete.
+- The implementation checkpoint passed 77 automated tests, TypeScript checking, and the production build in [GitHub Actions run 40512265312](https://github.com/OliverZsuffa/freequiz/actions/runs/40512265312); Pages configuration and artifact upload also passed. Real-device visual review is not claimed complete.

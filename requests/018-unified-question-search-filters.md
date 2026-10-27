@@ -2,7 +2,7 @@
 
 ## Status
 
-**Implemented in [PR #28](https://github.com/OliverZsuffa/freequiz/pull/28); awaiting final CI verification and merge.**
+**Implemented in [PR #28](https://github.com/OliverZsuffa/freequiz/pull/28); automated checks passed, merge pending.**
 
 This request corrects the interpretation of the Questions workflow in Request 017 and its follow-up. The previous changes rearranged individual controls, but the actual requirement is to unify question search and filtering into one coherent interface, with a deliberate distinction between frequently used controls and advanced controls.
 
@@ -173,4 +173,4 @@ The approved scope is implemented on the feature branch.
 - Session setup intersects the shared filtered result with the existing question-set scope. It never selects questions outside the current filters. The requested count is adjusted to fit the available set when setup opens and validated if subsequent filter changes leave too few matches.
 - Regression tests cover common filters, shared selection-mode behavior, live counts, no question list in setup, over-count validation, active filter summaries, and clearing common and advanced filters together.
 
-Automated checks are tracked by the PR's required GitHub Actions workflow. Real-device visual review remains a separate follow-up and is not claimed as completed.
+The final implementation checkpoint passed 77 automated tests, TypeScript checking, and the production build in [GitHub Actions run 40512265312](https://github.com/OliverZsuffa/freequiz/actions/runs/40512265312). Pages configuration and artifact upload also passed. Real-device visual review remains a separate follow-up and is not claimed as completed.
