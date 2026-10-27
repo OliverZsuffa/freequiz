@@ -73,6 +73,48 @@ Keep general text search visible above these six common filters. Use compact con
 - On mobile, the filter area must fit within the viewport, avoid horizontal page overflow, keep popovers within the screen, and not push the question list excessively far down.
 - Preserve existing theme and accent behavior. Do not introduce a new visual style or change unrelated screens.
 
+
+## Follow-up: Reusable selector for practice and exams
+
+Oliver clarified that the unified search and filters should be reusable, and that the full question list is too much information for ordinary study workflows. This extends Request 018 beyond the Questions management workspace.
+
+### 6. Reusable question-selection component
+
+- Implement the unified search and filter area as a reusable component, or a small reusable component set, with one shared filtering implementation and state contract.
+- Embed it in the homepage Practice and Exam flows so both use the same search, the same six common filters, the same Advanced filters disclosure, and the same matching logic.
+- Keep it reusable in the Questions management workspace. Avoid maintaining separate versions of the same filters for practice, exams, and management.
+- The component must support distinct presentation modes or configuration for **selection** versus **management**. Reuse behavior and logic, not necessarily the same full screen.
+- Inspect the existing architecture before choosing component boundaries. Follow the project's current framework and conventions rather than introducing a new abstraction or dependency without need.
+
+### 7. Selection mode: count first, no question dump
+
+In the homepage Practice and Exam workflows, the default view is for choosing a set of questions, not reading or managing individual questions.
+
+- Show a clear live count of matching questions, such as **100 questions**, updated whenever a filter changes.
+- Do not render the full question-by-question list by default in Practice or Exam selection mode.
+- Keep the common filters compact and visible. Keep other filters under the same Advanced filters disclosure.
+- Provide a clear next action to continue with the matching set. In Practice, continue to choosing the number of questions and then start practice. In Exam, continue to exam settings, including the existing question-count and time-limit options where supported.
+- Make it clear when no questions match and prevent starting a session with an empty set.
+- If the requested number exceeds the number of matching questions, handle that using clear existing app behavior or a clear validation message. Never silently select questions outside the filters.
+- Do not require users to inspect question text just to start a practice session or exam.
+
+### 8. Management mode: question list remains available
+
+- The Questions management workspace still needs a question list because users may need to inspect and edit individual questions.
+- Keep the list and its existing management actions in that workspace, below the same reusable filter component.
+- Do not remove question-level actions, bulk selection, bulk editing, moving sections, tag editing, question creation, import/export, or other existing management capabilities.
+- If useful and straightforward, allow users to deliberately reveal matching questions from selection mode for inspection, but do not make a list the default or block the core practice/exam flow on this optional feature.
+- The count shown in selection mode must be the count of distinct questions that actually match the current filters, not the number of rendered rows or an approximate total.
+
+### Additional acceptance criteria
+
+- Practice, Exam, and Questions management share the same reusable filter controls and matching behavior.
+- Practice and Exam selection screens show the matching count and do not display the question list by default.
+- The next action carries the exact filtered question set into the chosen workflow.
+- Filter changes update the count and selected set consistently.
+- No results, count changes, and unavailable question counts are handled clearly.
+- Existing question management remains capable of displaying and editing individual questions.
+
 ## Non-negotiable safeguards
 
 - Do not remove existing filters or question-management capabilities.
