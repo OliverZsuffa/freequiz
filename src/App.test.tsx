@@ -26,7 +26,7 @@ describe('Freequiz', () => {
     expect(screen.getByText('Professor-written')).toBeInTheDocument()
   })
 
-  it('shows import and clearly separated export options on the Import / export destination', () => {
+  it('shows import and clearly separated export options on the Import & export destination', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
     fireEvent.click(screen.getByRole('button', { name: /Import & export/i }))
@@ -522,7 +522,7 @@ describe('Request 013 mobile-first workflow', () => {
   it('shows a mixed state when only some motivation features are enabled', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
-    fireEvent.click(screen.getByRole('button', { name: /Settings & reminders/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Settings/i }))
     fireEvent.click(screen.getByRole('checkbox', { name: /Activity calendar/i }))
     const master = screen.getByRole('checkbox', { name: 'Enable all motivation features' })
     expect(master).toHaveProperty('indeterminate', true)
