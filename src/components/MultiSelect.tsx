@@ -62,14 +62,20 @@ export function MultiSelect({ label, ariaLabel, value, options, onChange }: Mult
       const margin = 14
       const bottomReserved = 76
       const width = Math.min(320, window.innerWidth - margin * 2)
-      const maxHeight = Math.max(120, Math.min(window.innerHeight * 0.55, window.innerHeight - bottomReserved - 16))
+      const maxHeight = Math.max(80, Math.min(window.innerHeight * 0.55, window.innerHeight - bottomReserved - 16))
       const left = Math.max(margin, Math.min(rect.left, window.innerWidth - margin - width))
       const below = window.innerHeight - bottomReserved - rect.bottom - 6
       const above = rect.top - 6
-      const top = below >= Math.min(popover.scrollHeight, maxHeight) || below >= above
-        ? Math.min(rect.bottom + 6, window.innerHeight - bottomReserved - maxHeight)
-        : Math.max(8, rect.top - Math.min(popover.scrollHeight, maxHeight) - 6)
-      setPosition({ top: Math.max(8, top), left, width, maxHeight })
+      const contentHeight = Math.min(popover.scrollHeight, maxHeight)
+      const top = below >= contentHeight
+        ? rect.bottom + 6
+        : above >= contentHeight
+          ? rect.top - contentHeight - 6
+          : below >= above
+            ? rect.bottom + 6
+            : rect.top - contentHeight - 6
+      const clampedTop = Math.min(Math.max(8, top), window.innerHeight - bottomReserved - contentHeight)
+      setPosition({ top: clampedTop, left, width, maxHeight })
     }
     placePopover()
     window.addEventListener('resize', placePopover)
