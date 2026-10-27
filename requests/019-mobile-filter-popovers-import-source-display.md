@@ -1,6 +1,6 @@
 # Request 019: Fix mobile question filters and import-source display
 
-**Status:** Implemented on branch `fix/019-mobile-question-filters`; automated checks and deployment verification pending.
+**Status:** Core fixes merged in PR #30; a follow-up in PR #31 preserves app theme variables for portaled mobile popovers. Follow-up checks and deployment verification pending.
 
 ## Goal
 
@@ -62,4 +62,4 @@ Use component tests for behavior and existing project tests for filtering/data b
 
 - No changes to question data, import/export formats, filter logic, default visible filters, or the overall unified-filter design unless investigation proves a narrowly scoped compatibility fix is necessary.
 - No unrelated UI cleanup or new dependencies.
-- This document is a plan only. Do not implement until Oliver explicitly approves it.
+- Oliver approved implementation on 2026-10-27. Core changes are merged in PR #30; PR #31 covers a theme-inheritance fix found during review.
