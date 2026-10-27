@@ -534,3 +534,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
  .setup-dialog .selection-filters .common-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  .setup-dialog .selection-filters .advanced-filter-grid{grid-template-columns:minmax(0,1fr)}
 }
+
+.active-filter-summary{align-items:flex-start!important;flex-wrap:wrap}
+.active-filter-summary .filter-summary-status{white-space:nowrap;padding-top:5px}
+.active-filter-labels{display:flex;align-items:center;gap:5px;flex:1;min-width:0;flex-wrap:wrap}
+.active-filter-labels .filter-chip{max-width:100%;overflow-wrap:anywhere}
+.active-filter-labels:empty{display:none}
+@media(max-width:760px){.active-filter-summary{gap:7px}.active-filter-labels{order:3;flex-basis:100%}.active-filter-summary .button{margin-left:auto}}

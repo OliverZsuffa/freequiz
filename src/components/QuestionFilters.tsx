@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react'
 import { Search, Star, X } from 'lucide-react'
-import type { AnswerMode, ImportBatch, Mastery, Profile } from '../domain'
+import type { AnswerMode, Mastery, Profile } from '../domain'
 import { MultiSelect } from './MultiSelect'
 
 type QuestionFiltersProps = {
@@ -57,12 +57,28 @@ type QuestionFiltersProps = {
 }
 
 export function QuestionFilters(p: QuestionFiltersProps) {
-  const active = !!p.query.trim() || p.multiTagFilter.length > 0 || p.multiSectionFilter.length > 0 ||
-    p.multiAnswerModeFilter.length > 0 || p.multiMasteryFilter.length > 0 || p.multiFavouriteFilter.length > 0 ||
-    p.multiDeferredFilter.length > 0 || p.multiProvenanceFilter.length > 0 || p.multiImportFilter.length > 0 ||
-    p.multiImportSourceFilter.length > 0 || p.multiExplanationFilter.length > 0 || p.multiTagPresenceFilter.length > 0 ||
-    !!p.filterTagsInclude.trim() || !!p.filterTagsExclude.trim() || !!p.createdAfter || !!p.createdBefore ||
-    !!p.updatedAfter || !!p.updatedBefore || p.sortBy !== 'default'
+  const activeLabels = [
+    ...(p.query.trim() ? ['Search: '+p.query.trim()] : []),
+    ...p.multiTagFilter.map(value=>'Tag: '+value),
+    ...p.multiSectionFilter.map(value=>'Section: '+(value==='unsorted'?'Unsorted':p.sectionPath(p.profile,value))),
+    ...p.multiFavouriteFilter.map(value=>value==='favourite'?'Favourites only':'Not favourites'),
+    ...p.multiDeferredFilter.map(value=>value==='deferred'?'Deferred only':'Not deferred'),
+    ...p.multiProvenanceFilter.map(value=>({ 'professor-written':'Written by professor', other:'Other known source', 'AI-Generated':'AI-generated', 'AI-Extracted':'AI-extracted', unknown:'Not specified' } as Record<string,string>)[value]??value),
+    ...p.multiMasteryFilter.map(value=>'Mastery: '+value.replace('-',' ')),
+    ...p.multiAnswerModeFilter.map(value=>'Answer type: '+({single:'One answer','exactly-n':'Pick exactly N','select-all':'All that apply'} as Record<AnswerMode,string>)[value]),
+    ...(p.filterTagsInclude.trim()?['Include tags: '+p.filterTagsInclude.trim()]:[]),
+    ...(p.filterTagsExclude.trim()?['Exclude tags: '+p.filterTagsExclude.trim()]:[]),
+    ...p.multiImportFilter.map(value=>{const batch=(p.profile.imports??[]).find(b=>b.id===value);return value==='unknown'?'No known import':'Import: '+(batch?.name??value)}),
+    ...p.multiImportSourceFilter.map(value=>'Import type: '+value),
+    ...p.multiExplanationFilter.map(value=>value==='present'?'Has explanation':'Missing explanation'),
+    ...p.multiTagPresenceFilter.map(value=>value==='present'?'Has tags':'No tags'),
+    ...(p.createdAfter?['Created after: '+p.createdAfter]:[]),
+    ...(p.createdBefore?['Created before: '+p.createdBefore]:[]),
+    ...(p.updatedAfter?['Modified after: '+p.updatedAfter]:[]),
+    ...(p.updatedBefore?['Modified before: '+p.updatedBefore]:[]),
+    ...(p.sortBy!=='default'?['Sort: '+p.sortBy]:[]),
+  ]
+  const active = activeLabels.length > 0
 
   return <section className={'unified-question-filters '+(p.mode==='selection'?'selection-filters':'management-filters')} aria-label="Question search and filters">
     <div className="library-general-search"><div className="search-field"><Search size={16}/><input aria-label="Search questions" value={p.query} onChange={e=>p.setQuery(e.target.value)} placeholder="Search prompts, options, explanations, sections, sources..."/></div></div>
@@ -75,7 +91,7 @@ export function QuestionFilters(p: QuestionFiltersProps) {
       <MultiSelect label="Question origin" ariaLabel="Filter question source" value={p.multiProvenanceFilter} onChange={p.setMultiProvenanceFilter} options={[{value:'professor-written',label:'Written by professor'},{value:'other',label:'Other known source'},{value:'AI-Generated',label:'AI-generated'},{value:'AI-Extracted',label:'AI-extracted'},{value:'unknown',label:'Not specified'}]}/>
       <MultiSelect label="Mastery" ariaLabel="Filter mastery" value={p.multiMasteryFilter} onChange={values=>p.setMultiMasteryFilter(values as Mastery[])} options={[{value:'new',label:'New'},{value:'learning',label:'Learning'},{value:'known',label:'Known'},{value:'needs-work',label:'Needs work'},{value:'weak',label:'Weak'}]}/>
     </div>
-    <div className="active-filter-summary"><span>{active?'Filters are active':'Search and filter questions'}</span><button className="button button-quiet" onClick={p.onClear}>Clear filters</button></div>
+    <div className="active-filter-summary"><span className="filter-summary-status">{active?activeLabels.length+' active filters':'No filters applied'}</span><div className="active-filter-labels" aria-label="Active filters">{activeLabels.map((label,i)=><span className="filter-chip" key={label+'-'+i}>{label}</span>)}</div><button className="button button-quiet" onClick={p.onClear}>Clear filters</button></div>
     <details className="advanced-filters"><summary>Advanced filters</summary><div className="advanced-filter-grid">
       <MultiSelect label="Answer type" ariaLabel="Filter answer types" value={p.multiAnswerModeFilter} onChange={values=>p.setMultiAnswerModeFilter(values as AnswerMode[])} options={[{value:'single',label:'One answer'},{value:'exactly-n',label:'Pick exactly N'},{value:'select-all',label:'All that apply'}]}/>
       <label>Include tags, all required<input aria-label="Include tags" value={p.filterTagsInclude} onChange={e=>p.setFilterTagsInclude(e.target.value)} placeholder="tag1, tag2"/></label>
