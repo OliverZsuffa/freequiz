@@ -94,15 +94,13 @@ describe('Freequiz', () => {
     expect(screen.getByRole('button', { name: /Create exam/i })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
     expect(screen.getByLabelText('Questions to practise')).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
     expect(screen.getByLabelText('Time limit (minutes)')).toBeInTheDocument()
     expect(screen.getByLabelText('Answer type')).toBeInTheDocument()
   })
 
   it('withholds correctness feedback until a timed exam is submitted', () => {
     render(<App />)
-    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
-    fireEvent.click(screen.getByRole('button', { name: /Create practice/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
     fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
     fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
     expect(screen.getByText(/Exam mode/)).toBeInTheDocument()
@@ -115,7 +113,7 @@ describe('Freequiz', () => {
   it('automatically submits a timed exam when its timer expires', () => {
     vi.useFakeTimers()
     render(<App />)
-    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
     fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
     fireEvent.change(screen.getByLabelText('Time limit (minutes)'), { target: { value: '1' } })
     fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
@@ -137,7 +135,7 @@ describe('AI prompt UI and editable tags', () => {
   it('offers extraction and generation prompt modes', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import & export/i }))
     expect(screen.getByLabelText('AI prompt mode')).toHaveValue('generate')
     fireEvent.change(screen.getByLabelText('AI prompt mode'), { target: { value: 'extract' } })
     fireEvent.click(screen.getByRole('button', { name: /Generate extraction prompt/i }))
@@ -148,7 +146,7 @@ describe('AI prompt UI and editable tags', () => {
   it('preserves protected provenance while ordinary tags remain editable', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import & export/i }))
     fireEvent.change(screen.getByLabelText('Question bank or full profile backup (JSON)'), { target: { value: JSON.stringify({
       format: 'freequiz/questions-v1', sections: [], questions: [{
         id: 'source-question', prompt: 'Imported question?', options: [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }],
@@ -177,7 +175,7 @@ describe('Request 006 import history', () => {
   it('records an import batch and shows its questions in import history', async () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import & export/i }))
     fireEvent.change(screen.getByLabelText('Import name'), { target: { value: 'Lecture 3' } })
     fireEvent.change(screen.getByLabelText('Question bank or full profile backup (JSON)'), { target: { value: JSON.stringify({
       format: 'freequiz/questions-v1',
@@ -196,7 +194,7 @@ describe('Request 006 import history', () => {
   it('offers a short prompt and optional existing-section matching', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import & export/i }))
     expect(screen.getByLabelText('Match my existing sections')).toBeChecked()
     fireEvent.click(screen.getByRole('button', { name: /Generate AI prompt/i }))
     const prompt = (screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i) as HTMLTextAreaElement).value
@@ -242,7 +240,7 @@ describe('Request 006 import history', () => {
   it('supports deep section paths and descendant filtering', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import & export/i }))
     fireEvent.change(screen.getByLabelText('Question bank or full profile backup (JSON)'), { target: { value: JSON.stringify({
       format: 'freequiz/questions-v1',
       sections: [
@@ -301,8 +299,8 @@ describe('Request 009 practice controls', () => {
   afterEach(() => cleanup())
   it('allows toggling a favourite during practice after answering', () => {
     render(<App />)
-    fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
     fireEvent.click(screen.getByRole('button', { name: /Create practice/i }))
+    fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
     fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
     const option = document.querySelector('.answer-option')
     expect(option).not.toBeNull()
@@ -319,8 +317,8 @@ describe('Request 009 practice deferral', () => {
   afterEach(() => cleanup())
   it('skips deferred practice questions without recording answers', () => {
     render(<App />)
-    fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
     fireEvent.click(screen.getByRole('button', { name: /Create practice/i }))
+    fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
     fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
     const first = screen.getByRole('heading', { level: 2 }).textContent
     fireEvent.click(screen.getByRole('button', { name: 'Defer' }))
@@ -337,7 +335,7 @@ describe('Request 009 exam deferral', () => {
   afterEach(() => cleanup())
   it('marks an exam question deferred without skipping it', () => {
     render(<App />)
-    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
     fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
     fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
     const question = screen.getByRole('heading', { level: 2 }).textContent
@@ -531,7 +529,7 @@ describe('Request 013 mobile-first workflow', () => {
   it('warns before leaving an exam without submitting', () => {
     const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
     render(<App />)
-    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
     fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
     fireEvent.click(screen.getByRole('button', { name: /Exit session/i }))
     expect(confirm).toHaveBeenCalledWith(expect.stringMatching(/Exit this exam without submitting/i))
