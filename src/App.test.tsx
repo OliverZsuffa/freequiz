@@ -16,6 +16,16 @@ describe('Freequiz', () => {
     expect(screen.queryByText('Good to have you here.')).not.toBeInTheDocument()
   })
 
+  it('lets a user explicitly mark a question as professor-written', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    fireEvent.click(screen.getByRole('button', { name: /New question/i }))
+    fireEvent.change(screen.getByLabelText('Question'), { target: { value: 'Which source wrote this question?' } })
+    fireEvent.change(screen.getByLabelText('Question source metadata'), { target: { value: 'professor-written' } })
+    fireEvent.click(screen.getByRole('button', { name: /Save question/i }))
+    expect(screen.getByText('Professor-written')).toBeInTheDocument()
+  })
+
   it('shows import and clearly separated export options on the Import / export destination', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
@@ -122,7 +132,7 @@ describe('Freequiz', () => {
 })
 
 
-describe('Request 004 features',()=>{beforeEach(()=>localStorage.clear());afterEach(()=>cleanup());it('shows the progress graph empty state',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:'Progress'}));expect(screen.getByRole('heading',{name:'Accuracy over time'})).toBeInTheDocument();expect(screen.getByText(/Your progress graph starts here/)).toBeInTheDocument()});it('offers optional gamification and reminders',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:'Settings'}));expect(screen.getByRole('heading',{name:'Gamification'})).toBeInTheDocument();expect(screen.getByText('Milestones and achievements')).toBeInTheDocument();expect(screen.getByRole('checkbox',{name:'Enable study reminders'})).not.toBeChecked()});it('offers multi-section and tag filtering in the unified Questions workspace',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:'Questions'}));expect(screen.getByLabelText('Filter section')).toBeInTheDocument();expect(screen.getByLabelText('Search tags')).toBeInTheDocument()});it('generates a reusable prompt without a source field',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Import \/ export/i}));expect(screen.queryByLabelText('Source material')).not.toBeInTheDocument();fireEvent.click(screen.getByRole('button',{name:/Generate AI prompt/i}));expect(screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i)).toBeInTheDocument()})});
+describe('Request 004 features',()=>{beforeEach(()=>localStorage.clear());afterEach(()=>cleanup());it('shows the progress graph empty state',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:'Progress'}));expect(screen.getByRole('heading',{name:'Accuracy over time'})).toBeInTheDocument();expect(screen.getByText(/Your progress graph starts here/)).toBeInTheDocument()});it('offers optional gamification and reminders',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:'Settings'}));expect(screen.getByRole('heading',{name:'Gamification'})).toBeInTheDocument();expect(screen.getByText('Milestones and achievements')).toBeInTheDocument();expect(screen.getByRole('checkbox',{name:'Enable study reminders'})).not.toBeChecked()});it('offers multi-section and tag filtering in the unified Questions workspace',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:'Questions'}));expect(screen.getByLabelText('Filter section')).toBeInTheDocument();expect(screen.getByLabelText('Search tags')).toBeInTheDocument()});it('generates a reusable prompt without a source field',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Import & export/i}));expect(screen.queryByLabelText('Source material')).not.toBeInTheDocument();fireEvent.click(screen.getByRole('button',{name:/Generate AI prompt/i}));expect(screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i)).toBeInTheDocument()})});
 
 
 describe('AI prompt UI and editable tags', () => {
