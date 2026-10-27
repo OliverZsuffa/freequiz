@@ -114,7 +114,7 @@ Implementation is available in Pull Request #8 and is awaiting merge into `main`
 
 - Profile deletion is confirmed and restricted to the active profile. It protects the final profile, switches to another profile after deletion, removes profile-owned data, and leaves app-wide settings unchanged.
 - Section selection uses recursive trees and full hierarchical paths. Parent selection includes descendants in study setup, and question-library filters have an explicit include-descendants toggle.
-- The question library supports search across prompts, options, explanations, tags, section paths, provenance, and import metadata. Filters cover answer mode, section, included/excluded tags, provenance, import batch, import type, explanation/tag presence, and recorded creation/modification dates. Sorting uses available fields and stable original order for ties.
+- The question library and home Practice/Exam setup share `QuestionFilters` and `filterQuestions`. Common filters visible by default are searchable Tags, Sections with the existing descendant toggle, Favourites, Deferred, explicit Question origin, and Mastery. Advanced filters retain answer type, include/exclude tags, import batch/type, explanation/tag presence, creation/modification dates, and sorting. The shared selector shows a live count in Practice/Exam setup instead of a question list and validates requested counts against the filtered set. Search covers prompts, options, explanations, section paths, provenance, and import metadata. Existing AND/OR semantics and stable original-order tie breaking are preserved.
 - Bulk selection supports individual questions and all matching results across the full filtered set. Bulk actions support adding, removing, or replacing tags, moving sections, setting explanations, and changing answer mode when existing correct-answer counts remain valid. Bulk tag changes and section moves, along with the other supported bulk changes, can be undone through the saved question snapshot.
 - Import batches record original filename/source identity when available and each import operation remains distinct. Existing questions without timestamps or source attribution are not assigned fabricated history.
 - Automated verification on the pull request passed: 2 test files, 44 tests, TypeScript checking, and production build. This does not represent manual desktop/mobile/offline testing or a deployed main-branch build.
@@ -183,3 +183,11 @@ The Learning timeline's **Export history** exports only the active profile's his
 - Import & export is consolidated in More and keeps question-only export separate from private backups.
 - Appearance settings moved from the top bar to Settings; on mobile the sidebar navigation is hidden in favour of bottom navigation.
 - Automated checks and real-device testing must be confirmed in the implementation PR; this note is not evidence of passing checks.
+
+
+## Request 018: unified question search and filters
+- Implemented in [PR #28](https://github.com/OliverZsuffa/freequiz/pull/28), using the existing local-first React/TypeScript architecture and no new dependencies.
+- The reusable `src/components/QuestionFilters.tsx` serves management and selection modes. Filtering and sorting live in `src/questionFiltering.ts`.
+- Management retains the question list and existing bulk-edit/export actions. Practice and Exam setup reuse the same filters and show a live count only. Starting a session uses the exact filtered set and refuses an invalid count.
+- The panel exposes common filters immediately, keeps specialist filters under one Advanced filters disclosure, shows active filter chips, and clears all filter state without editing questions.
+- The implementation checkpoint passed 77 automated tests, TypeScript checking, and the production build in [GitHub Actions run 40512265312](https://github.com/OliverZsuffa/freequiz/actions/runs/40512265312); Pages configuration and artifact upload also passed. Real-device visual review is not claimed complete.

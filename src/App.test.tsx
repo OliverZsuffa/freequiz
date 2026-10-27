@@ -23,7 +23,7 @@ describe('Freequiz', () => {
     fireEvent.change(screen.getByLabelText('Question'), { target: { value: 'Which source wrote this question?' } })
     fireEvent.change(screen.getByLabelText('Question source metadata'), { target: { value: 'professor-written' } })
     fireEvent.click(screen.getByRole('button', { name: /Save question/i }))
-    fireEvent.click(screen.getByText('More filters and sorting'))
+    fireEvent.click(screen.getByText('Advanced filters'))
     fireEvent.click(screen.getByRole('button', { name: 'Filter question source' }))
     fireEvent.click(screen.getByRole('checkbox', { name: 'Written by professor' }))
     expect(screen.getByText('Professor-written')).toBeInTheDocument()
@@ -46,7 +46,7 @@ describe('Freequiz', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     const tagSearch = screen.getByRole('textbox', { name: 'Search tags' })
-    fireEvent.click(screen.getByText('More filters and sorting'))
+    fireEvent.click(screen.getByText('Advanced filters'))
     const provenance = screen.getByRole('button', { name: /Question source/i })
     const generalSearch = screen.getByRole('textbox', { name: 'Search questions' })
     expect(generalSearch.compareDocumentPosition(tagSearch) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
@@ -106,7 +106,8 @@ describe('Freequiz', () => {
     fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
     expect(screen.getByLabelText('Questions to practise')).toBeInTheDocument()
     expect(screen.getByLabelText('Time limit (minutes)')).toBeInTheDocument()
-    expect(screen.getByLabelText('Answer type')).toBeInTheDocument()
+    fireEvent.click(screen.getByText('Advanced filters'))
+    expect(screen.getByRole('button', { name: 'Filter answer types' })).toBeInTheDocument()
   })
 
   it('withholds correctness feedback until a timed exam is submitted', () => {
@@ -220,7 +221,7 @@ describe('Request 006 import history', () => {
   it('filters questions by tags and supports sorting', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
-    fireEvent.click(screen.getByText('More filters and sorting'))
+    fireEvent.click(screen.getByText('Advanced filters'))
     fireEvent.change(screen.getByLabelText('Include tags'), { target: { value: 'angles' } })
     expect(screen.getAllByText('What is the sum of the interior angles of a triangle in Euclidean geometry?').length).toBeGreaterThan(0)
     expect(screen.queryByText('Which expression is the derivative of x²?')).not.toBeInTheDocument()
@@ -233,7 +234,7 @@ describe('Request 006 import history', () => {
     const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true)
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
-    fireEvent.click(screen.getByText('More filters and sorting'))
+    fireEvent.click(screen.getByText('Advanced filters'))
     fireEvent.change(screen.getByLabelText('Include tags'), { target: { value: 'angles' } })
     fireEvent.click(screen.getByRole('button', { name: /Select all matching/i }))
     expect(screen.getByRole('button', { name: /Select all matching/i })).toBeInTheDocument()
@@ -409,7 +410,7 @@ describe('Request 010 question metadata filters and bulk actions', () => {
   it('offers mastery, favourite and deferred filters', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
-    fireEvent.click(screen.getByText('More filters and sorting'))
+    fireEvent.click(screen.getByText('Advanced filters'))
     expect(screen.getByLabelText('Filter mastery')).toBeInTheDocument()
     expect(screen.getByLabelText('Filter favourite status')).toBeInTheDocument()
     expect(screen.getByLabelText('Filter deferred status')).toBeInTheDocument()
@@ -543,5 +544,59 @@ describe('Request 013 mobile-first workflow', () => {
     fireEvent.click(screen.getByRole('button', { name: /Exit session/i }))
     expect(confirm).toHaveBeenCalledWith(expect.stringMatching(/Exit this exam without submitting/i))
     expect(screen.getByRole('heading', { name: 'One question at a time.' })).toBeInTheDocument()
+  })
+})
+
+
+describe('Request 018 unified question filters', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => cleanup())
+
+  it('shows all six common filters without opening Advanced filters', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    expect(screen.getByLabelText('Search questions')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Filter section' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Filter favourite status' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Filter deferred status' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Filter question source' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Filter mastery' })).toBeInTheDocument()
+    expect(screen.getByText('Advanced filters').closest('details')).not.toHaveAttribute('open')
+  })
+
+  it('reuses the filters in practice setup and shows a live matching count without a question list', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Create practice/i }))
+    expect(screen.getByLabelText('Search questions')).toBeInTheDocument()
+    expect(screen.getByText(/questions match your filters/)).toBeInTheDocument()
+    expect(document.querySelector('.setup-dialog .question-row')).toBeNull()
+    fireEvent.change(screen.getByLabelText('Search questions'), { target: { value: 'triangle' } })
+    expect(document.querySelector('.selection-match-count')?.textContent).toContain('1 question matches your filters')
+    expect(document.querySelector('.setup-dialog .question-row')).toBeNull()
+  })
+
+
+  it('shows selected common filters and clears common and advanced filters together', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Filter section' }))
+    fireEvent.click(screen.getByRole('checkbox', { name: /Mathematics \/ Geometry/ }))
+    expect(document.querySelector('.active-filter-labels')?.textContent).toContain('Section: Mathematics / Geometry')
+    fireEvent.change(screen.getByLabelText('Search questions'), { target: { value: 'triangle' } })
+    fireEvent.click(screen.getByText('Advanced filters'))
+    fireEvent.change(screen.getByLabelText('Include tags'), { target: { value: 'angles' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Clear filters' }))
+    expect(screen.getByLabelText('Search questions')).toHaveValue('')
+    expect(screen.getByLabelText('Include tags')).toHaveValue('')
+    expect(document.querySelector('.active-filter-labels')?.textContent).toBe('')
+  })
+
+  it('does not allow a session count larger than the filtered set', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
+    fireEvent.change(screen.getByLabelText('Search questions'), { target: { value: 'triangle' } })
+    fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
+    expect(screen.getByRole('alert')).toHaveTextContent(/Choose between 1 and 1 questions/)
+    expect(screen.getByRole('button', { name: /Start exam/i })).toBeDisabled()
   })
 })
