@@ -137,7 +137,7 @@ describe('Freequiz', () => {
 })
 
 
-describe('Request 004 features',()=>{beforeEach(()=>localStorage.clear());afterEach(()=>cleanup());it('shows the progress graph empty state',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:'Progress'}));expect(screen.getByRole('heading',{name:'Accuracy over time'})).toBeInTheDocument();expect(screen.getByText(/Your progress graph starts here/)).toBeInTheDocument()});it('offers optional gamification and reminders',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:'Settings'}));expect(screen.getByRole('heading',{name:'Gamification'})).toBeInTheDocument();expect(screen.getByText('Milestones and achievements')).toBeInTheDocument();expect(screen.getByRole('checkbox',{name:'Enable study reminders'})).not.toBeChecked()});it('offers multi-section and tag filtering in the unified Questions workspace',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:'Questions'}));expect(screen.getByLabelText('Filter section')).toBeInTheDocument();expect(screen.getByLabelText('Search tags')).toBeInTheDocument()});it('generates a reusable prompt without a source field',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Import & export/i}));expect(screen.queryByLabelText('Source material')).not.toBeInTheDocument();fireEvent.click(screen.getByRole('button',{name:/Generate AI prompt/i}));expect(screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i)).toBeInTheDocument()})});
+describe('Request 004 features',()=>{beforeEach(()=>localStorage.clear());afterEach(()=>cleanup());it('shows the progress graph empty state',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:'Progress'}));expect(screen.getByRole('heading',{name:'Accuracy over time'})).toBeInTheDocument();expect(screen.getByText(/Your progress graph starts here/)).toBeInTheDocument()});it('offers optional gamification and reminders',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:'Settings'}));expect(screen.getByRole('heading',{name:'Gamification'})).toBeInTheDocument();expect(screen.getByText('Milestones and achievements')).toBeInTheDocument();expect(screen.getByRole('checkbox',{name:'Enable study reminders'})).not.toBeChecked()});it('offers multi-section and tag filtering in the unified Questions workspace',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:'Questions'}));expect(screen.getByRole('group', { name: 'Filter sections' })).toBeInTheDocument();expect(screen.getByLabelText('Search tags')).toBeInTheDocument()});it('generates a reusable prompt without a source field',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Import & export/i}));expect(screen.queryByLabelText('Source material')).not.toBeInTheDocument();fireEvent.click(screen.getByRole('button',{name:/Generate AI prompt/i}));expect(screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i)).toBeInTheDocument()})});
 
 
 describe('AI prompt UI and editable tags', () => {
@@ -196,8 +196,9 @@ describe('Request 006 import history', () => {
     }) } })
     fireEvent.click(screen.getByRole('button', { name: /Validate and preview/i }))
     fireEvent.click(screen.getByRole('button', { name: /Merge into profile/i }))
+    await screen.findAllByText('What is import history?')
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getAllByRole('button', { name: /Import history/i })[0])
+    fireEvent.click(within(document.querySelector('.global-menu') as HTMLElement).getByRole('button', { name: 'Import history' }))
     expect(screen.getByRole('heading', { name: 'Import history' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Lecture 3' })).toBeInTheDocument()
     expect(screen.getByText('What is import history?')).toBeInTheDocument()
@@ -263,8 +264,11 @@ describe('Request 006 import history', () => {
     }) } })
     fireEvent.click(screen.getByRole('button', { name: /Validate and preview/i }))
     fireEvent.click(screen.getByRole('button', { name: /Merge into profile/i }))
-    fireEvent.click(screen.getByRole('button', { name: 'Filter section' }))
-    expect(screen.getByRole('checkbox', { name: 'Deep root / Child / Grandchild / Leaf' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('group', { name: 'Filter sections' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Expand Deep root' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Expand Child' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Expand Grandchild' }))
+    expect(screen.getByRole('checkbox', { name: 'Leaf' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('checkbox', { name: 'Deep root' }))
     expect(screen.getAllByText('Question in a deeply nested section?').length).toBeGreaterThan(0)
   })
@@ -293,7 +297,7 @@ describe('Request 009 multi-select filters', () => {
   it('exposes categorical library filters as multi-select controls', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
-    expect(screen.getByRole('button', { name: 'Filter section' })).toBeInTheDocument()
+    expect(screen.getByRole('group', { name: 'Filter sections' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Filter answer types' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Filter question source' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Filter answer types' }))
@@ -519,9 +523,9 @@ describe('Request 013 mobile-first workflow', () => {
   it('uses touch-friendly checkbox multi-select filters rather than native multiple-select controls', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
-    const sectionFilter = screen.getByRole('button', { name: 'Filter section' })
+    const sectionFilter = screen.getByRole('group', { name: 'Filter sections' })
     fireEvent.click(sectionFilter)
-    expect(screen.getByRole('group', { name: 'Sections options' })).toBeInTheDocument()
+    expect(screen.getByRole('group', { name: 'Filter sections' })).toBeInTheDocument()
     expect(screen.getAllByRole('checkbox', { name: /Geometry/i }).length).toBeGreaterThan(0)
   })
 
@@ -556,7 +560,7 @@ describe('Request 018 unified question filters', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     expect(screen.getByLabelText('Search questions')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Filter section' })).toBeInTheDocument()
+    expect(screen.getByRole('group', { name: 'Filter sections' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Filter favourite status' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Filter deferred status' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Filter question source' })).toBeInTheDocument()
@@ -579,8 +583,9 @@ describe('Request 018 unified question filters', () => {
   it('shows selected common filters and clears common and advanced filters together', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Filter section' }))
-    fireEvent.click(screen.getByRole('checkbox', { name: /Mathematics \/ Geometry/ }))
+    fireEvent.click(screen.getByRole('group', { name: 'Filter sections' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Expand Mathematics' }))
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Geometry' }))
     expect(document.querySelector('.active-filter-labels')?.textContent).toContain('Section: Mathematics / Geometry')
     fireEvent.change(screen.getByLabelText('Search questions'), { target: { value: 'triangle' } })
     fireEvent.click(screen.getByText('Advanced filters'))

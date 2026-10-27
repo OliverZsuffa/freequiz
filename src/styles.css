@@ -199,7 +199,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .app.accent-orange{--accent:#c96a12;--accent-ink:#fff}
 .app.accent-green{--accent:#4d7c0f;--accent-ink:#fff}
 .app .button-primary{background:var(--accent);color:var(--accent-ink)}
-.app .brand-mark{background:var(--accent);color:#fff}
+.app .brand-mark{background:#2563eb;color:#fff}
 .app .main-nav button.active svg,.app .session-choices button>span{color:var(--accent)}
 .app button:focus-visible,.app input:focus-visible,.app textarea:focus-visible,.app select:focus-visible{outline-color:var(--accent)}
 .top-actions{position:relative}
@@ -252,7 +252,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .app button,.app input,.app textarea,.app select{accent-color:var(--accent)}
 .app button:focus-visible,.app input:focus-visible,.app textarea:focus-visible,.app select:focus-visible{outline-color:var(--accent)}
 .app .text-button,.app .brand-dot,.app .main-nav button.active svg,.app .section-row.selected,.app .section-card-bottom,.app .section-card-icon,.app .drop-zone>svg,.app .import-step>span,.app .ai-badge,.app .prompt-includes svg{color:var(--accent)}
-.app .brand-mark{background:var(--accent);color:#fff}
+.app .brand-mark{background:#2563eb;color:#fff}
 .app .button-primary{background:var(--accent);color:var(--accent-ink)}
 .app .answer-option.chosen:not(.answer-correct){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--panel2))}
 .app .answer-option.chosen:not(.answer-correct) .option-letter{background:var(--accent);border-color:var(--accent);color:#fff}
@@ -579,5 +579,15 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     align-content:start;
     z-index:90;
   }
-  .topbar:has(.global-menu){z-index:95}
+  .global-menu{position:fixed!important;top:calc(60px + env(safe-area-inset-top))!important;right:10px!important;left:auto!important;bottom:auto!important;width:min(320px,calc(100vw - 20px));max-height:calc(100dvh - 150px - env(safe-area-inset-top) - env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;z-index:9999!important}
 }
+
+
+/* Small-screen help actions: compact buttons rather than oversized controls. */
+@media(max-width:760px){.help-page .feedback-panel{grid-template-columns:minmax(0,1fr);gap:12px}.feedback-actions{min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.feedback-actions .button,.feedback-actions .text-button{min-width:0;width:100%;padding:8px 9px;font-size:11px;line-height:1.25;white-space:normal}.feedback-actions .text-button{grid-column:1/-1}.help-page .page-heading{gap:10px}.help-page .page-heading>.button{font-size:11px;padding:8px 10px}}
+
+/* Session filters stay out of the way until requested. */
+.session-filter-disclosure{border-top:1px solid var(--border);margin-top:6px;padding-top:9px}.session-filter-disclosure>summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:6px 2px;color:var(--muted);font-size:12px;font-weight:600}.session-filter-disclosure[open]>summary{margin-bottom:6px;color:var(--text)}.session-filter-disclosure .unified-question-filters{margin-top:0}
+/* Compact, nested section checklist for session filtering. */
+.section-filter-picker{min-width:0;display:grid;gap:7px;border:1px solid var(--border);border-radius:8px;padding:9px;background:var(--panel)}.section-filter-picker>strong{font-size:12px;font-weight:600;color:var(--text)}.section-filter-tree{max-height:230px;overflow:auto;min-width:0}.section-filter-unsorted,.section-filter-row label{display:flex;align-items:center;gap:7px;min-width:0;padding:5px 2px;font-size:11px;color:var(--muted)}.section-filter-row{display:flex;align-items:center;gap:3px;min-width:0}.section-filter-row label{flex:1;margin:0}.section-filter-row label span{min-width:0;overflow-wrap:anywhere;line-height:1.35}.section-filter-toggle{flex:0 0 19px;width:19px;height:21px;padding:0;border:1px solid var(--border);border-radius:4px;background:var(--panel2);color:var(--text);line-height:1}.section-filter-toggle-placeholder{flex:0 0 19px}.section-filter-tree input[type=checkbox]{flex:0 0 auto;accent-color:var(--accent)}.section-filter-children{min-width:0}
+@media(max-width:760px){.setup-dialog .session-filter-disclosure .common-filter-grid{grid-template-columns:minmax(0,1fr)}.section-filter-tree{max-height:180px}}
