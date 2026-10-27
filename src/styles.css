@@ -501,3 +501,36 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 /* Request 017 follow-up: put everyday question search first */
 .library-general-search{margin:0 0 12px;max-width:100%}.library-general-search .search-field{width:100%;min-width:0}.library-general-search .search-field input{font-size:14px;padding:14px 0}.library-toolbar{position:static;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:start;gap:10px;margin-bottom:10px;padding:0;border:0;background:transparent;box-shadow:none}.tag-filter-disclosure{border:1px solid var(--border);border-radius:9px;background:var(--panel);padding:9px 11px;min-width:0}.tag-filter-disclosure>summary{display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;color:var(--text);font-size:12px;font-weight:650;list-style:none}.tag-filter-disclosure>summary::-webkit-details-marker{display:none}.tag-filter-disclosure>summary:after{content:'+';font-size:17px;color:var(--muted);font-weight:400}.tag-filter-disclosure[open]>summary:after{content:'−'}.tag-filter-disclosure .filter-picker-options{margin-top:8px;max-height:190px}.filter-count{margin-left:auto;border-radius:99px;background:var(--panel2);padding:3px 7px;color:var(--muted);font-size:10px;font-weight:600}.active-filter-summary{display:flex;justify-content:flex-end;align-items:center;gap:10px;min-height:32px;margin:0 0 10px;color:var(--muted);font-size:11px}.active-filter-summary:empty{display:none}.active-filter-summary .button{padding:6px 9px;font-size:10px}.advanced-filters{margin-top:8px}.library-toolbar>.multi-select{min-width:0;width:100%}
 @media(max-width:760px){.library-general-search{margin-bottom:10px}.library-general-search .search-field input{font-size:14px;padding:13px 0}.library-toolbar{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}.tag-filter-disclosure .filter-picker-options{max-height:155px}.active-filter-summary{justify-content:space-between}.active-filter-summary:empty{display:none}}
+
+
+/* Request 018: one shared filter surface for management and session selection. */
+.unified-question-filters{min-width:0;max-width:100%;padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--panel);margin:10px 0 14px}
+.unified-question-filters .library-general-search{margin:0 0 12px}
+.common-filter-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));align-items:start;gap:10px}
+.common-filter-grid>.filter-picker,.common-filter-grid>.multi-select{min-width:0;width:100%;max-width:100%}
+.common-filter-grid>.compact-check{align-self:center;min-height:38px}
+.unified-question-filters .active-filter-summary{justify-content:space-between;margin:10px 0 0}
+.unified-question-filters .advanced-filters{margin:10px 0 0;padding:10px 0 0;border-top:1px solid var(--border)}
+.unified-question-filters .advanced-filters>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;font-size:12px;font-weight:650;color:var(--text);list-style:none}
+.unified-question-filters .advanced-filters>summary::-webkit-details-marker{display:none}
+.unified-question-filters .advanced-filters>summary:after{content:'+';color:var(--muted);font-size:16px}
+.unified-question-filters .advanced-filters[open]>summary:after{content:'−'}
+.unified-question-filters .advanced-filter-grid{margin-top:12px}
+.library-management-actions{display:flex;justify-content:flex-end;margin:0 0 8px}
+.selection-match-count{font-size:13px;color:var(--muted);margin:8px 0 12px}
+.selection-match-count strong{color:var(--text);font-size:18px}
+.selection-validation{font-size:12px;color:var(--pink);padding:10px 12px;background:#ff8f9d12;border-radius:8px;margin:10px 0}
+.setup-dialog:has(.selection-filters){width:min(920px,100%)}
+.setup-dialog .selection-filters{margin:0}
+.setup-dialog .selection-filters .common-filter-grid{grid-template-columns:repeat(auto-fit,minmax(135px,1fr))}
+.setup-dialog .selection-filters .advanced-filter-grid{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+@media(max-width:760px){
+ .unified-question-filters{padding:10px;margin:9px 0 12px}
+ .common-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .common-filter-grid>.filter-picker,.common-filter-grid>.multi-select{min-width:0}
+ .common-filter-grid .compact-check{grid-column:1/-1}
+ .unified-question-filters .active-filter-summary{align-items:center}
+ .setup-dialog:has(.selection-filters){width:100%;padding:14px}
+ .setup-dialog .selection-filters .common-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .setup-dialog .selection-filters .advanced-filter-grid{grid-template-columns:minmax(0,1fr)}
+}
