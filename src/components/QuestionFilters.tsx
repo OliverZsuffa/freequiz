@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from 'react'
+import { useState, type Dispatch, type SetStateAction, type ReactNode } from 'react'
 import { Search, Star, X } from 'lucide-react'
 import type { AnswerMode, ImportBatch, Mastery, Profile } from '../domain'
 import { formatImportSourceLabel, matchesImportSourceSearch } from '../importSourceLabel'
@@ -80,12 +80,24 @@ export function QuestionFilters(p: QuestionFiltersProps) {
     ...(p.sortBy!=='default'?['Sort: '+p.sortBy]:[]),
   ]
   const active = activeLabels.length > 0
+  const [expandedSections, setExpandedSections] = useState<string[]>(() => p.profile.sections.filter(s => !p.profile.sections.some(parent => parent.id === s.parentId)).map(s => s.id))
+  const renderSectionTree = (parentId: string | null, depth: number): ReactNode => p.profile.sections.filter(s => s.parentId === parentId).map(section => {
+    const children = p.profile.sections.some(s => s.parentId === section.id)
+    const expanded = expandedSections.includes(section.id)
+    return <div className="section-filter-node" key={section.id}>
+      <div className="section-filter-row" style={{ paddingLeft: 6 + depth * 16 }}>
+        {children ? <button type="button" className="section-filter-toggle" aria-label={(expanded ? "Collapse " : "Expand ") + section.name} aria-expanded={expanded} onClick={() => setExpandedSections(old => expanded ? old.filter(id => id !== section.id) : [...old, section.id])}>{expanded ? "−" : "+"}</button> : <span className="section-filter-toggle-placeholder" />}
+        <label title={section.name}><input type="checkbox" checked={p.multiSectionFilter.includes(section.id)} onChange={e => p.setMultiSectionFilter(old => e.target.checked ? [...new Set([...old, section.id])] : old.filter(id => id !== section.id))}/><span>{section.name}</span></label>
+      </div>
+      {children && expanded && <div className="section-filter-children">{renderSectionTree(section.id, depth + 1)}</div>}
+    </div>
+  })
 
   return <section className={'unified-question-filters '+(p.mode==='selection'?'selection-filters':'management-filters')} aria-label="Question search and filters">
     <div className="library-general-search"><div className="search-field"><Search size={16}/><input aria-label="Search questions" value={p.query} onChange={e=>p.setQuery(e.target.value)} placeholder="Search prompts, options, explanations, sections, sources..."/></div></div>
     <div className="common-filter-grid">
       <details className="filter-picker tag-picker tag-filter-disclosure"><summary>Tags{p.multiTagFilter.length>0&&<span className="filter-count">{p.multiTagFilter.length} selected</span>}</summary><label htmlFor={p.mode+'-tag-filter-search'}>Search tags<input id={p.mode+'-tag-filter-search'} aria-label="Search tags" value={p.tagSearch} onChange={e=>p.setTagSearch(e.target.value)} placeholder="Search tags..."/></label><div className="filter-picker-options" role="group" aria-label="Available tags">{p.allTags.filter(tag=>tag.toLocaleLowerCase().includes(p.tagSearch.trim().toLocaleLowerCase())).map(tag=>{const starred=(p.profile.favouriteTags??[]).includes(tag);return <div className="filter-picker-option" key={tag}><button type="button" className={'tag-star '+(starred?'is-starred':'')} aria-label={(starred?'Unstar':'Star')+' tag '+tag} aria-pressed={starred} title={starred?'Remove tag favourite':'Star tag'} onClick={()=>p.onToggleFavouriteTag(tag)}><Star size={13} fill={starred?'currentColor':'none'}/></button><label className="filter-option-label" title={tag}><input type="checkbox" checked={p.multiTagFilter.includes(tag)} onChange={e=>p.setMultiTagFilter(old=>e.target.checked?[...new Set([...old,tag])]:old.filter(t=>t!==tag))}/><span>{tag}</span></label></div>})}{!p.allTags.some(tag=>tag.toLocaleLowerCase().includes(p.tagSearch.trim().toLocaleLowerCase()))&&<small className="muted filter-picker-empty">No matching tags</small>}</div>{p.multiTagFilter.length>0&&<div className="filter-picker-selected" aria-label="Selected tag filters">{p.multiTagFilter.map(tag=><span className="filter-chip" key={tag}><span title={tag}>{tag}</span><button type="button" aria-label={'Remove tag filter '+tag} onClick={()=>p.setMultiTagFilter(old=>old.filter(t=>t!==tag))}><X size={12}/></button></span>)}</div>}</details>
-      <MultiSelect label="Sections" ariaLabel="Filter section" value={p.multiSectionFilter} onChange={p.setMultiSectionFilter} options={[{value:'unsorted',label:'Unsorted'},...p.profile.sections.map(s=>({value:s.id,label:p.sectionPath(p.profile,s.id)}))]}/>
+      <div className="section-filter-picker"><strong>Sections</strong><div className="section-filter-tree" role="group" aria-label="Filter sections"><label className="section-filter-unsorted"><input type="checkbox" checked={p.multiSectionFilter.includes("unsorted")} onChange={e => p.setMultiSectionFilter(old => e.target.checked ? [...new Set([...old, "unsorted"])] : old.filter(id => id !== "unsorted"))}/><span>Unsorted</span></label>{renderSectionTree(null, 0)}</div></div>
       <label className="compact-check"><input type="checkbox" checked={p.sectionDescendants} onChange={e=>p.setSectionDescendants(e.target.checked)}/> Include descendants</label>
       <MultiSelect label="Favourites" ariaLabel="Filter favourite status" value={p.multiFavouriteFilter} onChange={p.setMultiFavouriteFilter} options={[{value:'favourite',label:'Favourites'},{value:'not-favourite',label:'Not favourites'}]}/>
       <MultiSelect label="Deferred" ariaLabel="Filter deferred status" value={p.multiDeferredFilter} onChange={p.setMultiDeferredFilter} options={[{value:'deferred',label:'Deferred'},{value:'not-deferred',label:'Not deferred'}]}/>
