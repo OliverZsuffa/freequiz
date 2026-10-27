@@ -2,7 +2,7 @@
 
 ## Status
 
-**Planning only; awaiting Oliver's approval before implementation.** This request is based on the October 2026 feedback session with Oliver's dad and a source inspection of the current `main` branch. No application code or behavior is changed by this plan.
+**Approved by Oliver on 2026-10-27; implementation in progress in PR #24.** This request is based on the October 2026 feedback session with Oliver's dad and a source inspection of the current `main` branch.
 
 Related work:
 - [Request 012: whole-site UI/UX audit](012-whole-site-ux-audit.md)
@@ -131,7 +131,7 @@ The homepage should answer, in order: **Which profile am I using? How is my lear
 - Preserve local-first behavior: no account, backend, telemetry, automatic AI API calls, or cloud sync.
 - Preserve both question-only export and lossless profile backup semantics; never include private progress in a question pack.
 - Maintain current accessibility expectations: keyboard navigation, visible focus, accessible names, readable contrast, labels as well as colours, and touch targets.
-- No app implementation before Oliver approves this plan. Implement on a separate branch/PR, test, review, and update the Knowledge Base.
+- Oliver approved implementation on 2026-10-27. Changes are being developed on a separate branch/PR, with tests and Knowledge Base updates required before merge.
 
 ## Implementation phases
 
