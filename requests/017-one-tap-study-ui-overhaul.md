@@ -211,3 +211,11 @@ The homepage should answer, in order: **Which profile am I using? How is my lear
 - Changing learning scheduling, mastery rules, answer evaluation, exam scoring, reminder delivery, backup semantics, or local-first privacy architecture.
 - Adding cloud accounts/sync, telemetry, advertisements, or automatic AI integrations.
 - Treating a successful build as proof that the app is easy to use.
+
+
+### Follow-up: Questions search layout
+- Follow-up fix requested after the initial implementation because the question-search controls still looked like the old layout.
+- Put general question search first and full-width, followed by compact Tags and Sections controls. Tags now open on demand instead of displaying the entire tag list by default.
+- Move Answer type into More filters and sorting alongside the specialist metadata filters. Keep multiselect behavior, the existing tag search, descendant-section option, and all filter matching semantics.
+- Show a clear-filters action outside the advanced disclosure so users can find it when filters are active.
+- Verification: automated tests and manual mobile review pending in follow-up PR.
