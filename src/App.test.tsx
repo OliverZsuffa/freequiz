@@ -8,8 +8,10 @@ describe('Freequiz', () => {
 
   it('shows the calm overview and demo library', () => {
     render(<App />)
-    expect(screen.getByRole('heading', { name: 'What would you like to practise?' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Set up a session' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Choose a profile' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Study all questions/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Create practice/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Create exam/i })).toBeInTheDocument()
     expect(screen.getAllByText('Mathematics').length).toBeGreaterThan(0)
     expect(screen.queryByText('Good to have you here.')).not.toBeInTheDocument()
   })
@@ -17,7 +19,7 @@ describe('Freequiz', () => {
   it('shows import and clearly separated export options on the Import / export destination', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import & export/i }))
     expect(screen.getByText('Import a question bank')).toBeInTheDocument()
     expect(screen.getByText('Prepare questions with AI')).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Export or back up' })).toBeInTheDocument()
@@ -33,14 +35,17 @@ describe('Freequiz', () => {
     fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
     const tagSearch = screen.getByRole('textbox', { name: 'Search tags' })
     fireEvent.click(screen.getByText('More filters and sorting'))
-    const provenance = screen.getByRole('button', { name: /Provenance/i })
+    const provenance = screen.getByRole('button', { name: /Question source/i })
     const generalSearch = screen.getByRole('textbox', { name: 'Search questions' })
     expect(tagSearch.compareDocumentPosition(provenance) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(provenance.compareDocumentPosition(generalSearch) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 
-  it('keeps appearance controls visible beside each other', () => {
+  it('keeps appearance controls in Settings rather than the top bar', () => {
     render(<App />)
+    expect(screen.queryByRole('combobox', { name: 'Accent colour' })).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Settings' }))
     expect(screen.getByRole('combobox', { name: 'Accent colour' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Light appearance/i })).toBeInTheDocument()
   })
@@ -59,6 +64,8 @@ describe('Freequiz', () => {
 
   it('keeps the selected accent when switching appearance', () => {
     render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Settings' }))
     fireEvent.change(screen.getByRole('combobox', { name: 'Accent colour' }), { target: { value: 'purple' } })
     fireEvent.click(screen.getByRole('button', { name: /Light appearance/i }))
     expect(document.querySelector('.app')).toHaveClass('accent-purple')
@@ -67,6 +74,8 @@ describe('Freequiz', () => {
 
   it('persists the selected appearance', () => {
     render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Settings' }))
     fireEvent.click(screen.getByRole('button', { name: /Light appearance/i }))
     expect(localStorage.getItem('freequiz-theme')).toBe('light')
   })
@@ -82,8 +91,10 @@ describe('Freequiz', () => {
 
   it('offers a timed exam setup and answer-mode filters', () => {
     render(<App />)
-    expect(screen.getByLabelText('Question source')).toBeInTheDocument()
-    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    expect(screen.getByRole('button', { name: /Create exam/i })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
+    expect(screen.getByLabelText('Questions to practise')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
     expect(screen.getByLabelText('Time limit (minutes)')).toBeInTheDocument()
     expect(screen.getByLabelText('Answer type')).toBeInTheDocument()
   })
@@ -91,6 +102,7 @@ describe('Freequiz', () => {
   it('withholds correctness feedback until a timed exam is submitted', () => {
     render(<App />)
     fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    fireEvent.click(screen.getByRole('button', { name: /Create practice/i }))
     fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
     fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
     expect(screen.getByText(/Exam mode/)).toBeInTheDocument()
@@ -276,7 +288,7 @@ describe('Request 009 multi-select filters', () => {
     fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
     expect(screen.getByRole('button', { name: 'Filter section' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Filter answer types' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Filter provenance' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Filter question source' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Filter answer types' }))
     expect(screen.getByRole('group', { name: 'Answer type options' })).toBeInTheDocument()
     expect(screen.getByLabelText('Search import sources')).toBeInTheDocument(); expect(screen.getByRole('group', { name: 'Available import sources' })).toBeInTheDocument()
@@ -290,7 +302,8 @@ describe('Request 009 practice controls', () => {
   it('allows toggling a favourite during practice after answering', () => {
     render(<App />)
     fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
-    fireEvent.click(screen.getAllByRole('button', { name: /Start practice/i })[0])
+    fireEvent.click(screen.getByRole('button', { name: /Create practice/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
     const option = document.querySelector('.answer-option')
     expect(option).not.toBeNull()
     fireEvent.click(option as Element)
@@ -307,6 +320,7 @@ describe('Request 009 practice deferral', () => {
   it('skips deferred practice questions without recording answers', () => {
     render(<App />)
     fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
+    fireEvent.click(screen.getByRole('button', { name: /Create practice/i }))
     fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
     const first = screen.getByRole('heading', { level: 2 }).textContent
     fireEvent.click(screen.getByRole('button', { name: 'Defer' }))
@@ -426,7 +440,7 @@ describe('Request 010 question metadata filters and bulk actions', () => {
     vi.spyOn(window, 'confirm').mockReturnValue(true)
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Import / export' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Import & export' }))
     const backup = {
       format: 'freequiz/backup-v1',
       backupVersion: 1,
@@ -474,13 +488,13 @@ describe('Request 013 mobile-first workflow', () => {
     render(<App />)
     expect(screen.getByRole('button', { name: 'Progress' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
-    expect(screen.getByRole('button', { name: /Import \/ export/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Export questions to share/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Import & export/i })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Export questions to share/i })).not.toBeInTheDocument()
   })
 
-  it('starts ordinary practice from the visible setup instead of only due questions', () => {
+  it('starts ordinary practice with one tap from the homepage', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Study all questions/i }))
     expect(screen.getByRole('heading', { name: 'One question at a time.' })).toBeInTheDocument()
     expect(screen.getByText(/Question 1 of 4/)).toBeInTheDocument()
   })
