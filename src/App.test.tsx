@@ -42,15 +42,16 @@ describe('Freequiz', () => {
     expect(screen.getByText(/No attempts, exam results, favourites, or deferred state/i)).toBeInTheDocument()
   })
 
-  it('places tag search before metadata and general question search in the library', () => {
+  it('puts general question search first and keeps everyday filters compact', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     const tagSearch = screen.getByRole('textbox', { name: 'Search tags' })
     fireEvent.click(screen.getByText('More filters and sorting'))
     const provenance = screen.getByRole('button', { name: /Question source/i })
     const generalSearch = screen.getByRole('textbox', { name: 'Search questions' })
-    expect(tagSearch.compareDocumentPosition(provenance) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-    expect(provenance.compareDocumentPosition(generalSearch) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(generalSearch.compareDocumentPosition(tagSearch) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(screen.getByText('Tags', { selector: 'summary' })).toBeInTheDocument()
+    expect(screen.queryByRole('group', { name: 'Available tags' })).not.toBeVisible()
   })
 
   it('keeps appearance controls in Settings rather than the top bar', () => {
