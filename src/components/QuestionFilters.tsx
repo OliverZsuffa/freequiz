@@ -80,7 +80,7 @@ export function QuestionFilters(p: QuestionFiltersProps) {
     ...(p.sortBy!=='default'?['Sort: '+p.sortBy]:[]),
   ]
   const active = activeLabels.length > 0
-  const [expandedSections, setExpandedSections] = useState<string[]>(() => p.profile.sections.filter(s => !p.profile.sections.some(parent => parent.id === s.parentId)).map(s => s.id))
+  const [expandedSections, setExpandedSections] = useState<string[]>([])
   const renderSectionTree = (parentId: string | null, depth: number): ReactNode => p.profile.sections.filter(s => s.parentId === parentId).map(section => {
     const children = p.profile.sections.some(s => s.parentId === section.id)
     const expanded = expandedSections.includes(section.id)
