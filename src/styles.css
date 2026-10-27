@@ -538,3 +538,19 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .active-filter-labels .filter-chip{max-width:100%;overflow-wrap:anywhere}
 .active-filter-labels:empty{display:none}
 @media(max-width:760px){.active-filter-summary{gap:7px}.active-filter-labels{order:3;flex-basis:100%}.active-filter-summary .button{margin-left:auto}}
+
+
+/* Follow-up fix: the question bulk-action bar belongs in normal document flow. */
+.bulk-selection-summary{
+  position:static;
+  top:auto;
+  z-index:auto;
+}
+
+/* Keep mobile filter menus fully opaque when portalled for viewport positioning. */
+.multi-select-popover,
+.multi-select-popover.is-mobile{
+  background-color:var(--panel, #171f1b);
+  opacity:1;
+  backdrop-filter:none;
+}
