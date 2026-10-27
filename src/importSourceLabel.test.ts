@@ -26,7 +26,7 @@ describe('import source labels', () => {
 
   it('falls back cleanly for legacy batches without filename metadata', () => {
     expect(formatImportSourceLabel(batch({ sourceFileName: undefined, sourceIdentity: undefined })))
-      .toBe('Lecture import · json')
+      .toBe('Lecture import')
     expect(formatImportSourceLabel(batch({ name: '', sourceFileName: undefined, sourceIdentity: undefined })))
       .toBe('json')
   })
