@@ -1,5 +1,7 @@
 # Request 019: Fix mobile question filters and import-source display
 
+**Status:** Implemented on branch `fix/019-mobile-question-filters`; automated checks and deployment verification pending.
+
 ## Goal
 
 Fix three usability bugs in the shared question-filter UI without changing which questions match a filter or redesigning the overall filter layout:
