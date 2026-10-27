@@ -1,6 +1,6 @@
 # Request 019: Fix mobile question filters and import-source display
 
-**Status:** Core fixes merged in PR #30; a follow-up in PR #31 preserves app theme variables for portaled mobile popovers. Follow-up checks and deployment verification pending.
+**Status:** Implemented and merged in PRs [#30](https://github.com/OliverZsuffa/freequiz/pull/30) and [#31](https://github.com/OliverZsuffa/freequiz/pull/31). Automated checks passed; manual visual checks and main-branch deployment verification remain outstanding.
 
 ## Goal
 
@@ -62,4 +62,4 @@ Use component tests for behavior and existing project tests for filtering/data b
 
 - No changes to question data, import/export formats, filter logic, default visible filters, or the overall unified-filter design unless investigation proves a narrowly scoped compatibility fix is necessary.
 - No unrelated UI cleanup or new dependencies.
-- Oliver approved implementation on 2026-10-27. Core changes are merged in PR #30; PR #31 covers a theme-inheritance fix found during review.
+- Oliver approved implementation on 2026-10-27. Core changes and the theme-inheritance follow-up are merged in PRs #30 and #31. PR workflow runs 40519486548 and 40519918829 passed 84 tests, TypeScript checking, production build, Pages configuration, and artifact upload. Manual phone/desktop checks and the main-branch deployment were not independently verified.
