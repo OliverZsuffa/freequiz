@@ -554,3 +554,9 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   opacity:1;
   backdrop-filter:none;
 }
+
+
+/* Session setup is a z-index 100 modal; portalled mobile filters must sit above it. */
+@media(max-width:760px){
+  .multi-select-popover.is-mobile{z-index:110}
+}
