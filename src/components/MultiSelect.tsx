@@ -21,6 +21,7 @@ export function MultiSelect({ label, ariaLabel, value, options, onChange }: Mult
   const popoverRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    if (typeof window.matchMedia !== 'function') return
     const media = window.matchMedia('(max-width: 760px)')
     const update = () => setIsMobile(media.matches)
     update()
