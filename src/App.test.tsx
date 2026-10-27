@@ -8,16 +8,31 @@ describe('Freequiz', () => {
 
   it('shows the calm overview and demo library', () => {
     render(<App />)
-    expect(screen.getByRole('heading', { name: 'What would you like to practise?' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Set up a session' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Choose a profile' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Study all questions/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Create practice/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Create exam/i })).toBeInTheDocument()
     expect(screen.getAllByText('Mathematics').length).toBeGreaterThan(0)
     expect(screen.queryByText('Good to have you here.')).not.toBeInTheDocument()
   })
 
-  it('shows import and clearly separated export options on the Import / export destination', () => {
+  it('lets a user explicitly mark a question as professor-written', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    fireEvent.click(screen.getByRole('button', { name: /New question/i }))
+    fireEvent.change(screen.getByLabelText('Question'), { target: { value: 'Which source wrote this question?' } })
+    fireEvent.change(screen.getByLabelText('Question source metadata'), { target: { value: 'professor-written' } })
+    fireEvent.click(screen.getByRole('button', { name: /Save question/i }))
+    fireEvent.click(screen.getByText('More filters and sorting'))
+    fireEvent.click(screen.getByRole('button', { name: 'Filter question source' }))
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Written by professor' }))
+    expect(screen.getByText('Professor-written')).toBeInTheDocument()
+  })
+
+  it('shows import and clearly separated export options on the Import & export destination', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import & export/i }))
     expect(screen.getByText('Import a question bank')).toBeInTheDocument()
     expect(screen.getByText('Prepare questions with AI')).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Export or back up' })).toBeInTheDocument()
@@ -29,26 +44,27 @@ describe('Freequiz', () => {
 
   it('places tag search before metadata and general question search in the library', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     const tagSearch = screen.getByRole('textbox', { name: 'Search tags' })
     fireEvent.click(screen.getByText('More filters and sorting'))
-    const provenance = screen.getByRole('button', { name: /Provenance/i })
+    const provenance = screen.getByRole('button', { name: /Question source/i })
     const generalSearch = screen.getByRole('textbox', { name: 'Search questions' })
     expect(tagSearch.compareDocumentPosition(provenance) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(provenance.compareDocumentPosition(generalSearch) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 
-  it('keeps appearance controls visible beside each other', () => {
+  it('keeps appearance controls in Settings rather than the top bar', () => {
     render(<App />)
+    expect(screen.queryByRole('combobox', { name: 'Accent colour' })).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Settings' }))
     expect(screen.getByRole('combobox', { name: 'Accent colour' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Light appearance/i })).toBeInTheDocument()
   })
 
   it('uses the dedicated tag picker instead of general search for tags', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     fireEvent.change(screen.getByRole('textbox', { name: 'Search questions' }), { target: { value: 'gardening' } })
     expect(screen.queryByText('Which plant part mainly absorbs water from the soil?')).not.toBeInTheDocument()
     fireEvent.change(screen.getByRole('textbox', { name: 'Search questions' }), { target: { value: '' } })
@@ -59,6 +75,8 @@ describe('Freequiz', () => {
 
   it('keeps the selected accent when switching appearance', () => {
     render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Settings' }))
     fireEvent.change(screen.getByRole('combobox', { name: 'Accent colour' }), { target: { value: 'purple' } })
     fireEvent.click(screen.getByRole('button', { name: /Light appearance/i }))
     expect(document.querySelector('.app')).toHaveClass('accent-purple')
@@ -67,13 +85,14 @@ describe('Freequiz', () => {
 
   it('persists the selected appearance', () => {
     render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Settings' }))
     fireEvent.click(screen.getByRole('button', { name: /Light appearance/i }))
     expect(localStorage.getItem('freequiz-theme')).toBe('light')
   })
   it('offers explicit answer modes in the question editor', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     fireEvent.click(screen.getByRole('button', { name: /New question/i }))
     expect(screen.getByLabelText('Answer mode')).toBeInTheDocument()
     expect(screen.getAllByRole('option', { name: 'Pick exactly N' }).length).toBeGreaterThan(0)
@@ -82,15 +101,16 @@ describe('Freequiz', () => {
 
   it('offers a timed exam setup and answer-mode filters', () => {
     render(<App />)
-    expect(screen.getByLabelText('Question source')).toBeInTheDocument()
-    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    expect(screen.getByRole('button', { name: /Create exam/i })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
+    expect(screen.getByLabelText('Questions to practise')).toBeInTheDocument()
     expect(screen.getByLabelText('Time limit (minutes)')).toBeInTheDocument()
     expect(screen.getByLabelText('Answer type')).toBeInTheDocument()
   })
 
   it('withholds correctness feedback until a timed exam is submitted', () => {
     render(<App />)
-    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
     fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
     fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
     expect(screen.getByText(/Exam mode/)).toBeInTheDocument()
@@ -103,7 +123,7 @@ describe('Freequiz', () => {
   it('automatically submits a timed exam when its timer expires', () => {
     vi.useFakeTimers()
     render(<App />)
-    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
     fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
     fireEvent.change(screen.getByLabelText('Time limit (minutes)'), { target: { value: '1' } })
     fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
@@ -115,7 +135,7 @@ describe('Freequiz', () => {
 })
 
 
-describe('Request 004 features',()=>{beforeEach(()=>localStorage.clear());afterEach(()=>cleanup());it('shows the progress graph empty state',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/^Statistics$/i}));expect(screen.getByRole('heading',{name:'Accuracy over time'})).toBeInTheDocument();expect(screen.getByText(/Your progress graph starts here/)).toBeInTheDocument()});it('offers optional gamification and reminders',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Settings & reminders/i}));expect(screen.getByRole('heading',{name:'Gamification'})).toBeInTheDocument();expect(screen.getByText('Milestones and achievements')).toBeInTheDocument();expect(screen.getByRole('checkbox',{name:'Enable study reminders'})).not.toBeChecked()});it('offers multi-section and tag filtering in the unified Questions workspace',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:'Questions'}));expect(screen.getByLabelText('Filter section')).toBeInTheDocument();expect(screen.getByLabelText('Search tags')).toBeInTheDocument()});it('generates a reusable prompt without a source field',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Import \/ export/i}));expect(screen.queryByLabelText('Source material')).not.toBeInTheDocument();fireEvent.click(screen.getByRole('button',{name:/Generate AI prompt/i}));expect(screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i)).toBeInTheDocument()})});
+describe('Request 004 features',()=>{beforeEach(()=>localStorage.clear());afterEach(()=>cleanup());it('shows the progress graph empty state',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:'Progress'}));expect(screen.getByRole('heading',{name:'Accuracy over time'})).toBeInTheDocument();expect(screen.getByText(/Your progress graph starts here/)).toBeInTheDocument()});it('offers optional gamification and reminders',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:'Settings'}));expect(screen.getByRole('heading',{name:'Gamification'})).toBeInTheDocument();expect(screen.getByText('Milestones and achievements')).toBeInTheDocument();expect(screen.getByRole('checkbox',{name:'Enable study reminders'})).not.toBeChecked()});it('offers multi-section and tag filtering in the unified Questions workspace',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:'Questions'}));expect(screen.getByLabelText('Filter section')).toBeInTheDocument();expect(screen.getByLabelText('Search tags')).toBeInTheDocument()});it('generates a reusable prompt without a source field',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Import & export/i}));expect(screen.queryByLabelText('Source material')).not.toBeInTheDocument();fireEvent.click(screen.getByRole('button',{name:/Generate AI prompt/i}));expect(screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i)).toBeInTheDocument()})});
 
 
 describe('AI prompt UI and editable tags', () => {
@@ -125,7 +145,7 @@ describe('AI prompt UI and editable tags', () => {
   it('offers extraction and generation prompt modes', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import & export/i }))
     expect(screen.getByLabelText('AI prompt mode')).toHaveValue('generate')
     fireEvent.change(screen.getByLabelText('AI prompt mode'), { target: { value: 'extract' } })
     fireEvent.click(screen.getByRole('button', { name: /Generate extraction prompt/i }))
@@ -136,7 +156,7 @@ describe('AI prompt UI and editable tags', () => {
   it('preserves protected provenance while ordinary tags remain editable', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import & export/i }))
     fireEvent.change(screen.getByLabelText('Question bank or full profile backup (JSON)'), { target: { value: JSON.stringify({
       format: 'freequiz/questions-v1', sections: [], questions: [{
         id: 'source-question', prompt: 'Imported question?', options: [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }],
@@ -146,14 +166,14 @@ describe('AI prompt UI and editable tags', () => {
     fireEvent.click(screen.getByRole('button', { name: /Validate and preview/i }))
     fireEvent.click(screen.getByRole('button', { name: /Merge into profile/i }))
     fireEvent.click(screen.getByRole('button', { name: 'Edit Imported question?' }))
-    expect(screen.getByText('AI-Generated', { selector: 'strong' })).toBeInTheDocument()
+    expect(screen.getByText('AI-generated', { selector: 'strong' })).toBeInTheDocument()
     const tags = screen.getByLabelText('Question tags')
     expect(tags).toHaveValue('old-tag')
     fireEvent.change(tags, { target: { value: 'new-tag, review' } })
     fireEvent.click(screen.getByRole('button', { name: /Save question/i }))
     fireEvent.click(screen.getByRole('button', { name: 'Edit Imported question?' }))
     expect(screen.getByLabelText('Question tags')).toHaveValue('new-tag, review')
-    expect(screen.getByText('AI-Generated', { selector: 'strong' })).toBeInTheDocument()
+    expect(screen.getByText('AI-generated', { selector: 'strong' })).toBeInTheDocument()
   })
 })
 
@@ -165,7 +185,7 @@ describe('Request 006 import history', () => {
   it('records an import batch and shows its questions in import history', async () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import & export/i }))
     fireEvent.change(screen.getByLabelText('Import name'), { target: { value: 'Lecture 3' } })
     fireEvent.change(screen.getByLabelText('Question bank or full profile backup (JSON)'), { target: { value: JSON.stringify({
       format: 'freequiz/questions-v1',
@@ -184,7 +204,7 @@ describe('Request 006 import history', () => {
   it('offers a short prompt and optional existing-section matching', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import & export/i }))
     expect(screen.getByLabelText('Match my existing sections')).toBeChecked()
     fireEvent.click(screen.getByRole('button', { name: /Generate AI prompt/i }))
     const prompt = (screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i) as HTMLTextAreaElement).value
@@ -198,8 +218,7 @@ describe('Request 006 import history', () => {
   })
   it('filters questions by tags and supports sorting', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     fireEvent.click(screen.getByText('More filters and sorting'))
     fireEvent.change(screen.getByLabelText('Include tags'), { target: { value: 'angles' } })
     expect(screen.getAllByText('What is the sum of the interior angles of a triangle in Euclidean geometry?').length).toBeGreaterThan(0)
@@ -212,8 +231,7 @@ describe('Request 006 import history', () => {
   it('bulk edits selected questions and offers undo', () => {
     const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true)
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     fireEvent.click(screen.getByText('More filters and sorting'))
     fireEvent.change(screen.getByLabelText('Include tags'), { target: { value: 'angles' } })
     fireEvent.click(screen.getByRole('button', { name: /Select all matching/i }))
@@ -230,7 +248,7 @@ describe('Request 006 import history', () => {
   it('supports deep section paths and descendant filtering', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Import \/ export/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Import & export/i }))
     fireEvent.change(screen.getByLabelText('Question bank or full profile backup (JSON)'), { target: { value: JSON.stringify({
       format: 'freequiz/questions-v1',
       sections: [
@@ -253,10 +271,10 @@ describe('Request 006 import history', () => {
     const prompt = vi.spyOn(window, 'prompt').mockReturnValue('Temporary profile')
     const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true)
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Demo library/i }))
-    fireEvent.click(screen.getByRole('button', { name: /New profile/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Add profile' }))
     expect(screen.getAllByRole('button', { name: /Temporary profile/i }).length).toBeGreaterThan(0)
-    fireEvent.click(screen.getAllByRole('button', { name: /Temporary profile/i })[0])
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    fireEvent.click(screen.getByRole('button', { name: /Temporary profile \d+ questions/i }))
     fireEvent.click(screen.getByRole('button', { name: /Delete current profile/i }))
     expect(confirm).toHaveBeenCalled()
     expect(screen.getByRole('button', { name: /Demo library/i })).toBeInTheDocument()
@@ -272,11 +290,10 @@ describe('Request 009 multi-select filters', () => {
   afterEach(() => cleanup())
   it('exposes categorical library filters as multi-select controls', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     expect(screen.getByRole('button', { name: 'Filter section' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Filter answer types' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Filter provenance' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Filter question source' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Filter answer types' }))
     expect(screen.getByRole('group', { name: 'Answer type options' })).toBeInTheDocument()
     expect(screen.getByLabelText('Search import sources')).toBeInTheDocument(); expect(screen.getByRole('group', { name: 'Available import sources' })).toBeInTheDocument()
@@ -289,8 +306,9 @@ describe('Request 009 practice controls', () => {
   afterEach(() => cleanup())
   it('allows toggling a favourite during practice after answering', () => {
     render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Create practice/i }))
     fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
-    fireEvent.click(screen.getAllByRole('button', { name: /Start practice/i })[0])
+    fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
     const option = document.querySelector('.answer-option')
     expect(option).not.toBeNull()
     fireEvent.click(option as Element)
@@ -306,6 +324,7 @@ describe('Request 009 practice deferral', () => {
   afterEach(() => cleanup())
   it('skips deferred practice questions without recording answers', () => {
     render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Create practice/i }))
     fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
     fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
     const first = screen.getByRole('heading', { level: 2 }).textContent
@@ -323,7 +342,7 @@ describe('Request 009 exam deferral', () => {
   afterEach(() => cleanup())
   it('marks an exam question deferred without skipping it', () => {
     render(<App />)
-    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
     fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
     fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
     const question = screen.getByRole('heading', { level: 2 }).textContent
@@ -359,7 +378,8 @@ describe('Request 010 unified workspace and guidance', () => {
 
   it('runs the interactive workflow tutorial and remembers completion', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Start tutorial/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Help & feedback' }))
+    fireEvent.click(screen.getByRole('button', { name: /Start interactive tutorial/i }))
     expect(screen.getByRole('dialog', { name: /Find or import questions/i })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /Next step/i }))
     expect(screen.getByRole('dialog', { name: /Filter and select a set/i })).toBeInTheDocument()
@@ -372,7 +392,7 @@ describe('Request 010 unified workspace and guidance', () => {
 
   it('keeps detailed activity and mastery goals available behind a secondary disclosure', () => {
     render(<App />)
-    fireEvent.click(screen.getByText('Progress, goals & sections'))
+    fireEvent.click(screen.getByText('More about your progress'))
     expect(screen.getByRole('heading', { name: 'Last 7 days' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Mastery, not just activity' })).toBeInTheDocument()
     expect(screen.getByText(/Bank-relative target/i)).toBeInTheDocument()
@@ -426,7 +446,7 @@ describe('Request 010 question metadata filters and bulk actions', () => {
     vi.spyOn(window, 'confirm').mockReturnValue(true)
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Import / export' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Import & export' }))
     const backup = {
       format: 'freequiz/backup-v1',
       backupVersion: 1,
@@ -474,13 +494,13 @@ describe('Request 013 mobile-first workflow', () => {
     render(<App />)
     expect(screen.getByRole('button', { name: 'Progress' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
-    expect(screen.getByRole('button', { name: /Import \/ export/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Export questions to share/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Import & export/i })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Export questions to share/i })).not.toBeInTheDocument()
   })
 
-  it('starts ordinary practice from the visible setup instead of only due questions', () => {
+  it('starts ordinary practice with one tap from the homepage', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Study all questions/i }))
     expect(screen.getByRole('heading', { name: 'One question at a time.' })).toBeInTheDocument()
     expect(screen.getByText(/Question 1 of 4/)).toBeInTheDocument()
   })
@@ -506,7 +526,7 @@ describe('Request 013 mobile-first workflow', () => {
   it('shows a mixed state when only some motivation features are enabled', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
-    fireEvent.click(screen.getByRole('button', { name: /Settings & reminders/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Settings/i }))
     fireEvent.click(screen.getByRole('checkbox', { name: /Activity calendar/i }))
     const master = screen.getByRole('checkbox', { name: 'Enable all motivation features' })
     expect(master).toHaveProperty('indeterminate', true)
@@ -517,7 +537,7 @@ describe('Request 013 mobile-first workflow', () => {
   it('warns before leaving an exam without submitting', () => {
     const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
     render(<App />)
-    fireEvent.change(screen.getByLabelText('Session type'), { target: { value: 'exam' } })
+    fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
     fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
     fireEvent.click(screen.getByRole('button', { name: /Exit session/i }))
     expect(confirm).toHaveBeenCalledWith(expect.stringMatching(/Exit this exam without submitting/i))
