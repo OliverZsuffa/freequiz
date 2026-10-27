@@ -1,6 +1,6 @@
 export type Option = { id: string; text: string }
 export type AnswerMode = 'single' | 'exactly-n' | 'select-all'
-export type Question = { id: string; prompt: string; options: Option[]; correctOptionIds: string[]; answerMode?: AnswerMode; sectionId: string | null; explanation?: string; tags?: string[]; provenance?: 'AI-Generated' | 'AI-Extracted'; sourceImportId?: string; sourceFileName?: string; createdAt?: string; updatedAt?: string }
+export type Question = { id: string; prompt: string; options: Option[]; correctOptionIds: string[]; answerMode?: AnswerMode; sectionId: string | null; explanation?: string; tags?: string[]; provenance?: 'AI-Generated' | 'AI-Extracted'; source?: 'professor-written' | 'other'; sourceImportId?: string; sourceFileName?: string; createdAt?: string; updatedAt?: string }
 export type QuestionGroup = { id: string; name: string; questionIds: string[] }
 export type ExamResponse = { questionId: string; selectedOptionIds: string[]; correct: boolean }
 export type ExamSession = { id: string; at: string; source: string; timeLimitSeconds: number; durationSeconds: number; responses: ExamResponse[]; score: number }
@@ -97,7 +97,8 @@ export function parseImport(raw: unknown): {sections: Section[]; questions: Ques
   if (answerMode === 'single' && correct.length !== 1) throw new Error('Question '+(i+1)+': single-answer mode requires exactly one correct option.')
   if (answerMode === 'exactly-n' && correct.length < 2) throw new Error('Question '+(i+1)+': exactly-N mode requires at least two correct options.')
   const provenance = q.provenance === 'AI-Generated' || q.provenance === 'AI-Extracted' ? q.provenance : undefined
-  return {id:typeof q.id==='string'?q.id:crypto.randomUUID(),prompt:q.prompt.trim(),options,correctOptionIds:correct,answerMode,sectionId:typeof q.sectionId==='string'?q.sectionId:null,explanation:typeof q.explanation==='string'?q.explanation:'',tags:Array.isArray(q.tags)?q.tags.filter((t:any)=>typeof t==='string'&&t.trim()&&!['AI-Generated','AI-Extracted'].includes(t)).map((t:string)=>t.trim()):[],...(provenance?{provenance}:{})}
+  const source = q.source === 'professor-written' || q.source === 'other' ? q.source : undefined
+  return {id:typeof q.id==='string'?q.id:crypto.randomUUID(),prompt:q.prompt.trim(),options,correctOptionIds:correct,answerMode,sectionId:typeof q.sectionId==='string'?q.sectionId:null,explanation:typeof q.explanation==='string'?q.explanation:'',tags:Array.isArray(q.tags)?q.tags.filter((t:any)=>typeof t==='string'&&t.trim()&&!['AI-Generated','AI-Extracted'].includes(t)).map((t:string)=>t.trim()):[],...(provenance?{provenance}:{}),...(source?{source}:{})}
  })
  return {sections,questions}
 }
