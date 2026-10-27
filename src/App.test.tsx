@@ -23,6 +23,9 @@ describe('Freequiz', () => {
     fireEvent.change(screen.getByLabelText('Question'), { target: { value: 'Which source wrote this question?' } })
     fireEvent.change(screen.getByLabelText('Question source metadata'), { target: { value: 'professor-written' } })
     fireEvent.click(screen.getByRole('button', { name: /Save question/i }))
+    fireEvent.click(screen.getByText('More filters and sorting'))
+    fireEvent.click(screen.getByRole('button', { name: 'Filter question source' }))
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Written by professor' }))
     expect(screen.getByText('Professor-written')).toBeInTheDocument()
   })
 
