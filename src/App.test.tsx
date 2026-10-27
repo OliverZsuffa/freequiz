@@ -571,7 +571,7 @@ describe('Request 018 unified question filters', () => {
     expect(screen.getByText(/questions match your filters/)).toBeInTheDocument()
     expect(document.querySelector('.setup-dialog .question-row')).toBeNull()
     fireEvent.change(screen.getByLabelText('Search questions'), { target: { value: 'triangle' } })
-    expect(screen.getByText('1 question matches your filters')).toBeInTheDocument()
+    expect(document.querySelector('.selection-match-count')?.textContent).toContain('1 question matches your filters')
     expect(document.querySelector('.setup-dialog .question-row')).toBeNull()
   })
 
