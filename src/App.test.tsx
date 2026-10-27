@@ -31,8 +31,7 @@ describe('Freequiz', () => {
 
   it('places tag search before metadata and general question search in the library', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     const tagSearch = screen.getByRole('textbox', { name: 'Search tags' })
     fireEvent.click(screen.getByText('More filters and sorting'))
     const provenance = screen.getByRole('button', { name: /Question source/i })
@@ -52,8 +51,7 @@ describe('Freequiz', () => {
 
   it('uses the dedicated tag picker instead of general search for tags', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     fireEvent.change(screen.getByRole('textbox', { name: 'Search questions' }), { target: { value: 'gardening' } })
     expect(screen.queryByText('Which plant part mainly absorbs water from the soil?')).not.toBeInTheDocument()
     fireEvent.change(screen.getByRole('textbox', { name: 'Search questions' }), { target: { value: '' } })
@@ -81,8 +79,7 @@ describe('Freequiz', () => {
   })
   it('offers explicit answer modes in the question editor', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     fireEvent.click(screen.getByRole('button', { name: /New question/i }))
     expect(screen.getByLabelText('Answer mode')).toBeInTheDocument()
     expect(screen.getAllByRole('option', { name: 'Pick exactly N' }).length).toBeGreaterThan(0)
@@ -125,7 +122,7 @@ describe('Freequiz', () => {
 })
 
 
-describe('Request 004 features',()=>{beforeEach(()=>localStorage.clear());afterEach(()=>cleanup());it('shows the progress graph empty state',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/^Statistics$/i}));expect(screen.getByRole('heading',{name:'Accuracy over time'})).toBeInTheDocument();expect(screen.getByText(/Your progress graph starts here/)).toBeInTheDocument()});it('offers optional gamification and reminders',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Settings & reminders/i}));expect(screen.getByRole('heading',{name:'Gamification'})).toBeInTheDocument();expect(screen.getByText('Milestones and achievements')).toBeInTheDocument();expect(screen.getByRole('checkbox',{name:'Enable study reminders'})).not.toBeChecked()});it('offers multi-section and tag filtering in the unified Questions workspace',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:'Questions'}));expect(screen.getByLabelText('Filter section')).toBeInTheDocument();expect(screen.getByLabelText('Search tags')).toBeInTheDocument()});it('generates a reusable prompt without a source field',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Import \/ export/i}));expect(screen.queryByLabelText('Source material')).not.toBeInTheDocument();fireEvent.click(screen.getByRole('button',{name:/Generate AI prompt/i}));expect(screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i)).toBeInTheDocument()})});
+describe('Request 004 features',()=>{beforeEach(()=>localStorage.clear());afterEach(()=>cleanup());it('shows the progress graph empty state',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:'Progress'}));expect(screen.getByRole('heading',{name:'Accuracy over time'})).toBeInTheDocument();expect(screen.getByText(/Your progress graph starts here/)).toBeInTheDocument()});it('offers optional gamification and reminders',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:'Settings'}));expect(screen.getByRole('heading',{name:'Gamification'})).toBeInTheDocument();expect(screen.getByText('Milestones and achievements')).toBeInTheDocument();expect(screen.getByRole('checkbox',{name:'Enable study reminders'})).not.toBeChecked()});it('offers multi-section and tag filtering in the unified Questions workspace',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:'Questions'}));expect(screen.getByLabelText('Filter section')).toBeInTheDocument();expect(screen.getByLabelText('Search tags')).toBeInTheDocument()});it('generates a reusable prompt without a source field',()=>{render(<App/>);fireEvent.click(screen.getByRole('button',{name:/Menu/i}));fireEvent.click(screen.getByRole('button',{name:/Import \/ export/i}));expect(screen.queryByLabelText('Source material')).not.toBeInTheDocument();fireEvent.click(screen.getByRole('button',{name:/Generate AI prompt/i}));expect(screen.getByDisplayValue(/MODE: GENERATE NEW QUESTIONS/i)).toBeInTheDocument()})});
 
 
 describe('AI prompt UI and editable tags', () => {
@@ -208,8 +205,7 @@ describe('Request 006 import history', () => {
   })
   it('filters questions by tags and supports sorting', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     fireEvent.click(screen.getByText('More filters and sorting'))
     fireEvent.change(screen.getByLabelText('Include tags'), { target: { value: 'angles' } })
     expect(screen.getAllByText('What is the sum of the interior angles of a triangle in Euclidean geometry?').length).toBeGreaterThan(0)
@@ -222,8 +218,7 @@ describe('Request 006 import history', () => {
   it('bulk edits selected questions and offers undo', () => {
     const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true)
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     fireEvent.click(screen.getByText('More filters and sorting'))
     fireEvent.change(screen.getByLabelText('Include tags'), { target: { value: 'angles' } })
     fireEvent.click(screen.getByRole('button', { name: /Select all matching/i }))
@@ -282,8 +277,7 @@ describe('Request 009 multi-select filters', () => {
   afterEach(() => cleanup())
   it('exposes categorical library filters as multi-select controls', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
     expect(screen.getByRole('button', { name: 'Filter section' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Filter answer types' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Filter question source' })).toBeInTheDocument()
