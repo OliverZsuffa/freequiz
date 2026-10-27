@@ -193,3 +193,12 @@ The Learning timeline's **Export history** exports only the active profile's his
 - Management retains the question list and existing bulk-edit/export actions. Practice and Exam setup reuse the same filters and show a live count only. Starting a session uses the exact filtered set and refuses an invalid count.
 - The panel exposes common filters immediately, keeps specialist filters under one Advanced filters disclosure, shows active filter chips, and clears all filter state without editing questions.
 - The implementation checkpoint passed 77 automated tests, TypeScript checking, and the production build in [GitHub Actions run 40512265312](https://github.com/OliverZsuffa/freequiz/actions/runs/40512265312); Pages configuration and artifact upload also passed. Real-device visual review is not claimed complete.
+
+
+## Request 019: Mobile filter popovers and import-source display
+
+- Implemented on branch `fix/019-mobile-question-filters`; pull request and automated verification pending.
+- Mobile multi-select popovers are portaled outside scrollable parents and positioned relative to their trigger, with viewport-aware placement. Phone selections close the popover without losing the selected value; desktop selections stay open. Outside pointer and Escape dismiss the popover.
+- Import-source labels now prefer the original filename or source identity, fall back to the saved import name/source for legacy records, search all available metadata, and show explicit empty states.
+- Removed sticky positioning from the stale `.library-toolbar` CSS rule. The current shared filter panel is not sticky; intentional top navigation and bulk-selection controls remain unchanged.
+- Added component tests for mobile/desktop selection and dismissal, and label/search tests for filenames and legacy metadata. CI results and any remaining manual verification must be recorded after the PR workflow runs.
