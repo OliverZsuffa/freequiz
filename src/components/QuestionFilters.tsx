@@ -3,7 +3,7 @@ import { Search, Star, X } from 'lucide-react'
 import type { AnswerMode, Mastery, Profile } from '../domain'
 import { MultiSelect } from './MultiSelect'
 
-type QuestionFiltersProps = {
+export type QuestionFiltersProps = {
   profile: Profile
   allTags: string[]
   mode: 'management' | 'selection'
