@@ -197,10 +197,9 @@ The Learning timeline's **Export history** exports only the active profile's his
 
 ## Request 019: Mobile filter popovers and import-source display
 
-- Core fixes implemented and merged in [PR #30](https://github.com/OliverZsuffa/freequiz/pull/30), merge commit [ac37a663](https://github.com/OliverZsuffa/freequiz/commit/ac37a663f592b9dc5ec7fac332a85ea9d6ba6f18).
-- PR workflow [40519486548](https://github.com/OliverZsuffa/freequiz/actions/runs/40519486548) passed all 84 tests, TypeScript checking, production build, Pages configuration, and artifact upload.
-- Mobile multi-select popovers are positioned relative to their trigger, with viewport-aware placement. Phone selections close the popover without losing the selected value; desktop selections stay open. Outside pointer and Escape dismiss the popover.
+- Implemented in [PR #30](https://github.com/OliverZsuffa/freequiz/pull/30) and follow-up [PR #31](https://github.com/OliverZsuffa/freequiz/pull/31).
+- PR workflow [40519486548](https://github.com/OliverZsuffa/freequiz/actions/runs/40519486548) passed 84 tests, TypeScript checking, production build, Pages configuration, and artifact upload for PR #30. Follow-up workflow [40519918829](https://github.com/OliverZsuffa/freequiz/actions/runs/40519918829) passed the same checks for PR #31.
+- Mobile multi-select popovers are positioned relative to their trigger within the viewport. They render inside the app container to preserve light/dark and accent variables while escaping scrollable dialogs. Phone selections close the popover without losing selected values; desktop selections stay open. Outside pointer and Escape dismiss the popover.
 - Import-source labels prefer the original filename or source identity, fall back to saved import names/source for legacy records, search all available metadata, and show explicit empty states.
 - Removed sticky positioning from the stale `.library-toolbar` CSS rule. The current shared filter panel is not sticky; intentional top navigation and bulk-selection controls remain unchanged.
-- Review found one additional visual issue: a portal rendered directly under `body` would lose CSS variables scoped to `.app`. Follow-up [PR #31](https://github.com/OliverZsuffa/freequiz/pull/31) keeps the mobile popover inside the app container and adds a regression assertion. Its checks are pending.
-- Manual phone/desktop visual checks and independent verification of the main-branch Pages deployment remain outstanding.
+- Manual phone/desktop visual checks and independent verification of the main-branch Pages deployment remain outstanding. PR checks built and uploaded the Pages artifact, but they do not prove the main deployment or live visual behavior.
