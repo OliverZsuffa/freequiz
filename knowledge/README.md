@@ -68,6 +68,8 @@ Freequiz is a private, client side only progressive web app for organising and p
 - Automated checks and deployment succeeded. A manual browser, phone, and offline smoke test has not been performed from this environment.
 
 ## Working process
+
+See [GitHub change and deployment workflow](github-workflow.md) for the concrete branch/PR process, the Git Data API fallback for files the usual editor cannot handle, and the checks required before claiming a deployment is live.
 1. Read this Knowledge Base and relevant request documents before planning changes.
 2. Document an implementation plan under `requests/`.
 3. Wait for explicit approval before ordinary feature work.
