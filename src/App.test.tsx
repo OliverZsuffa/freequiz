@@ -391,7 +391,7 @@ describe('Request 010 unified workspace and guidance', () => {
     render(<App />)
     fireEvent.click(screen.getByText('More about your progress'))
     expect(screen.getByRole('heading', { name: 'Last 7 days' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Settings/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Mastery, not just activity' })).toBeInTheDocument()
     expect(screen.getByText(/Bank-relative target/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Edit goals/i })).toBeInTheDocument()
   })
