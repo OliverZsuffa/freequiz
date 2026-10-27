@@ -44,7 +44,7 @@ describe('MultiSelect', () => {
     expect(screen.queryByRole('group', { name: 'Deferred options' })).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: /^Deferred/ })).toHaveAttribute('aria-expanded', 'false')
     expect(screen.getByRole('button', { name: /^Deferred/ })).toHaveTextContent('1')
-    fireEvent.click(screen.getByRole('button', { name: 'Deferred' }))
+    fireEvent.click(screen.getByRole('button', { name: /^Deferred/ }))
     expect(screen.getByRole('checkbox', { name: 'Deferred' })).toBeChecked()
   })
 
@@ -56,7 +56,7 @@ describe('MultiSelect', () => {
     expect(screen.getByRole('group', { name: 'Deferred options' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('checkbox', { name: 'Not deferred' }))
     expect(screen.getByRole('group', { name: 'Deferred options' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Deferred' })).toHaveTextContent('2')
+    expect(screen.getByRole('button', { name: /^Deferred/ })).toHaveTextContent('2')
   })
 
   it('closes on Escape and outside pointer interaction', () => {
