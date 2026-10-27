@@ -72,8 +72,7 @@ export function filterQuestions({
         q.source ?? '',
         batch?.name ?? '',
         batch?.source ?? '',
-        batch?.sourceFileName ?? '',
-        q.sourceFileName ?? '',
+        batch?.sourceFileName ?? q.sourceFileName ?? '',
       ].join(' ').toLowerCase()
 
       return searchable.includes(query.toLowerCase())
