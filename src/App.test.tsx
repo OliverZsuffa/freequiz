@@ -196,6 +196,7 @@ describe('Request 006 import history', () => {
     }) } })
     fireEvent.click(screen.getByRole('button', { name: /Validate and preview/i }))
     fireEvent.click(screen.getByRole('button', { name: /Merge into profile/i }))
+    await screen.findByText('What is import history?')
     fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
     fireEvent.click(screen.getAllByRole('button', { name: /Import history/i })[0])
     expect(screen.getByRole('heading', { name: 'Import history' })).toBeInTheDocument()
