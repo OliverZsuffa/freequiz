@@ -39,6 +39,32 @@ describe('Freequiz', () => {
     expect(provenance.compareDocumentPosition(generalSearch) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 
+  it('keeps appearance controls visible beside each other', () => {
+    render(<App />)
+    expect(screen.getByRole('combobox', { name: 'Accent colour' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Light appearance/i })).toBeInTheDocument()
+  })
+
+  it('uses the dedicated tag picker instead of general search for tags', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Menu/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Question library/i }))
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search questions' }), { target: { value: 'gardening' } })
+    expect(screen.queryByText('Which plant part mainly absorbs water from the soil?')).not.toBeInTheDocument()
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search questions' }), { target: { value: '' } })
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search tags' }), { target: { value: 'gardening' } })
+    fireEvent.click(screen.getByRole('checkbox', { name: 'gardening' }))
+    expect(screen.getAllByText('Which plant part mainly absorbs water from the soil?').length).toBeGreaterThan(0)
+  })
+
+  it('keeps the selected accent when switching appearance', () => {
+    render(<App />)
+    fireEvent.change(screen.getByRole('combobox', { name: 'Accent colour' }), { target: { value: 'purple' } })
+    fireEvent.click(screen.getByRole('button', { name: /Light appearance/i }))
+    expect(document.querySelector('.app')).toHaveClass('accent-purple')
+    expect(localStorage.getItem('freequiz-accent')).toBe('purple')
+  })
+
   it('persists the selected appearance', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Light appearance/i }))

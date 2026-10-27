@@ -35,7 +35,7 @@
 .breadcrumb{font-size:13px}
 .button{border-radius:8px;padding:10px 13px;font-size:12px;font-weight:650;transition:background .15s,border-color .15s}
 .button-primary{background:var(--green);color:#192218}
-.app.light .button-primary{color:#fff;background:#416e28}
+.app.light .button-primary{color:var(--accent-ink);background:var(--accent)}
 .button-quiet{border-color:var(--border);background:transparent}
 .content{max-width:1320px;padding:42px 40px 64px}
 .page{max-width:980px}
@@ -449,3 +449,46 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 
 /* A raised menu must also raise its sticky header's stacking context above bottom navigation. */
 @media(max-width:760px){.topbar:has(.global-menu){z-index:65}}
+
+
+/* Request 016 implementation: structured desktop filters, visible appearance controls, and legal footer. */
+@media(min-width:761px){
+  .library-toolbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:start;gap:12px}
+  .library-toolbar>.filter-picker,.library-toolbar>.multi-select{width:100%;min-width:0}
+  .library-toolbar>.button{align-self:start;justify-self:start}
+}
+.appearance-controls{display:flex;align-items:center;gap:6px;min-width:0}
+.accent-control{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:11px}
+.accent-control select{max-width:95px;padding:8px 7px;background:var(--panel);color:var(--text);border:1px solid var(--border);border-radius:7px;font-size:11px}
+.top-theme-button{min-height:34px;padding:7px 8px;font-size:11px;white-space:nowrap}
+.site-footer{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 auto;padding:15px 38px 24px;border-top:1px solid var(--border);color:var(--muted);font-size:11px;max-width:1400px}
+.site-footer nav{display:flex;align-items:center;justify-content:flex-end;gap:16px;flex-wrap:wrap}
+.site-footer a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.site-footer a:hover{color:var(--text)}
+.site-footer .kofi-link{color:var(--text);font-weight:650;text-decoration:none;border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:var(--panel)}
+.legal-page{max-width:820px}
+.legal-copy{line-height:1.7;font-size:13px}
+.legal-copy h2{margin:24px 0 8px;font-size:15px}
+.legal-copy h2:first-child{margin-top:0}
+.legal-copy p{overflow-wrap:anywhere}
+.legal-copy a{color:var(--accent);text-underline-offset:3px}
+.legal-address span{display:block}
+.import-source-picker{min-width:0;max-width:100%;overflow:hidden}
+.import-source-picker .filter-picker-options{max-height:220px;overflow-y:auto;overscroll-behavior:contain}
+.import-source-picker .filter-option-label span{color:var(--text);opacity:1;visibility:visible}
+.import-source-picker .filter-option-label{color:var(--text);opacity:1}
+@media(max-width:760px){
+  .library-toolbar{grid-template-columns:minmax(0,1fr)}
+  .topbar{gap:8px;padding:0 10px}
+  .top-actions{gap:5px}
+  .appearance-controls{gap:4px}
+  .accent-control span{display:none}
+  .accent-control select{max-width:78px;padding:7px 4px}
+  .top-theme-button{gap:4px;padding:7px 6px}
+  .top-theme-button span{display:none}
+  .site-footer{padding:14px 14px calc(88px + env(safe-area-inset-bottom));align-items:flex-start;flex-direction:column;gap:10px}
+  .site-footer nav{justify-content:flex-start;gap:12px}
+  .global-menu,.tools-menu{position:fixed;left:auto;right:10px;top:auto;bottom:calc(70px + env(safe-area-inset-bottom));width:min(320px,calc(100vw - 20px));max-height:calc(100dvh - 90px - env(safe-area-inset-bottom));overflow-y:auto;z-index:80}
+  .topbar:has(.global-menu){z-index:85}
+  .import-source-picker .filter-picker-options{max-height:160px}
+}
