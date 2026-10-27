@@ -1,9 +1,9 @@
 {
-  "name": "",
-  "address": "",
-  "email": "",
-  "additionalContact": "",
-  "vatId": "",
-  "registerDetails": "",
+  "name": "TEST PLACEHOLDER — NOT A REAL OPERATOR",
+  "address": "TEST ADDRESS — NOT REAL, Example Street 123, 00000 Example City, Germany",
+  "email": "test@example.com",
+  "additionalContact": "TEST ONLY — placeholder contact details",
+  "vatId": "TEST ONLY — no VAT ID",
+  "registerDetails": "TEST ONLY — no register entry",
   "kofiUrl": ""
 }
