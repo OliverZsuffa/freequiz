@@ -575,6 +575,22 @@ describe('Request 018 unified question filters', () => {
     expect(document.querySelector('.setup-dialog .question-row')).toBeNull()
   })
 
+
+  it('shows selected common filters and clears common and advanced filters together', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Filter section' }))
+    fireEvent.click(screen.getByRole('checkbox', { name: /Mathematics \/ Geometry/ }))
+    expect(document.querySelector('.active-filter-labels')?.textContent).toContain('Section: Mathematics / Geometry')
+    fireEvent.change(screen.getByLabelText('Search questions'), { target: { value: 'triangle' } })
+    fireEvent.click(screen.getByText('Advanced filters'))
+    fireEvent.change(screen.getByLabelText('Include tags'), { target: { value: 'angles' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Clear filters' }))
+    expect(screen.getByLabelText('Search questions')).toHaveValue('')
+    expect(screen.getByLabelText('Include tags')).toHaveValue('')
+    expect(document.querySelector('.active-filter-labels')?.textContent).toBe('')
+  })
+
   it('does not allow a session count larger than the filtered set', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Create exam/i }))
