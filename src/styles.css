@@ -554,3 +554,30 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   opacity:1;
   backdrop-filter:none;
 }
+
+
+/* Session setup is a z-index 100 modal; portalled mobile filters must sit above it. */
+@media(max-width:760px){
+  .multi-select-popover.is-mobile{z-index:110}
+}
+
+
+/* Mobile More menu: anchor it below the header so its first options aren't clipped
+   by bottom-anchored positioning on short/dynamic mobile viewports. */
+@media(max-width:760px){
+  .global-menu{
+    position:fixed;
+    top:calc(60px + env(safe-area-inset-top));
+    bottom:auto;
+    right:10px;
+    left:auto;
+    width:min(320px,calc(100vw - 20px));
+    min-width:0;
+    max-height:calc(100dvh - 150px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    align-content:start;
+    z-index:90;
+  }
+  .topbar:has(.global-menu){z-index:95}
+}
