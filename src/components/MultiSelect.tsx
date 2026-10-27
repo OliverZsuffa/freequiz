@@ -123,6 +123,6 @@ export function MultiSelect({ label, ariaLabel, value, options, onChange }: Mult
     <button ref={triggerRef} type="button" className="multi-select-trigger" aria-label={ariaLabel ?? label} aria-expanded={open} onClick={() => setOpen(v => !v)}>
       {label}{value.length > 0 && <span className="multi-select-count">{value.length}</span>}<ChevronDown size={13}/>
     </button>
-    {open && isMobile && typeof document !== 'undefined' ? createPortal(popover, document.body) : popover}
+    {open && isMobile && typeof document !== 'undefined' ? createPortal(popover, document.querySelector('.app') ?? document.body) : popover}
   </div>
 }
