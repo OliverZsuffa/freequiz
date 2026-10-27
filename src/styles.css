@@ -328,7 +328,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .library-handoff{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 15px;border:1px solid var(--border);border-radius:12px;background:var(--panel2);margin-top:12px}
 .library-handoff p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
 .library-toolbar{position:static;top:auto;z-index:auto;background:var(--panel);padding:12px;border:1px solid var(--border);border-radius:12px;box-shadow:0 5px 16px #0000000a}
-.bulk-selection-summary{position:static;top:auto;z-index:auto;background:var(--panel);padding:12px;border:1px solid var(--border);border-radius:12px;margin:12px 0;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.bulk-selection-summary{position:sticky;top:104px;z-index:7;background:var(--panel);padding:12px;border:1px solid var(--border);border-radius:12px;margin:12px 0;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .selection-actions{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
 .selection-actions .button{padding:8px 10px;font-size:11px}
 .load-more-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;color:var(--muted);font-size:12px}
