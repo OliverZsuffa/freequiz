@@ -37,9 +37,10 @@ describe('MultiSelect', () => {
 
   it('closes after a phone selection and keeps the selected value', async () => {
     setMobile(true)
-    render(<Harness />)
+    render(<div className="app"><Harness /></div>)
     fireEvent.click(screen.getByRole('button', { name: /^Deferred/ }))
     expect(screen.getByRole('group', { name: 'Deferred options' })).toBeInTheDocument()
+    expect(document.querySelector('.app')?.contains(screen.getByRole('group', { name: 'Deferred options' }))).toBe(true)
     fireEvent.click(screen.getByRole('checkbox', { name: 'Deferred' }))
     expect(screen.queryByRole('group', { name: 'Deferred options' })).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: /^Deferred/ })).toHaveAttribute('aria-expanded', 'false')
