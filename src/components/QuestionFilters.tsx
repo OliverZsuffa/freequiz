@@ -81,7 +81,7 @@ export function QuestionFilters(p: QuestionFiltersProps) {
   ]
   const active = activeLabels.length > 0
   const [expandedSections, setExpandedSections] = useState<string[]>([])
-  const renderSectionTree = (parentId: string | null, depth: number): ReactNode => p.profile.sections.filter(s => s.parentId === parentId).map(section => {
+  const renderSectionTree = (parentId: string | null, depth: number): ReactNode => p.profile.sections.filter(s => parentId === null ? !s.parentId : s.parentId === parentId).map(section => {
     const children = p.profile.sections.some(s => s.parentId === section.id)
     const expanded = expandedSections.includes(section.id)
     return <div className="section-filter-node" key={section.id}>
