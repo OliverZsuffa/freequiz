@@ -173,3 +173,13 @@ The Learning timeline's **Export history** exports only the active profile's his
 - Legal pages read operator-specific values from `public/legal-info.json`. That file is public when deployed. Required legal identity fields must be filled by the operator before production deployment; the deployment workflow validates the configuration and will stop if required values are missing. The optional Ko-fi link is shown only when a valid URL is configured.
 - Privacy text distinguishes browser-local learning data from GitHub Pages hosting logs and describes the optional external Ko-fi destination. It must be reviewed by the operator against actual details before deployment.
 - Manual real-device verification has not yet been performed.
+
+
+## Request 017: one-tap study UI overhaul
+- Implemented on branch `implement/017-one-tap-study-ui-overhaul` pending review.
+- Homepage prioritises one-tap Study all questions, a visible horizontal profile chooser, compact colour-coded progress, and a small streak count based on consecutive days with saved attempts.
+- Create practice and Create exam open a setup dialog; shortcuts practise in-progress or deferred questions.
+- Question source is a plain-language label and supports explicitly marking a question as professor-written or another known source. Imported questions are not automatically treated as professor-written. AI provenance remains separately preserved.
+- Import & export is consolidated in More and keeps question-only export separate from private backups.
+- Appearance settings moved from the top bar to Settings; on mobile the sidebar navigation is hidden in favour of bottom navigation.
+- Automated checks and real-device testing must be confirmed in the implementation PR; this note is not evidence of passing checks.
