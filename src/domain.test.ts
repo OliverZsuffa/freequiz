@@ -207,3 +207,19 @@ describe('public sample question bank',()=>{
   expect(parsed.questions.every(question=>question.options.length>=2&&question.correctOptionIds.every(id=>question.options.some(option=>option.id===id)))).toBe(true)
  })
 })
+
+
+describe('question source metadata',()=>{
+ it('preserves an explicitly recorded source through question export and import',()=>{
+  const parsed=parseImport({format:'freequiz/questions-v1',sections:[],questions:[{id:'professor-q',prompt:'A source question?',options:[{id:'a',text:'A'},{id:'b',text:'B'}],correctOptionIds:['a'],sectionId:null,source:'professor-written'}]})
+  expect(parsed.questions[0].source).toBe('professor-written')
+  const profile={...demoProfile,sections:[],questions:parsed.questions}
+  const exported=exportQuestions(profile)
+  expect(exported.questions[0].source).toBe('professor-written')
+  expect(parseImport(exported).questions[0].source).toBe('professor-written')
+ })
+ it('keeps legacy questions without source metadata valid',()=>{
+  const parsed=parseImport([{id:'legacy-q',prompt:'Old question?',options:['A','B'],answer:0}])
+  expect(parsed.questions[0].source).toBeUndefined()
+ })
+})
