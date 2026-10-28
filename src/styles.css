@@ -614,3 +614,9 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
  .overview-page .study-shortcuts{margin-top:8px;gap:7px 12px}
  .overview-page .study-shortcuts .text-button{font-size:11px}
 }
+
+
+/* Request 020: keep the open desktop More menu above page content. */
+@media(min-width:761px){
+  .topbar:has(.global-menu){z-index:85}
+}
