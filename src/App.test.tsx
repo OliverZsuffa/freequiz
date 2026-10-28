@@ -9,7 +9,9 @@ describe('Freequiz', () => {
   it('shows the calm overview and demo library', () => {
     render(<App />)
     expect(screen.getByRole('heading', { name: 'Choose a profile' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Study all questions/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Practise remaining/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Practise all questions' })).toBeInTheDocument()
+    expect(screen.queryByText('READY WHEN YOU ARE')).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Create practice/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Create exam/i })).toBeInTheDocument()
     expect(screen.getAllByText('Mathematics').length).toBeGreaterThan(0)
@@ -506,7 +508,7 @@ describe('Request 013 mobile-first workflow', () => {
 
   it('starts ordinary practice with one tap from the homepage', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: /Study all questions/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Practise remaining/i }))
     expect(screen.getByRole('heading', { name: 'One question at a time.' })).toBeInTheDocument()
     expect(screen.getByText(/Question 1 of 4/)).toBeInTheDocument()
   })

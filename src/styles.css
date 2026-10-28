@@ -591,3 +591,26 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 /* Compact, nested section checklist for session filtering. */
 .section-filter-picker{min-width:0;display:grid;gap:7px;border:1px solid var(--border);border-radius:8px;padding:9px;background:var(--panel)}.section-filter-picker>strong{font-size:12px;font-weight:600;color:var(--text)}.section-filter-tree{max-height:230px;overflow:auto;min-width:0}.section-filter-unsorted,.section-filter-row label{display:flex;align-items:center;gap:7px;min-width:0;padding:5px 2px;font-size:11px;color:var(--muted)}.section-filter-row{display:flex;align-items:center;gap:3px;min-width:0}.section-filter-row label{flex:1;margin:0}.section-filter-row label span{min-width:0;overflow-wrap:anywhere;line-height:1.35}.section-filter-toggle{flex:0 0 19px;width:19px;height:21px;padding:0;border:1px solid var(--border);border-radius:4px;background:var(--panel2);color:var(--text);line-height:1}.section-filter-toggle-placeholder{flex:0 0 19px}.section-filter-tree input[type=checkbox]{flex:0 0 auto;accent-color:var(--accent)}.section-filter-children{min-width:0}
 @media(max-width:760px){.setup-dialog .session-filter-disclosure .common-filter-grid{grid-template-columns:minmax(0,1fr)}.section-filter-tree{max-height:180px}}
+
+
+/* Compact mobile study home; the bottom navigation replaces the top bar on phones. */
+@media(max-width:760px){
+ .topbar{display:none}
+ .content{padding-top:12px;padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+ .overview-page .home-profile-band{margin-bottom:12px}
+ .overview-page .home-profile-heading{margin-bottom:6px}
+ .overview-page .home-profile-heading h1{font-size:18px}
+ .overview-page .home-profile-list{gap:6px}
+ .overview-page .quick-study-heading{margin-bottom:10px}
+ .overview-page .quick-study-heading h2{font-size:21px}
+ .overview-page .quick-study-heading .subtitle{margin:0}
+ .overview-page .overview-progress{padding-bottom:12px;margin-bottom:12px}
+ .overview-page .progress-three>div{padding:8px 9px}
+ .overview-page .mastery-bar{margin:10px 0 6px}
+ .overview-page .quick-study-actions{margin:12px 0 18px}
+ .overview-page .quick-study-button{min-height:48px;font-size:15px}
+ .overview-page .quick-study-secondary{margin-top:7px;gap:7px}
+ .overview-page .quick-study-secondary .button{padding:9px}
+ .overview-page .study-shortcuts{margin-top:8px;gap:7px 12px}
+ .overview-page .study-shortcuts .text-button{font-size:11px}
+}
