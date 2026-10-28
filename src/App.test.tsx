@@ -560,7 +560,7 @@ describe('Request 013 mobile-first workflow', () => {
   it('starts ordinary practice with one tap from the homepage', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Practise remaining/i }))
-    expect(screen.getByRole('heading', { name: 'One question at a time.' })).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'One question at a time.' })).not.toBeInTheDocument()
     expect(screen.getByText(/Question 1 of 4/)).toBeInTheDocument()
   })
 
@@ -600,7 +600,7 @@ describe('Request 013 mobile-first workflow', () => {
     fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
     fireEvent.click(screen.getByRole('button', { name: /Exit session/i }))
     expect(confirm).toHaveBeenCalledWith(expect.stringMatching(/Exit this exam without submitting/i))
-    expect(screen.getByRole('heading', { name: 'One question at a time.' })).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'One question at a time.' })).not.toBeInTheDocument()
   })
 })
 
