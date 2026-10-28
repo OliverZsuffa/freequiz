@@ -2,7 +2,7 @@
 
 ## Status
 
-Planning only. No application code changes are included in this request. Implementation requires Oliver's explicit approval after reviewing this plan.
+Approved by Oliver on 2026-10-28. Implementation is prepared in [PR #41](https://github.com/OliverZsuffa/freequiz/pull/41) and is awaiting his merge approval. This planning PR remains documentation-only.
 
 ## Goal
 
@@ -67,3 +67,13 @@ Only fix concrete layout or interaction problems found during the audit. Keep th
 - Changes to study logic, question data, persistence, or imports/exports.
 - Mobile layout refinements unrelated to preventing a regression from a shared change.
 - Merging implementation changes without explicit approval.
+
+
+## Implementation record
+
+- Removed the portal for the More menu so it is rendered inside the header actions container that positions it relative to the trigger.
+- Added a desktop-only header stacking adjustment while the menu is open so it stays above page content.
+- Preserved the existing mobile-specific menu positioning and sizing rules.
+- Added a regression test verifying that the menu is inside the header actions and that selecting Settings closes it and navigates correctly.
+- TypeScript type checking, automated tests, and the production build passed in [GitHub Actions](https://github.com/OliverZsuffa/freequiz/actions/runs/40683205357).
+- The implementation has not been merged or deployed to the main branch.
