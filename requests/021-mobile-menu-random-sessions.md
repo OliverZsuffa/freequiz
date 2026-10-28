@@ -70,19 +70,6 @@ Keep one continuous horizontal bar divided into four adjacent segments, with no 
 - Update the bar's accessible description to communicate all four counts/states.
 - Handle an empty question set without invalid widths or misleading counts.
 
-## 7. Explain mastery and independent flags in the in-app help
-
-Add clear, user-facing explanations in the existing help interface or the most appropriate current help location. Match the actual behaviour in code.
-
-Explain the four mastery states using the definitions in section 5. Clarify that:
-- A correct answer is determined by the current answer-mode rules.
-- Mastery is recalculated from recent recorded attempts.
-- **Favourite** is an independent user-set flag for quick access or revision.
-- **Deferred** is an independent flag for setting a question aside for later. Verify current practice and exam behaviour before describing how it is set.
-- Source/provenance labels, such as AI-Generated, AI-Extracted, or professor-written, are metadata, not mastery states.
-- These properties can coexist: for example, a question can be Known and favourited, or Weak and deferred.
-- Skipping must not be described as a wrong answer unless the code actually records an incorrect attempt.
-
 ## Implementation approach
 
 1. Inspect the current header/menu styles and question-dialogue layout before changing them; identify the specific rules and components responsible for mobile visibility and excess vertical space.
@@ -91,7 +78,6 @@ Explain the four mastery states using the definitions in section 5. Clarify that
 4. Change the default question count to 30 while preserving clamping and manual-input validation.
 5. Update mastery calculation to the four-state model; search for and remove all obsolete `needs-work` handling without changing unrelated question flags.
 6. Update the homepage's single continuous mastery bar, state order, colours, labels, counts, proportions, and accessible description.
-7. Add and verify the in-app help explanations for mastery, favourite, deferred, and source/provenance metadata.
 8. Run the full automated test suite, type checking, and production build. Review the diff for unintended changes. Check the responsive layout at narrow mobile sizes, including long questions and many options, using available automated/browser checks; clearly report any manual-device checks that were not performed.
 
 ## Acceptance criteria
@@ -102,6 +88,5 @@ Explain the four mastery states using the definitions in section 5. Clarify that
 - The initial question count is 30 and is limited to the available eligible questions.
 - Exactly four mastery states remain: New, Weak, Learning, Known. One attempt maps to Learning; mixed latest two attempts map to Learning; two incorrect map to Weak; two correct map to Known.
 - The homepage uses one continuous bar ordered New (gray), Weak (red), Learning (yellow), Known (green), with proportional segments and separate counts/labels.
-- In-app help explains mastery and distinguishes it from favourite, deferred, and provenance/source metadata.
 - Automated tests, type checking, and production build pass before merge.
 - Wait for Oliver's explicit approval before implementing; wait for a separate explicit merge instruction before merging.
