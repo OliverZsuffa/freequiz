@@ -123,7 +123,7 @@ h2,h3{letter-spacing:-.35px}
 .mastery-pill{background:transparent!important;padding:4px 0;font-size:11px}
 .mastery-pill.known{color:var(--green)}
 .mastery-pill.learning{color:var(--yellow)}
-.mastery-pill.needs-work,.mastery-pill.weak{color:var(--pink)}
+.mastery-pill.weak{color:var(--pink)}
 .mastery-pill.new{color:var(--muted)}
 .tag{background:transparent;border:1px solid var(--border);border-radius:4px}
 .editor-panel{background:var(--panel);margin-bottom:22px}
