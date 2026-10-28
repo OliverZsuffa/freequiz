@@ -36,7 +36,7 @@ describe('Freequiz', () => {
     expect(Array.from(labels!.children).map(item => item.querySelector('span')?.textContent)).toEqual(['New', 'Weak', 'Learning', 'Known'])
     const bar = document.querySelector('.overview-page .mastery-bar')
     expect(Array.from(bar!.children).map(item => ['new', 'weak', 'learning', 'known'].find(state => item.classList.contains(state)))).toEqual(['new', 'weak', 'learning', 'known'])
-    expect(bar).toHaveAttribute('aria-label', expect.stringContaining(' new, '))
+    expect(bar?.getAttribute('aria-label')).toContain(' new, ')
   })
 
   it('defaults session size to 30 or the number of matching questions, whichever is smaller', () => {
