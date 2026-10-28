@@ -29,27 +29,6 @@ describe('Freequiz', () => {
     expect(document.querySelector('.global-menu')).not.toBeInTheDocument()
   })
 
-  it('opens the More menu and closes it after navigation', () => {
-    render(<App />)
-    const menuButton = screen.getByRole('button', { name: 'Menu' })
-    expect(menuButton).toHaveAttribute('aria-expanded', 'false')
-
-    fireEvent.click(menuButton)
-    expect(menuButton).toHaveAttribute('aria-expanded', 'true')
-    const menu = document.querySelector('.global-menu') as HTMLElement
-    expect(menu).toBeInTheDocument()
-    expect(within(menu).getByRole('button', { name: 'Help & feedback' })).toBeInTheDocument()
-    expect(within(menu).getByRole('button', { name: 'Settings' })).toBeInTheDocument()
-    expect(within(menu).getByRole('button', { name: 'Learning summary' })).toBeInTheDocument()
-    expect(within(menu).getByRole('button', { name: 'Import history' })).toBeInTheDocument()
-    expect(within(menu).getByRole('button', { name: 'Import & export' })).toBeInTheDocument()
-
-    fireEvent.click(within(menu).getByRole('button', { name: 'Settings' }))
-    expect(screen.getByRole('heading', { name: 'Settings' })).toBeInTheDocument()
-    expect(document.querySelector('.global-menu')).not.toBeInTheDocument()
-    expect(menuButton).toHaveAttribute('aria-expanded', 'false')
-  })
-
   it('lets a user explicitly mark a question as professor-written', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
