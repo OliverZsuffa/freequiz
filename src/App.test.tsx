@@ -29,6 +29,46 @@ describe('Freequiz', () => {
     expect(document.querySelector('.global-menu')).not.toBeInTheDocument()
   })
 
+  it('shows mastery states separately in the requested order on the homepage', () => {
+    render(<App />)
+    const labels = document.querySelector('.overview-page .progress-four')
+    expect(labels).toBeInTheDocument()
+    expect(Array.from(labels!.children).map(item => item.querySelector('span')?.textContent)).toEqual(['New', 'Weak', 'Learning', 'Known'])
+    const bar = document.querySelector('.overview-page .mastery-bar')
+    expect(Array.from(bar!.children).map(item => ['new', 'weak', 'learning', 'known'].find(state => item.classList.contains(state)))).toEqual(['new', 'weak', 'learning', 'known'])
+    expect(bar?.getAttribute('aria-label')).toContain(' new, ')
+  })
+
+  it('defaults session size to 30 or the number of matching questions, whichever is smaller', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Create practice/i }))
+    const count = screen.getByRole('spinbutton', { name: 'Number of questions' }) as HTMLInputElement
+    expect(Number(count.value)).toBe(Math.min(30, Number(count.max)))
+  })
+
+  it('removes the oversized practice headline and keeps the question counter', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /Create practice/i }))
+    fireEvent.change(screen.getByLabelText('Number of questions'), { target: { value: '2' } })
+    fireEvent.click(screen.getByRole('button', { name: /Start practice/i }))
+    expect(screen.queryByRole('heading', { name: 'One question at a time.' })).not.toBeInTheDocument()
+    expect(screen.getByText('Question 1 of 2')).toBeInTheDocument()
+  })
+
+  it('keeps the More menu available on a phone-sized viewport', () => {
+    const originalWidth = window.innerWidth
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 390 })
+    render(<App />)
+    const trigger = screen.getByRole('button', { name: 'Menu' })
+    fireEvent.click(trigger)
+    expect(trigger).toHaveAttribute('aria-expanded', 'true')
+    const menu = document.querySelector('.global-menu')
+    expect(menu).toBeInTheDocument()
+    fireEvent.click(within(menu as HTMLElement).getByRole('button', { name: 'Settings' }))
+    expect(screen.getByRole('heading', { name: 'Settings' })).toBeInTheDocument()
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: originalWidth })
+  })
+
   it('lets a user explicitly mark a question as professor-written', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
@@ -520,7 +560,7 @@ describe('Request 013 mobile-first workflow', () => {
   it('starts ordinary practice with one tap from the homepage', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: /Practise remaining/i }))
-    expect(screen.getByRole('heading', { name: 'One question at a time.' })).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'One question at a time.' })).not.toBeInTheDocument()
     expect(screen.getByText(/Question 1 of 4/)).toBeInTheDocument()
   })
 
@@ -560,7 +600,7 @@ describe('Request 013 mobile-first workflow', () => {
     fireEvent.click(screen.getByRole('button', { name: /Start exam/i }))
     fireEvent.click(screen.getByRole('button', { name: /Exit session/i }))
     expect(confirm).toHaveBeenCalledWith(expect.stringMatching(/Exit this exam without submitting/i))
-    expect(screen.getByRole('heading', { name: 'One question at a time.' })).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'One question at a time.' })).not.toBeInTheDocument()
   })
 })
 

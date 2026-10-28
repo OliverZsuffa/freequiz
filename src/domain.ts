@@ -10,7 +10,7 @@ export type ImportBatch = { id: string; name: string; at: string; source: 'json'
 export type Profile = { id: string; name: string; sections: Section[]; questions: Question[]; attempts: Attempt[]; favourites?: string[]; favouriteTags?: string[]; deferredQuestionIds?: string[]; groups?: QuestionGroup[]; exams?: ExamSession[]; imports?: ImportBatch[] }
 export type FullProfileBackup = { format: 'freequiz/backup-v1'; backupVersion: 1; exportedAt: string; activeProfileId: string; profiles: Profile[] }
 export type Store = { version: 1; activeProfileId: string; profiles: Profile[] }
-export type Mastery = 'new' | 'learning' | 'known' | 'needs-work' | 'weak'
+export type Mastery = 'new' | 'weak' | 'learning' | 'known'
 
 export function exportQuestions(profile: Profile) {
  const used = new Set(profile.questions.map(q => q.sectionId).filter((id): id is string => !!id))
@@ -69,10 +69,19 @@ export function parseBackup(raw: unknown): FullProfileBackup {
 export function masteryFor(attempts: Attempt[], id: string): Mastery {
  const history = attempts.filter(a => a.questionId === id).sort((a,b) => b.at.localeCompare(a.at))
  if (!history.length) return 'new'
- if (history.length === 1) return history[0].correct ? 'learning' : 'needs-work'
+ if (history.length === 1) return 'learning'
  if (history[0].correct && history[1].correct) return 'known'
  if (!history[0].correct && !history[1].correct) return 'weak'
- return history[0].correct ? 'learning' : 'needs-work'
+ return 'learning'
+}
+export function selectRandom<T>(items: T[], count: number, random: () => number = Math.random): T[] {
+ const shuffled = [...items]
+ for (let i = shuffled.length - 1; i > 0; i--) {
+  const j = Math.floor(random() * (i + 1))
+  ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+ }
+ const limit = Number.isFinite(count) ? Math.max(0, Math.min(shuffled.length, Math.floor(count))) : shuffled.length
+ return shuffled.slice(0, limit)
 }
 export function isCorrect(selected: string[], expected: string[]) { return selected.length === expected.length && selected.every(id => expected.includes(id)) }
 export function dueForReview(attempts: Attempt[], id: string, now = Date.now()) {
