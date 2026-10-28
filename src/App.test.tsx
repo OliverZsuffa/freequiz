@@ -18,6 +18,17 @@ describe('Freequiz', () => {
     expect(screen.queryByText('Good to have you here.')).not.toBeInTheDocument()
   })
 
+  it('anchors the More menu inside the header actions so desktop positioning is trigger-relative', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
+    const menu = document.querySelector('.global-menu')
+    expect(menu).toBeInTheDocument()
+    expect(menu?.parentElement).toHaveClass('top-actions')
+    fireEvent.click(within(menu as HTMLElement).getByRole('button', { name: 'Settings' }))
+    expect(screen.getByRole('heading', { name: 'Settings' })).toBeInTheDocument()
+    expect(document.querySelector('.global-menu')).not.toBeInTheDocument()
+  })
+
   it('lets a user explicitly mark a question as professor-written', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
