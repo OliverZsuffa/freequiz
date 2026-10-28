@@ -485,8 +485,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   .top-theme-button span{display:none}
   .site-footer{padding:14px 14px calc(88px + env(safe-area-inset-bottom));align-items:flex-start;flex-direction:column;gap:10px}
   .site-footer nav{justify-content:flex-start;gap:12px}
-  .global-menu,.tools-menu{position:fixed;left:auto;right:10px;top:auto;bottom:calc(70px + env(safe-area-inset-bottom));width:min(320px,calc(100vw - 20px));max-height:calc(100dvh - 90px - env(safe-area-inset-bottom));overflow-y:auto;z-index:80}
-  .topbar:has(.global-menu){z-index:85}
+  .tools-menu{position:fixed;left:auto;right:10px;top:auto;bottom:calc(70px + env(safe-area-inset-bottom));width:min(320px,calc(100vw - 20px));max-height:calc(100dvh - 90px - env(safe-area-inset-bottom));overflow-y:auto;z-index:80}
+  /* The More menu is inside .top-actions, so keep it anchored to its trigger on desktop. */
+  .global-menu{position:absolute;left:auto;right:0;top:calc(100% + 8px);bottom:auto;width:auto;min-width:205px;max-width:min(320px,calc(100vw - 20px));max-height:calc(100dvh - 100px);overflow-y:auto;z-index:90}
+  .topbar:has(.global-menu){z-index:95}
   .import-source-picker .filter-picker-options{max-height:160px}
 }
 
