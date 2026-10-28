@@ -614,3 +614,16 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
  .overview-page .study-shortcuts{margin-top:8px;gap:7px 12px}
  .overview-page .study-shortcuts .text-button{font-size:11px}
 }
+
+
+/* Request 020: anchor the desktop More menu to the trigger's measured viewport position. */
+@media(min-width:761px){
+  .global-menu{
+    position:fixed;
+    left:auto;
+    bottom:auto;
+    z-index:100;
+    max-width:calc(100vw - 24px);
+    max-height:calc(100dvh - 24px);
+  }
+}
