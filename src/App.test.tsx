@@ -18,6 +18,16 @@ describe('Freequiz', () => {
     expect(screen.queryByText('Good to have you here.')).not.toBeInTheDocument()
   })
 
+  it('opens the More menu and closes it after navigation', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
+    expect(document.querySelector('.global-menu')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Help & feedback' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Settings' }))
+    expect(document.querySelector('.global-menu')).not.toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Settings' })).toBeInTheDocument()
+  })
+
   it('lets a user explicitly mark a question as professor-written', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Questions' }))
