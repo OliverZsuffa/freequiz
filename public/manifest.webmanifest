@@ -1,15 +1,16 @@
 {
+  "id": "./",
   "name": "Freequiz",
   "short_name": "Freequiz",
   "description": "Private question practice with progress that stays yours.",
-  "start_url": "./",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#101a19",
   "theme_color": "#2563eb",
   "icons": [
     {
-      "src": "./icon.svg?v=2",
+      "src": "./icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
