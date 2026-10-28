@@ -1,8 +1,22 @@
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
-import { buildAiPrompt, dueForReview, exportQuestions, isCorrect, masteryFor, parseBackup, parseImport, demoProfile, type Attempt } from './domain'
+import { buildAiPrompt, dueForReview, exportQuestions, isCorrect, masteryFor, selectRandom, parseBackup, parseImport, demoProfile, type Attempt } from './domain'
 const a=(correct:boolean,at:string):Attempt=>({id:at,questionId:'q',at,selectedOptionIds:[],correct})
-describe('mastery states',()=>{it('marks untouched questions new',()=>expect(masteryFor([],'q')).toBe('new'));it('uses one attempt for learning and needs work',()=>{expect(masteryFor([a(true,'2026-01-01')],'q')).toBe('learning');expect(masteryFor([a(false,'2026-01-01')],'q')).toBe('needs-work')});it('requires two recent correct answers for known',()=>expect(masteryFor([a(true,'2026-01-02'),a(true,'2026-01-01')],'q')).toBe('known'));it('marks two recent incorrect answers weak',()=>expect(masteryFor([a(false,'2026-01-02'),a(false,'2026-01-01')],'q')).toBe('weak'))})
+describe('mastery states',()=>{
+ it('marks untouched questions new',()=>expect(masteryFor([],'q')).toBe('new'))
+ it('classifies a single attempt as learning regardless of its result',()=>{expect(masteryFor([a(true,'2026-01-01')],'q')).toBe('learning');expect(masteryFor([a(false,'2026-01-01')],'q')).toBe('learning')})
+ it('requires two recent correct answers for known',()=>expect(masteryFor([a(true,'2026-01-02'),a(true,'2026-01-01')],'q')).toBe('known'))
+ it('marks two recent incorrect answers weak',()=>expect(masteryFor([a(false,'2026-01-02'),a(false,'2026-01-01')],'q')).toBe('weak'))
+ it('classifies mixed recent results as learning regardless of order',()=>{expect(masteryFor([a(true,'2026-01-02'),a(false,'2026-01-01')],'q')).toBe('learning');expect(masteryFor([a(false,'2026-01-02'),a(true,'2026-01-01')],'q')).toBe('learning')})
+ it('uses the two most recent attempts rather than lifetime totals',()=>expect(masteryFor([a(false,'2026-01-03'),a(false,'2026-01-02'),a(true,'2026-01-01')],'q')).toBe('weak'))
+})
+describe('random question selection',()=>{
+ const pool=Array.from({length:170},(_,i)=>({id:'q'+i}))
+ it('selects the requested number of distinct eligible questions',()=>{const selected=selectRandom(pool,10,()=>0.37);expect(selected).toHaveLength(10);expect(new Set(selected.map(q=>q.id)).size).toBe(10);expect(selected.every(q=>pool.includes(q))).toBe(true)})
+ it('includes every eligible question exactly once when the full pool is requested',()=>{const selected=selectRandom(pool,170,()=>0.37);expect(selected).toHaveLength(170);expect(new Set(selected.map(q=>q.id)).size).toBe(170);expect(new Set(selected.map(q=>q.id))).toEqual(new Set(pool.map(q=>q.id)))})
+ it('clamps the requested count to the available pool',()=>expect(selectRandom(pool.slice(0,4),30,()=>0.5)).toHaveLength(4))
+ it('returns an empty list for an empty pool or zero count',()=>{expect(selectRandom([],30)).toEqual([]);expect(selectRandom(pool,0)).toEqual([])})
+})
 describe('answer and review helpers',()=>{it('checks exact multi select matches',()=>{expect(isCorrect(['a','b'],['b','a'])).toBe(true);expect(isCorrect(['a'],['a','b'])).toBe(false)});it('makes unseen questions due immediately',()=>expect(dueForReview([],'q')).toBe(true));it('makes incorrect answers due immediately',()=>expect(dueForReview([a(false,new Date().toISOString())],'q')).toBe(true))})
 describe('JSON import',()=>{it('normalises simple question arrays',()=>{const r=parseImport([{prompt:'Pick one',options:['A','B'],answer:1}]);expect(r.questions[0].correctOptionIds).toEqual(['o2'])});it('rejects too few options',()=>expect(()=>parseImport({questions:[{prompt:'Broken',options:['A'],correctOptionIds:['a']}]})).toThrow(/at least two options/));it('rejects invalid option IDs',()=>expect(()=>parseImport({questions:[{prompt:'Broken',options:['A','B'],correctOptionIds:['missing']}]})).toThrow(/correctOptionIds/))})
 it('includes existing sections and reusable source instructions in AI prompt',()=>{const p=buildAiPrompt([{id:'math',name:'Math',parentId:null}]);expect(p).toContain('Math');expect(p).toContain('source material');expect(p).toContain('exactly-n');expect(p).toContain('select-all')})
