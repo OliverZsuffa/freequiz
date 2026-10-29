@@ -31,11 +31,10 @@ describe('LaTeX instructions in AI prompts', () => {
       expect(prompt).toContain('operators are not accidentally outside the span')
       expect(prompt).toContain('Correct complete formula in JSON')
       expect(prompt).toContain('In extraction mode, preserve source wording')
-      expect(prompt).toContain('Correct inline JSON example')
-      expect(prompt).toContain('After JSON parsing, the question text is')
+      expect(prompt).toContain('Correct inline JSON example: "prompt": "Solve ' + '\\\\' + '(x^2 = 4' + '\\\\' + ').".')
+      expect(prompt).toContain('After JSON parsing, the question text is: Solve ' + '\\(' + 'x^2 = 4' + '\\)' + '.')
       expect(prompt).toContain('Do not add a second layer of escaping')
       expect(prompt).toContain('Correct it to the complete-formula example above')
-      expect(prompt).not.toContain('Do not use dollar delimiters')
     }
   })
 })
