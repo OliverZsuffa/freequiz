@@ -15,7 +15,7 @@ Freequiz is already client-side and stores profiles/progress in browser storage.
 3. Do not add a backend, accounts, sync, analytics, remote API calls, or other online functionality.
 4. Existing profiles, questions, attempts, exam history, settings, imports, exports, and backups must remain intact. Do not clear, migrate destructively, or overwrite user data to enable offline use.
 5. The first visit still needs a connection to download the app. Make that limitation clear only where useful; avoid adding clutter to the interface.
-6. The mobile More menu must be visible and usable from the existing bottom navigation on narrow screens, including when opened from Study, Questions, Progress, and a practice session. The menu is now rendered through a body portal so it is not trapped inside the hidden top bar.
+6. The mobile More menu must be visible and usable from the existing bottom navigation on narrow screens, including when opened from Study, Questions, Progress, and a practice session. The menu is rendered through a portal into `.main-area`, outside the hidden top bar while inheriting the app's theme variables.
 7. Preserve the desktop menu behaviour and existing mobile bottom-navigation design.
 
 ## Implementation plan
@@ -87,5 +87,5 @@ Add or update tests to verify:
 
 - Replaced the hand-maintained shell-only service worker with a Vite build plugin that emits a versioned worker and precaches all emitted build files plus every public static file. The build now validates the generated cache manifest and the GitHub Pages base path.
 - Service-worker registration uses Vite's base path and explicit scope, so the published `/freequiz/` app stays inside its project subpath.
-- Moved the shared More menu into a body portal and gave it fixed viewport positioning, so the mobile-only hidden top bar can no longer hide the menu. Added regression assertions for portal placement and the mobile bottom-navigation trigger.
+- Moved the shared More menu into a `.main-area` portal and gave it fixed viewport positioning, so the mobile-only hidden top bar can no longer hide the menu. Added regression assertions for portal placement and the mobile bottom-navigation trigger.
 - Automated checks and deployment status will be recorded after CI completes. Real-device offline smoke testing must be reported separately from CI.
