@@ -179,11 +179,17 @@ SECTION FORMAT AND ASSIGNMENT
 - If a question cannot be assigned confidently, use sectionId: null rather than inventing an ID.
 
 MATHEMATICAL NOTATION
-- Preserve mathematical notation accurately. Use LaTeX delimiters \\( ... \\) for inline math and \\[ ... \\] for display equations.
-- The output is JSON, so each literal LaTeX backslash must be escaped once in the JSON source: write TWO backslash characters for each one backslash in the decoded question text. Do not write four backslashes for one delimiter backslash.
-- Correct inline JSON example: "prompt": "Solve \\\\(x^2 = 4\\\\)." After JSON parsing, the question text is: Solve \\(x^2 = 4\\).
-- Correct display JSON example: "prompt": "Find the roots: \\\\[x^2 = 4\\\\]" After JSON parsing, the question text is: Find the roots: \\[x^2 = 4\\]
-- Keep formulas in the original mathematical meaning; do not replace them with screenshots, Unicode approximations, or Markdown code. Use plain text for ordinary prose and LaTeX delimiters only around mathematical expressions.
+- Preserve mathematical notation accurately and use only the delimiters supported by Freequiz: \( ... \) for inline math and \[ ... \] for display equations. Do NOT use dollar delimiters such as $...$ or $$...$$; Freequiz does not render those delimiters.
+- Enclose each complete mathematical expression in one matching pair of delimiters. Never split a single formula into separate math fragments or leave a mathematical operator outside math mode. For example, keep \iff, \rightarrow, \land, and \neg inside the same complete expression when they are part of the formula.
+- Use valid LaTeX commands inside formulas, such as \land rather than the plain-text word AND. Preserve the intended mathematical meaning.
+- This output is JSON. In the JSON source, encode each literal LaTeX backslash using exactly TWO backslash characters. After JSON parsing, the question text must contain exactly ONE backslash for each LaTeX command or delimiter. Do not add a second layer of escaping or use FOUR backslashes for a single LaTeX backslash.
+- Correct inline JSON example: "prompt": "Solve \\(x^2 = 4\\)." After JSON parsing, the question text is: Solve \(x^2 = 4\).
+- Correct display JSON example: "prompt": "Find the roots: \\[x^2 = 4\\]" After JSON parsing, the question text is: Find the roots: \[x^2 = 4\].
+- Correct complete formula in JSON: "text": "\\((A \\rightarrow B) \\iff (\\neg A \\rightarrow \\neg B)\\)". After JSON parsing, this is one inline formula: \((A \rightarrow B) \iff (\neg A \rightarrow \neg B)\).
+- Incorrect: "text": "($A \\rightarrow B$) \\iff ($\\neg A \\rightarrow \\neg B$)". This mixes unsupported dollar delimiters with fragments of math outside a complete supported math span. Correct it to the complete-formula example above.
+- Before returning JSON, check every prompt, option, and explanation containing mathematics: supported delimiters only; every opening delimiter has its matching closing delimiter; each complete formula is enclosed as one span; operators are not accidentally outside the span; JSON contains exactly two backslash characters per LaTeX backslash; and decoded text contains exactly one.
+- In extraction mode, preserve source wording, notation, and mathematical meaning as closely as possible. Correct delimiter/escaping mistakes only when the intended expression is clear. If the source expression is ambiguous and cannot safely be repaired, do not guess its meaning; preserve it as faithfully as possible and flag the item in the separate review report.
+- Keep formulas as text in the JSON. Do not replace them with screenshots, Unicode approximations, or Markdown code. Use plain text for ordinary prose and supported LaTeX delimiters only around mathematical expressions.
 
 ${sectionRules}${sectionList}`;
 
