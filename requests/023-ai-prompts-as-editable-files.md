@@ -16,6 +16,19 @@ Move the AI Extract and Generate instructions out of `src/domain.ts` into plain-
 - Add regression tests for prompt loading, section handling, generic filenames, comprehensive coverage, and explicit question-quality rules.
 - Update the Knowledge Base and verify tests, type checking, and the production build.
 
+## Implementation plan
+1. Inspect the existing prompt builder and tests to identify what must remain dynamic and which current behaviours need regression coverage.
+2. Move the Extract and Generate instruction text into separate plain-text files and load them with Vite raw imports, preserving offline operation.
+3. Keep the JSON schema, provenance rules, and supplied section catalogue in the shared prompt builder; use generic references rather than assuming any user's source/catalogue filename.
+4. Rewrite the Extract instructions for strict source fidelity and unresolved-item reporting. Expand Generate coverage and retain separate, explicit rules for each question-quality concern.
+5. Add or update regression tests for prompt contents, section handling, filename wording, learning coverage, and the distinct quality-rule sections.
+6. Update the Knowledge Base, run the test suite, TypeScript check, production build, and offline-build validation, then inspect the PR diff and workflow results.
+7. Merge only after the user approves; then verify the main-branch workflow and report deployment status separately from manual browser/device testing.
+
+## Implementation plan status
+- Steps 1–5 are implemented on the PR branch. Step 6's automated checks passed in GitHub Actions; the PR and Knowledge Base documentation were updated.
+- Step 7 is pending until the merge is completed. The PR workflow builds and uploads the Pages artifact but does not itself prove the main-branch deployment or manual browser/device behaviour.
+
 ## Implementation notes
 - Prompt text is imported as build-time raw text. This keeps the deployed app independent of network availability.
 - The common JSON schema and dynamic section catalogue remain code-generated, avoiding hard-coded or duplicated user-specific section data in the text files.
