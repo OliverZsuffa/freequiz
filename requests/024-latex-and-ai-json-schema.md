@@ -2,7 +2,7 @@
 
 ## Status
 
-Implementation is proposed in [PR #47](https://github.com/OliverZsuffa/freequiz/pull/47). This document includes the implementation plan as well as the execution record. Automated checks passed in [workflow run 40921538249](https://github.com/OliverZsuffa/freequiz/actions/runs/40921538249): 101 tests, TypeScript check, production build, offline-build validation, and Pages artifact upload. The PR is not merged. Manual visual/offline smoke testing remains outstanding.
+Implemented and merged via [PR #47](https://github.com/OliverZsuffa/freequiz/pull/47), merge commit [`cea6a2c6e6ef08f445e343c353b58425e95c1b07`](https://github.com/OliverZsuffa/freequiz/commit/cea6a2c6e6ef08f445e343c353b58425e95c1b07). This document includes the implementation plan and execution record. PR workflow [40921538249](https://github.com/OliverZsuffa/freequiz/actions/runs/40921538249) passed 101 tests, TypeScript checking, production build, offline-build validation, Pages configuration, and artifact upload on the implementation code before the documentation-only follow-up. The available workflow lookup did not return a main-branch deployment run for the merge commit, so deployment is not independently verified here. Manual visual/offline smoke testing remains outstanding.
 
 ## Problem and goals
 
