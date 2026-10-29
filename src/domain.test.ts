@@ -18,8 +18,8 @@ describe('random question selection',()=>{
  it('returns an empty list for an empty pool or zero count',()=>{expect(selectRandom([],30)).toEqual([]);expect(selectRandom(pool,0)).toEqual([])})
 })
 describe('answer and review helpers',()=>{it('checks exact multi select matches',()=>{expect(isCorrect(['a','b'],['b','a'])).toBe(true);expect(isCorrect(['a'],['a','b'])).toBe(false)});it('makes unseen questions due immediately',()=>expect(dueForReview([],'q')).toBe(true));it('makes incorrect answers due immediately',()=>expect(dueForReview([a(false,new Date().toISOString())],'q')).toBe(true))})
-describe('JSON import',()=>{it('normalises simple question arrays',()=>{const r=parseImport([{prompt:'Pick one',options:['A','B'],answer:1}]);expect(r.questions[0].correctOptionIds).toEqual(['o2'])});it('rejects too few options',()=>expect(()=>parseImport({questions:[{prompt:'Broken',options:['A'],correctOptionIds:['a']}]})).toThrow(/at least two options/));it('rejects invalid option IDs',()=>expect(()=>parseImport({questions:[{prompt:'Broken',options:['A','B'],correctOptionIds:['missing']}]})).toThrow(/correctOptionIds/))})
-it('includes existing sections and reusable source instructions in AI prompt',()=>{const p=buildAiPrompt([{id:'math',name:'Math',parentId:null}]);expect(p).toContain('Math');expect(p).toContain('source material');expect(p).toContain('exactly-n');expect(p).toContain('select-all')})
+describe('JSON import',()=>{it('normalises simple question arrays',()=>{const r=parseImport([{prompt:'Pick one',options:['A','B'],answer:1}]);expect(r.questions[0].correctOptionIds).toEqual(['o2'])});it('normalises section title aliases into the internal name field',()=>{const r=parseImport({sections:[{id:'sec-1',title:'Einführung & Grundbegriffe'}],questions:[{id:'q1',prompt:'Question?',options:['A','B'],answer:0,sectionId:'sec-1'}]});expect(r.sections).toEqual([{id:'sec-1',name:'Einführung & Grundbegriffe',parentId:null}]);expect(r.questions[0].sectionId).toBe('sec-1')});it('rejects too few options',()=>expect(()=>parseImport({questions:[{prompt:'Broken',options:['A'],correctOptionIds:['a']}]})).toThrow(/at least two options/));it('rejects invalid option IDs',()=>expect(()=>parseImport({questions:[{prompt:'Broken',options:['A','B'],correctOptionIds:['missing']}]})).toThrow(/correctOptionIds/))})
+it('includes existing sections and reusable source instructions in AI prompt',()=>{const p=buildAiPrompt([{id:'math',name:'Math',parentId:null}]);expect(p).toContain('Math');expect(p).toContain('source material');expect(p).toContain('exactly-n');expect(p).toContain('select-all');expect(p).toContain('freequiz/questions-v1');expect(p).toContain('"name": "Section name"');expect(p).toContain('Use "name", not "title"');expect(p).toContain('MATHEMATICAL NOTATION');expect(p).toContain('correctOptionIds')})
 
 describe('answer modes and import compatibility', () => {
   it('defaults older single-answer questions to single mode', () => {
@@ -117,10 +117,12 @@ describe('Request 006 AI prompt quality', () => {
     expect(included).toContain('Existing IDs remain valid even when their definitions are absent from this import file')
     expect(included).toContain('Do NOT make the file self-contained by repeating existing section definitions')
     expect(included).toContain('Do not treat generic schema conventions or assumptions about self-contained JSON as a reason to repeat existing sections')
-    expect(included).not.toContain('"parentId":')
+    expect(included).toContain('"parentId": null')
     const omitted = buildAiPrompt(sections, 'generate', false)
     expect(omitted).not.toContain('Existing sections (id | parentId | name)')
     expect(omitted).toContain('Create a concise section hierarchy from course headings/content as needed')
+    expect(omitted).toContain('JSON OUTPUT CONTRACT — FOLLOW EXACTLY')
+    expect(omitted).toContain('"parentId": null')
   })
 
   it('requires broad coverage and a substantial set without padding', () => {

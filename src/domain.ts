@@ -93,7 +93,17 @@ export function dueForReview(attempts: Attempt[], id: string, now = Date.now()) 
 export function parseImport(raw: unknown): {sections: Section[]; questions: Question[]} {
  const src: any = Array.isArray(raw) ? {questions:raw} : raw
  if (!src || !Array.isArray(src.questions)) throw new Error('Expected an object with a questions array, or a questions array directly.')
- const sections: Section[] = Array.isArray(src.sections) ? src.sections : []
+ const sections: Section[] = Array.isArray(src.sections) ? src.sections.map((s: any, i: number): Section => {
+  if (!s || typeof s.id !== 'string' || !s.id.trim() || !((typeof s.name === 'string' && s.name.trim()) || (typeof s.title === 'string' && s.title.trim()))) {
+   throw new Error('Section ' + (i + 1) + ': provide an id and a non-empty name (or title).')
+  }
+  return { id: s.id, name: (typeof s.name === 'string' && s.name.trim() ? s.name : s.title).trim(), parentId: typeof s.parentId === 'string' && s.parentId.trim() ? s.parentId : null }
+ }) : []
+ const sectionIds = new Set<string>()
+ for (const section of sections) {
+  if (sectionIds.has(section.id)) throw new Error('Imported sections contain duplicate IDs.')
+  sectionIds.add(section.id)
+ }
  const questions = src.questions.map((q:any,i:number):Question => {
   if (!q || typeof q.prompt !== 'string' || !q.prompt.trim()) throw new Error('Question '+(i+1)+': prompt is missing.')
   if (!Array.isArray(q.options) || q.options.length < 2) throw new Error('Question '+(i+1)+': provide at least two options.')
@@ -123,7 +133,58 @@ export function buildAiPrompt(sections: Section[], mode: AiPromptMode = 'generat
  const sectionRules = hasExistingSections
   ? ' Treat the supplied section catalogue as the complete existing section catalogue. Reuse the exact existing section ID in each question sectionId whenever a listed section fits. Existing IDs remain valid even when their definitions are absent from this import file; Freequiz matches them against the profile section tree. Do NOT make the file self-contained by repeating existing section definitions. Do not return, copy, rename, or redefine any listed section in the output sections array. That array may contain ONLY genuinely new section definitions that do not fit any existing section. If every question fits an existing section, the required output is exactly sections: []. Example: with an existing section ID such as section-1-1, a question may use sectionId: section-1-1 while the top-level sections array is empty. Do not treat generic schema conventions or assumptions about self-contained JSON as a reason to repeat existing sections. A new section parentId may refer to an existing section ID.'
   : ' No existing section list is provided. Create a concise section hierarchy from course headings/content as needed. Return only new sections actually used by questions, with stable IDs and valid parentId relationships.';
- const common = 'Return one valid JSON object in the freequiz/questions-v1 format: {format, sections, questions}. Set format to exactly freequiz/questions-v1. Each question needs a unique id, prompt, options (each with unique id and text), correctOptionIds, answerMode, sectionId, explanation, tags, and provenance. answerMode is single, exactly-n, or select-all. Option counts may vary. Correct IDs must match option IDs. Set provenance on every question to '+(mode==='extract'?'AI-Extracted':'AI-Generated')+'; keep it out of ordinary tags. '+sectionRules+sectionList;
+ const common = `JSON OUTPUT CONTRACT — FOLLOW EXACTLY
+Return only one valid JSON object, with no Markdown fences, comments, trailing commas, or text before/after it. Its top-level shape is:
+{
+  "format": "freequiz/questions-v1",
+  "sections": [
+    { "id": "sec-1", "name": "Section name", "parentId": null }
+  ],
+  "questions": [
+    {
+      "id": "q-1",
+      "prompt": "Question text",
+      "options": [
+        { "id": "q-1-a", "text": "First answer option" },
+        { "id": "q-1-b", "text": "Second answer option" }
+      ],
+      "correctOptionIds": ["q-1-a"],
+      "answerMode": "single",
+      "sectionId": "sec-1",
+      "explanation": "Brief explanation",
+      "tags": ["topic"],
+      "provenance": "${mode==='extract'?'AI-Extracted':'AI-Generated'}"
+    }
+  ]
+}
+The example is illustrative: return the actual questions, sections, IDs, and answers required by the rules below.
+
+TOP-LEVEL RULES
+- Set format to exactly "freequiz/questions-v1".
+- Always include both sections and questions as arrays, even when sections must be [].
+- Give every question a unique non-empty id and every option within a question a unique non-empty id.
+- Every question must include prompt (non-empty string), options (at least two objects), correctOptionIds (array of option IDs), answerMode, sectionId (section ID string or null), explanation (string; use "" if none), tags (array of strings; use [] if none), and provenance.
+- Each option object must contain id and text as strings. Do not output options as bare strings.
+- correctOptionIds must contain one or more IDs that exactly match option IDs in that question. Never use option text or a numeric index as an answer key.
+- answerMode must be "single", "exactly-n", or "select-all". Use "single" only with exactly one correct ID; "exactly-n" only when the question explicitly asks for a fixed number and at least two options are correct; use "select-all" when the respondent must choose every valid answer and there can be multiple correct answers.
+- Set provenance on every question to "${mode==='extract'?'AI-Extracted':'AI-Generated'}". Provenance is a field, not a tag. Do not put AI provenance labels in tags.
+- Do not invent extra top-level fields. The optional source field should be omitted unless the original question is explicitly known to be professor-written or another source is explicitly recorded; never infer authorship.
+
+SECTION FORMAT AND ASSIGNMENT
+- Every new section object must use exactly these fields: id, name, parentId. Use "name", not "title". name is the visible section label. parentId is the parent section ID or null for a top-level section.
+- Every question's sectionId must be null or the ID of a real section: either an existing section listed below or a new section included in the output sections array. Never use a section name in sectionId.
+- If an existing section catalogue is supplied, treat it as authoritative. Reuse exact existing IDs for matching questions; do not redefine, rename, or repeat existing sections in the output sections array. If all questions fit existing sections, return "sections": [].
+- Only add new section definitions when the supplied material contains a meaningful topic not covered by the existing catalogue. Do not create duplicate or near-duplicate sections. New sections may have parentId pointing to an existing section ID or another new section ID.
+- If no existing catalogue is supplied, create a concise hierarchy that reflects the actual examinable topics. Include only sections used by at least one question. Use stable unique IDs and valid parent relationships.
+- If a question cannot be assigned confidently, use sectionId: null rather than inventing an ID.
+
+MATHEMATICAL NOTATION
+- Preserve mathematical notation accurately. Use LaTeX delimiters for formulas: \\( ... \\) for inline math and \\[ ... \\] for display equations.
+- Because the output is JSON, escape every LaTeX backslash as \\\\ in the JSON text. For example, a prompt containing inline x squared should contain the JSON text "prompt": "Simplify \\\\(x^2\\\\)." and a display equation should use "\\\\[ ... \\\\]".
+- Keep formulas in the original mathematical meaning; do not replace them with screenshots, Unicode approximations, or Markdown code. Use plain text for ordinary prose and LaTeX delimiters only around mathematical expressions.
+
+${sectionRules}${sectionList}`;
+
  const promptTemplate = mode === 'extract' ? extractPrompt : generatePrompt;
  return promptTemplate.replace('{{COMMON_SCHEMA_AND_SECTION_RULES}}', common);
 }
