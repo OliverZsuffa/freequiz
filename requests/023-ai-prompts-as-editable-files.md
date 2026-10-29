@@ -22,4 +22,6 @@ Move the AI Extract and Generate instructions out of `src/domain.ts` into plain-
 - The prompts use generic wording such as “the supplied source” and “the supplied section catalogue”; they must not mention a particular filename such as `quiz-sections.json`.
 
 ## Verification status
-Implementation is on branch `implement/023-editable-ai-prompts`. Automated checks and PR review are pending. No merge or deployment is claimed.
+- PR #46: https://github.com/OliverZsuffa/freequiz/pull/46
+- Workflow run [40908254027](https://github.com/OliverZsuffa/freequiz/actions/runs/40908254027) passed all 97 tests, TypeScript checking, production build, offline-build validation, Pages configuration, and artifact upload.
+- Changes remain unmerged pending review/approval. The PR workflow did not deploy the site, and manual browser/device testing was not performed.
