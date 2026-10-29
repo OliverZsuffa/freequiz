@@ -225,8 +225,8 @@ The Learning timeline's **Export history** exports only the active profile's his
 
 ## Request 026: Clearer AI LaTeX instructions
 
-- Approved and implemented in [PR #49](https://github.com/OliverZsuffa/freequiz/pull/49); checks are pending.
+- Approved and implemented in [PR #49](https://github.com/OliverZsuffa/freequiz/pull/49). PR workflow [40930112083](https://github.com/OliverZsuffa/freequiz/actions/runs/40930112083) passed 105 tests, TypeScript checking, production build, offline-build validation, Pages configuration, and artifact upload.
 - Shared instructions in `src/domain.ts` now specify the delimiters Freequiz renders, require each complete formula to use one matching math span, and explain JSON escaping at the source and decoded-string levels.
 - The prompts prohibit `$...$` and `$$...$$` because the current `MathText` component does not render those delimiters. Both Extract and Generate receive the shared instructions.
 - Regression coverage checks the prompt contract and a complete implication/equivalence formula through JSON parsing and MathText.
-- Deployment and manual browser verification are not yet confirmed.
+- The PR deployment job was skipped as expected; main-branch deployment has not been checked because the PR is not merged. Manual browser/visual verification has not been performed.
