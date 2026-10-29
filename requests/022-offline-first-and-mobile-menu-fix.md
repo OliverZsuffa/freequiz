@@ -1,6 +1,6 @@
 # Request 022: Offline-first Freequiz and reliable mobile More menu
 
-**Status:** Implementation on `request-022-offline-menu-fix`; CI and release checks pending.
+**Status:** Implemented and merged in [PR #45](https://github.com/OliverZsuffa/freequiz/pull/45). Main build and GitHub Pages deployment passed in [workflow run 40902835993](https://github.com/OliverZsuffa/freequiz/actions/runs/40902835993). Real-device offline and phone-viewport smoke testing remains outstanding.
 
 ## Goal
 
@@ -89,3 +89,10 @@ Add or update tests to verify:
 - Service-worker registration uses Vite's base path and explicit scope, so the published `/freequiz/` app stays inside its project subpath.
 - Moved the shared More menu into a `.main-area` portal and gave it fixed viewport positioning, so the mobile-only hidden top bar can no longer hide the menu. Added regression assertions for portal placement and the mobile bottom-navigation trigger.
 - Automated checks and deployment status will be recorded after CI completes. Real-device offline smoke testing must be reported separately from CI.
+
+
+## Verification record
+
+- PR workflow [40902614069](https://github.com/OliverZsuffa/freequiz/actions/runs/40902614069) passed the test suite, TypeScript check, production build, and offline-cache validation.
+- After merge, main workflow [40902835993](https://github.com/OliverZsuffa/freequiz/actions/runs/40902835993) passed the build, public legal-info validation, and GitHub Pages deployment.
+- Automated tests confirm that the menu is portalled into `.main-area` outside the hidden top bar and can be opened through the mobile More trigger. No real-device/browser offline smoke test was available in this implementation session, so offline operation and actual viewport geometry still need a hands-on check.
