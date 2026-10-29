@@ -179,7 +179,7 @@ SECTION FORMAT AND ASSIGNMENT
 - If a question cannot be assigned confidently, use sectionId: null rather than inventing an ID.
 
 MATHEMATICAL NOTATION
-- Preserve mathematical notation accurately. Use LaTeX delimiters \\\\( ... \\\\) for inline math and \\\\[ ... \\\\] for display equations.
+- Preserve mathematical notation accurately. Use LaTeX delimiters \\( ... \\) for inline math and \\[ ... \\] for display equations.
 - The output is JSON, so each literal LaTeX backslash must be escaped once in the JSON source: write TWO backslash characters for each one backslash in the decoded question text. Do not write four backslashes for one delimiter backslash.
 - Correct inline JSON example: "prompt": "Solve \\\\(x^2 = 4\\\\)." After JSON parsing, the question text is: Solve \\(x^2 = 4\\).
 - Correct display JSON example: "prompt": "Find the roots: \\\\[x^2 = 4\\\\]" After JSON parsing, the question text is: Find the roots: \\[x^2 = 4\\]
