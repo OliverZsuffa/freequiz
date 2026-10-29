@@ -38,7 +38,7 @@ Freequiz stores your profiles and progress in this browser. It does not have acc
 - Independently configurable activity heatmap, streaks, milestones, weekly goals, celebrations, and session highlights
 - Opt-in reminders checked while the app is open; closed-app delivery is not guaranteed
 - IndexedDB persistence with localStorage fallback
-- Installable PWA and service worker for offline app shell caching
+- Installable PWA with a build-generated service worker that precaches the complete app shell and static assets for offline use
 - Responsive layout
 
 ## Local development
@@ -54,7 +54,7 @@ npm run build
 
 ## GitHub Pages
 
-The Actions workflow builds and tests the application, uploads the `dist` artifact, then deploys it to Pages. Vite is configured for the `/freequiz/` base path.
+The Actions workflow builds and tests the application, validates the generated offline cache manifest, uploads the `dist` artifact, then deploys it to Pages. Vite is configured for the `/freequiz/` base path. After the first successful online visit, wait for the service worker to finish installing; Freequiz can then reopen and run offline. External links still need a connection.
 
 In repository settings, set **Pages → Build and deployment → Source** to **GitHub Actions**. The workflow deploys on pushes to `main`. Check the Actions run and open the published URL to confirm deployment.
 
