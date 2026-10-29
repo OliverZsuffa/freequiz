@@ -1,12 +1,12 @@
 # Request 022: Offline-first Freequiz and reliable mobile More menu
 
-**Status:** Implementation in progress on `request-022-offline-menu-fix`; validation and release checks pending.
+**Status:** Implementation on `request-022-offline-menu-fix`; CI and release checks pending.
 
 ## Goal
 
 Make Freequiz work offline with the same features and behaviour it has online, and fix the mobile More menu, which is still inaccessible.
 
-Freequiz is already client-side and stores profiles/progress in browser storage. It has a web app manifest, but the current `src/main.tsx` does not register a service worker and no existing service-worker file was found in the current repository. The manifest alone does not make the app available offline.
+Freequiz is client-side and stores profiles/progress in browser storage. It has a web app manifest and a manually maintained `public/sw.js`, registered from `src/App.tsx`; however, that worker only pre-caches the HTML shell and a few static files, not the hashed JavaScript/CSS required to run the app on the first offline reload. The menu was also rendered inside `.topbar`, which is hidden on mobile.
 
 ## Requirements
 
