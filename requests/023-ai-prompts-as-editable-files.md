@@ -26,8 +26,8 @@ Move the AI Extract and Generate instructions out of `src/domain.ts` into plain-
 7. Merge only after the user approves; then verify the main-branch workflow and report deployment status separately from manual browser/device testing.
 
 ## Implementation plan status
-- Steps 1–5 are implemented on the PR branch. Step 6's automated checks passed in GitHub Actions; the PR and Knowledge Base documentation were updated.
-- Step 7 is pending until the merge is completed. The PR workflow builds and uploads the Pages artifact but does not itself prove the main-branch deployment or manual browser/device behaviour.
+- Steps 1–6 are complete. The implementation was merged in PR #46 (squash merge commit `c0e2dbad91958b20242ee8b78895f3fbcf8625ea`). The PR workflow passed the automated checks listed below.
+- Step 7's merge is complete. The main-branch deployment has not been independently verified here, and manual browser/device testing was not performed.
 
 ## Implementation notes
 - Prompt text is imported as build-time raw text. This keeps the deployed app independent of network availability.
@@ -37,4 +37,4 @@ Move the AI Extract and Generate instructions out of `src/domain.ts` into plain-
 ## Verification status
 - PR #46: https://github.com/OliverZsuffa/freequiz/pull/46
 - Workflow run [40908254027](https://github.com/OliverZsuffa/freequiz/actions/runs/40908254027) passed all 97 tests, TypeScript checking, production build, offline-build validation, Pages configuration, and artifact upload.
-- Changes remain unmerged pending review/approval. The PR workflow did not deploy the site, and manual browser/device testing was not performed.
+- Merged in PR #46 as commit [`c0e2dbad91958b20242ee8b78895f3fbcf8625ea`](https://github.com/OliverZsuffa/freequiz/commit/c0e2dbad91958b20242ee8b78895f3fbcf8625ea). The PR workflow did not deploy the site; main-branch deployment and manual browser/device testing have not been independently verified.
