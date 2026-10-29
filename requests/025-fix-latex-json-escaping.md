@@ -2,7 +2,7 @@
 
 ## Status
 
-Implementation is in progress on branch `plan/025-fix-latex-json-escaping` and proposed in PR. Automated checks are pending. No manual browser smoke test has been performed.
+Implemented and proposed in [PR #48](https://github.com/OliverZsuffa/freequiz/pull/48) on branch `plan/025-fix-latex-json-escaping`. CI passed in [workflow run 40924624377](https://github.com/OliverZsuffa/freequiz/actions/runs/40924624377). No manual browser smoke test has been performed.
 
 ## Problem
 
@@ -69,3 +69,11 @@ Request 024 added local rendering for LaTeX delimiters `\\(...\\)` and `\\[...\\
 - Added an integration-style test that parses valid JSON containing inline math, an answer-option formula, and a display formula, then renders the decoded strings through \`MathText\`.
 - Added a negative test showing that over-escaped delimiters are not mistaken for supported delimiters.
 - Automated test/build results will be added after CI completes.
+
+
+### Verification results
+
+- [Workflow run 40924624377](https://github.com/OliverZsuffa/freequiz/actions/runs/40924624377) passed: all 5 test files, 104 tests, TypeScript check, production build, Pages configuration, and artifact upload.
+- The deploy job was skipped because this workflow run is for a pull request; no deployment is claimed.
+- The first CI attempt exposed a missing closing parenthesis in a new prompt assertion. That test syntax was corrected and the subsequent workflow passed.
+- No manual browser/visual smoke test has been performed.
