@@ -48,7 +48,7 @@ describe('MathText', () => {
         explanation: formula
       }]
     })
-    expect(rawJson).toContain('\\\\\\\\(')
+    expect(rawJson).toContain('\\\\(')
     const parsed = parseImport(JSON.parse(rawJson))
     expect(parsed.questions[0].options[0].text).toBe(formula)
     const { container } = render(<>
