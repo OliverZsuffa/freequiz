@@ -70,7 +70,7 @@ describe('AI prompt modes and provenance', () => {
     expect(prompt).toContain('MODE: GENERATE NEW QUESTIONS')
     expect(prompt).toContain('AI-Generated')
     expect(prompt).toContain('Every incorrect option must be a credible mistake')
-    expect(prompt).toContain('Balance answer lengths')
+    expect(prompt).toContain('ANSWER-LENGTH AND OPTION BALANCE')
     expect(prompt).toContain('Vary the positions of correct answers across the whole question set')
     expect(prompt).toContain('grammar')
   })
