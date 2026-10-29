@@ -2,7 +2,7 @@
 
 ## Status
 
-Implementation proposed in [PR #47](https://github.com/OliverZsuffa/freequiz/pull/47); automated checks are being verified.
+Implementation proposed in [PR #47](https://github.com/OliverZsuffa/freequiz/pull/47). Automated checks passed in [workflow run 40921538249](https://github.com/OliverZsuffa/freequiz/actions/runs/40921538249): 101 tests, TypeScript check, production build, offline-build validation, and Pages artifact upload. The PR is not merged; manual visual/offline smoke testing remains outstanding.
 
 ## Goals
 
@@ -33,3 +33,11 @@ Implementation proposed in [PR #47](https://github.com/OliverZsuffa/freequiz/pul
 - Automated tests cover prompt schema instructions, `title` to `name` normalisation, inline/display rendering, and malformed formulas.
 - TypeScript and production/offline build checks pass.
 - Pull request CI is reviewed before reporting completion. Manual visual and offline smoke tests remain distinguished from automated checks.
+
+
+## Verification record
+
+- PR #47 workflow [40921538249](https://github.com/OliverZsuffa/freequiz/actions/runs/40921538249) passed all 101 tests across 5 test files, TypeScript checking, Vite production build, offline-build validation, Pages configuration, and artifact upload.
+- Automated tests cover inline/display formula rendering, malformed LaTeX safety, explicit AI JSON schema instructions, and imported section `title` compatibility.
+- Stored title-only section names are normalised on app load, including import-history section snapshots. This was included in the passing build.
+- PR remains unmerged pending Oliver's approval. No manual browser, visual, or offline smoke test has been performed.
