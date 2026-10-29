@@ -26,7 +26,8 @@ describe('LaTeX instructions in AI prompts', () => {
     for (const mode of ['extract', 'generate'] as const) {
       const prompt = buildAiPrompt([], mode)
       expect(prompt).toContain('MATHEMATICAL NOTATION')
-      expect(prompt).toContain('Do NOT use dollar delimiters such as $...$ or $$...$$')
+      expect(prompt).toContain('Do NOT use dollar delimiters')
+      expect(prompt).toContain('Freequiz does not render those delimiters')
       expect(prompt).toContain('Enclose each complete mathematical expression in one matching pair of delimiters')
       expect(prompt).toContain('operators are not accidentally outside the span')
       expect(prompt).toContain('Correct complete formula in JSON')
