@@ -118,7 +118,7 @@ export type AiPromptMode = 'extract' | 'generate'
 export function buildAiPrompt(sections: Section[], mode: AiPromptMode = 'generate', includeSections = true) {
  const hasExistingSections = includeSections && sections.length > 0;
  const sectionList = hasExistingSections
-  ? '\\nExisting sections (id | parentId | name):\\n' + sections.map(s=>s.id+' | '+(s.parentId??'-')+' | '+s.name).join('\\n')
+  ? '\nExisting sections (id | parentId | name):\n' + sections.map(s=>s.id+' | '+(s.parentId??'-')+' | '+s.name).join('\n')
   : '';
  const sectionRules = hasExistingSections
   ? ' Treat the supplied section catalogue as the complete existing section catalogue. Reuse the exact existing section ID in each question sectionId whenever a listed section fits. Existing IDs remain valid even when their definitions are absent from this import file; Freequiz matches them against the profile section tree. Do NOT make the file self-contained by repeating existing section definitions. Do not return, copy, rename, or redefine any listed section in the output sections array. That array may contain ONLY genuinely new section definitions that do not fit any existing section. If every question fits an existing section, the required output is exactly sections: []. Example: with an existing section ID such as section-1-1, a question may use sectionId: section-1-1 while the top-level sections array is empty. Do not treat generic schema conventions or assumptions about self-contained JSON as a reason to repeat existing sections. A new section parentId may refer to an existing section ID.'
