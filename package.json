@@ -8,7 +8,7 @@
     "validate:legal-info": "node scripts/validate-legal-info.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "build": "npm run typecheck && vite build",
+    "build": "npm run typecheck && vite build && node scripts/validate-offline-build.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

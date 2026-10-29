@@ -46,7 +46,7 @@ Freequiz is a private, client side only progressive web app for organising and p
 - Four persisted accent presets (blue, purple, orange, green), plus dark/light appearance. Request 006 aligns dark/light surfaces with the selected accent while retaining semantic correctness and mastery colours.
 - Import workflow validates JSON and previews merge/replace; AI prompt generation remains local and does not call an API.
 - Import history is profile-local and optional for legacy profiles. Each batch stores its timestamp, name, source type, original question/section snapshot, and IDs newly added. Users can inspect batches, see added/skipped counts, see the first import attribution in the library, and export an individual batch as a question-bank JSON file. Snapshots remain available if library questions are later changed or deleted.
-- IndexedDB persistence with localStorage fallback, profile backup export, responsive layout, PWA manifest/service worker, and GitHub Pages deployment workflow.
+- IndexedDB persistence with localStorage fallback, profile backup export, responsive layout, PWA manifest and build-generated service worker that precaches built assets, and GitHub Pages deployment workflow.
 
 ## Known limitations
 - Section creation currently adds top-level sections only. Imported nested sections display and filter correctly, but nested creation/moving and section renaming are not yet available.
