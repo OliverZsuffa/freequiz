@@ -18,12 +18,12 @@ describe('Freequiz', () => {
     expect(screen.queryByText('Good to have you here.')).not.toBeInTheDocument()
   })
 
-  it('anchors the More menu inside the header actions so desktop positioning is trigger-relative', () => {
+  it('renders the More menu in a viewport-level portal so it remains visible when the top bar is hidden', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
     const menu = document.querySelector('.global-menu')
     expect(menu).toBeInTheDocument()
-    expect(menu?.parentElement).toHaveClass('top-actions')
+    expect(menu?.parentElement).toBe(document.body)
     fireEvent.click(within(menu as HTMLElement).getByRole('button', { name: 'Settings' }))
     expect(screen.getByRole('heading', { name: 'Settings' })).toBeInTheDocument()
     expect(document.querySelector('.global-menu')).not.toBeInTheDocument()
@@ -55,11 +55,11 @@ describe('Freequiz', () => {
     expect(screen.getByText('Question 1 of 2')).toBeInTheDocument()
   })
 
-  it('keeps the More menu available on a phone-sized viewport', () => {
+  it('opens the More menu from the mobile bottom navigation', () => {
     const originalWidth = window.innerWidth
     Object.defineProperty(window, 'innerWidth', { configurable: true, value: 390 })
     render(<App />)
-    const trigger = screen.getByRole('button', { name: 'Menu' })
+    const trigger = screen.getByRole('button', { name: 'Open more options' })
     fireEvent.click(trigger)
     expect(trigger).toHaveAttribute('aria-expanded', 'true')
     const menu = document.querySelector('.global-menu')
