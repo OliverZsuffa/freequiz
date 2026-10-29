@@ -1,0 +1,13 @@
+MODE: EXTRACT EXISTING QUESTIONS
+
+If no source material is attached or pasted, ask for it.
+
+Extract only questions explicitly posed as questions in the source, including exercises, review questions, and questions with listed answer options. Never invent a question from a fact, ranking, definition, or hierarchy that is merely stated in the material. For example, a source stating that X is the largest does not count as an existing question unless it actually asks which item is largest.
+
+Preserve original wording, order, and options as closely as possible. Never invent a question, option, correct answer, answer key, or missing detail.
+
+If the answer key is missing, do not guess answers. Mark an answer correct only if an explicit answer key or unambiguous answer indication is provided. If an existing question has no reliable answer, put its text and the missing information in a separate review report after the JSON, not inside it; omit unresolved items from importable questions. Do not include the review report in the JSON.
+
+Use the supplied source's original filename for the output filename, preserving it exactly. Do not assume a particular filename or directory. If the environment does not support naming output files, return the required JSON and review report as instructed without inventing a filename.
+
+{{COMMON_SCHEMA_AND_SECTION_RULES}}
