@@ -31,6 +31,34 @@ describe('MathText', () => {
     expect(container.querySelector('.math-display .katex-display')).toBeInTheDocument()
   })
 
+  it('renders a complete implication/equivalence formula from valid question-bank JSON', () => {
+    const formula = 'Equivalence: \\((A \\rightarrow B) \\iff (\\neg A \\rightarrow \\neg B)\\)'
+    const rawJson = JSON.stringify({
+      format: 'freequiz/questions-v1',
+      sections: [],
+      questions: [{
+        id: 'equivalence',
+        prompt: 'Which equivalence is valid?',
+        options: [
+          { id: 'a', text: formula },
+          { id: 'b', text: 'Not equivalent' }
+        ],
+        correctOptionIds: ['a'],
+        sectionId: null,
+        explanation: formula
+      }]
+    })
+    expect(rawJson).toContain('\\\\\\\\(')
+    const parsed = parseImport(JSON.parse(rawJson))
+    expect(parsed.questions[0].options[0].text).toBe(formula)
+    const { container } = render(<>
+      <MathText text={parsed.questions[0].options[0].text} />
+      <MathText text={parsed.questions[0].explanation ?? ''} />
+    </>)
+    expect(container.querySelectorAll('.katex').length).toBe(2)
+    expect(container.textContent).toContain('A')
+  })
+
   it('does not interpret over-escaped JSON delimiters as normal delimiters', () => {
     const jsonText = String.raw`{"questions":[{"id":"over","prompt":"Solve \\\\(x^2 = 4\\\\).","options":[{"id":"a","text":"A"},{"id":"b","text":"B"}],"correctOptionIds":["a"]}]}`
     const parsed = parseImport(JSON.parse(jsonText))
