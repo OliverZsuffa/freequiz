@@ -21,6 +21,18 @@ describe('answer and review helpers',()=>{it('checks exact multi select matches'
 describe('JSON import',()=>{it('normalises simple question arrays',()=>{const r=parseImport([{prompt:'Pick one',options:['A','B'],answer:1}]);expect(r.questions[0].correctOptionIds).toEqual(['o2'])});it('normalises section title aliases into the internal name field',()=>{const r=parseImport({sections:[{id:'sec-1',title:'Einführung & Grundbegriffe'}],questions:[{id:'q1',prompt:'Question?',options:['A','B'],answer:0,sectionId:'sec-1'}]});expect(r.sections).toEqual([{id:'sec-1',name:'Einführung & Grundbegriffe',parentId:null}]);expect(r.questions[0].sectionId).toBe('sec-1')});it('rejects too few options',()=>expect(()=>parseImport({questions:[{prompt:'Broken',options:['A'],correctOptionIds:['a']}]})).toThrow(/at least two options/));it('rejects invalid option IDs',()=>expect(()=>parseImport({questions:[{prompt:'Broken',options:['A','B'],correctOptionIds:['missing']}]})).toThrow(/correctOptionIds/))})
 it('includes existing sections and reusable source instructions in AI prompt',()=>{const p=buildAiPrompt([{id:'math',name:'Math',parentId:null}]);expect(p).toContain('Math');expect(p).toContain('source material');expect(p).toContain('exactly-n');expect(p).toContain('select-all');expect(p).toContain('freequiz/questions-v1');expect(p).toContain('"name": "Section name"');expect(p).toContain('Use "name", not "title"');expect(p).toContain('MATHEMATICAL NOTATION');expect(p).toContain('correctOptionIds')})
 
+describe('LaTeX JSON escaping instructions', () => {
+  it('explains the JSON and decoded-string escaping layers in both AI modes', () => {
+    for (const mode of ['extract', 'generate'] as const) {
+      const prompt = buildAiPrompt([], mode)
+      expect(prompt).toContain('write TWO backslash characters')
+      expect(prompt).toContain(String.raw\`"prompt": "Solve \\\\(x^2 = 4\\\\)."\`)
+      expect(prompt).toContain(String.raw\`After JSON parsing, the question text is: Solve \\(x^2 = 4\\).\`)
+      expect(prompt).toContain('Do not write four backslashes for one delimiter backslash')
+    }
+  })
+})
+
 describe('answer modes and import compatibility', () => {
   it('defaults older single-answer questions to single mode', () => {
     const parsed = parseImport({ questions: [{ id: 'old-single', prompt: 'Pick one', options: [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }], correctOptionIds: ['a'] }] })
