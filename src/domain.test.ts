@@ -69,7 +69,7 @@ describe('AI prompt modes and provenance', () => {
     const prompt = buildAiPrompt([], 'generate')
     expect(prompt).toContain('MODE: GENERATE NEW QUESTIONS')
     expect(prompt).toContain('AI-Generated')
-    expect(prompt).toContain('Distractors must be credible mistakes')
+    expect(prompt).toContain('Every incorrect option must be a credible mistake')
     expect(prompt).toContain('Balance answer lengths')
     expect(prompt).toContain('Vary the positions of correct answers across the whole question set')
     expect(prompt).toContain('grammar')
@@ -130,7 +130,7 @@ describe('Request 006 AI prompt quality', () => {
     expect(prompt).toContain('every major topic is represented')
     expect(prompt).toContain('Do not pad the bank with near-duplicates')
     expect(prompt).toContain('Skip introductions, agendas, advertisements')
-    expect(prompt).toContain('Vary correct-answer positions')
+    expect(prompt).toContain('Vary the positions of correct answers across the whole question set')
   })
 
   it('strictly forbids source-referencing wording in generated questions', () => {
