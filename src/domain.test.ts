@@ -26,8 +26,8 @@ describe('LaTeX JSON escaping instructions', () => {
     for (const mode of ['extract', 'generate'] as const) {
       const prompt = buildAiPrompt([], mode)
       expect(prompt).toContain('write TWO backslash characters')
-      expect(prompt).toContain(String.raw\`"prompt": "Solve \\\\(x^2 = 4\\\\)."\`)
-      expect(prompt).toContain(String.raw\`After JSON parsing, the question text is: Solve \\(x^2 = 4\\).\`)
+      expect(prompt).toContain('"prompt": "Solve ' + '\\\\' + '(x^2 = 4' + '\\\\' + ')."'
+      expect(prompt).toContain('After JSON parsing, the question text is: Solve \\(x^2 = 4\\).')
       expect(prompt).toContain('Do not write four backslashes for one delimiter backslash')
     }
   })
