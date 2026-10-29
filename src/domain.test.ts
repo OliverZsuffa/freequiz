@@ -71,7 +71,7 @@ describe('AI prompt modes and provenance', () => {
     expect(prompt).toContain('AI-Generated')
     expect(prompt).toContain('Distractors must be credible mistakes')
     expect(prompt).toContain('Balance answer lengths')
-    expect(prompt).toContain('Vary correct-answer positions')
+    expect(prompt).toContain('Vary the positions of correct answers across the whole question set')
     expect(prompt).toContain('grammar')
   })
 
@@ -139,6 +139,31 @@ describe('Request 006 AI prompt quality', () => {
     expect(prompt).toContain('according to the slides')
     expect(prompt).toContain('Do not mention slides, lectures, notes, documents, or the source')
     expect(prompt).toContain('Every question stem must be direct, natural, self-contained')
+  })
+
+  it('keeps distractor, option-balance, answer-position, and ambiguity rules explicit and separate', () => {
+    const prompt = buildAiPrompt([], 'generate')
+    expect(prompt).toContain('DISTRACTOR QUALITY')
+    expect(prompt).toContain('ANSWER-LENGTH AND OPTION BALANCE')
+    expect(prompt).toContain('CORRECT-ANSWER POSITION BALANCE')
+    expect(prompt).toContain('AVOIDING ANSWER CLUES AND AMBIGUITY')
+    expect(prompt).toContain('Every incorrect option must be a credible mistake')
+    expect(prompt).toContain('Do not systematically make the correct answer longer')
+    expect(prompt).toContain('Vary the positions of correct answers across the whole question set')
+    expect(prompt).toContain('Do not rely on unstated assumptions to rule out a distractor')
+  })
+
+  it('adds source-wide learning coverage and avoids hard-coded source filenames', () => {
+    const generated = buildAiPrompt([], 'generate')
+    const extracted = buildAiPrompt([], 'extract')
+    for (const prompt of [generated, extracted]) {
+      expect(prompt).toContain("Use the supplied source's original filename for the output filename")
+      expect(prompt).toContain('Do not assume a particular filename or directory')
+      expect(prompt).not.toContain('quiz-sections.json')
+    }
+    expect(generated).toContain('Read the supplied source as a whole')
+    expect(generated).toContain('Do not generate questions about author names, publication years, document metadata')
+    expect(generated).toContain("Do not test arbitrary exact numbers from an example company's dataset")
   })
 
   it('accepts a question that references an existing section without repeating its definition', () => {
