@@ -117,10 +117,12 @@ describe('Request 006 AI prompt quality', () => {
     expect(included).toContain('Existing IDs remain valid even when their definitions are absent from this import file')
     expect(included).toContain('Do NOT make the file self-contained by repeating existing section definitions')
     expect(included).toContain('Do not treat generic schema conventions or assumptions about self-contained JSON as a reason to repeat existing sections')
-    expect(included).not.toContain('"parentId":')
+    expect(included).toContain('"parentId": null')
     const omitted = buildAiPrompt(sections, 'generate', false)
     expect(omitted).not.toContain('Existing sections (id | parentId | name)')
     expect(omitted).toContain('Create a concise section hierarchy from course headings/content as needed')
+    expect(omitted).toContain('JSON OUTPUT CONTRACT — FOLLOW EXACTLY')
+    expect(omitted).toContain('"parentId": null')
   })
 
   it('requires broad coverage and a substantial set without padding', () => {
