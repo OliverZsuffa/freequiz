@@ -17,7 +17,7 @@ describe('MathText', () => {
   })
 
   it('parses valid JSON escaping and renders the decoded inline and display formulas', () => {
-    const jsonText = String.raw\`{"format":"freequiz/questions-v1","sections":[],"questions":[{"id":"math","prompt":"Solve \\\\(x^2 = 4\\\\).","options":[{"id":"a","text":"\\\\(2\\\\)"},{"id":"b","text":"\\\\(3\\\\)"}],"correctOptionIds":["a"],"sectionId":null,"explanation":"Roots: \\\\[x=\\\\pm2\\\\]"}]}\`
+    const jsonText = String.raw`{"format":"freequiz/questions-v1","sections":[],"questions":[{"id":"math","prompt":"Solve \\\\(x^2 = 4\\\\).","options":[{"id":"a","text":"\\\\(2\\\\)"},{"id":"b","text":"\\\\(3\\\\)"}],"correctOptionIds":["a"],"sectionId":null,"explanation":"Roots: \\\\[x=\\\\pm2\\\\]"}]}`
     const parsed = parseImport(JSON.parse(jsonText))
     expect(parsed.questions[0].prompt).toBe('Solve \\(x^2 = 4\\).')
     expect(parsed.questions[0].options[0].text).toBe('\\(2\\)')
@@ -32,7 +32,7 @@ describe('MathText', () => {
   })
 
   it('does not interpret over-escaped JSON delimiters as normal delimiters', () => {
-    const jsonText = String.raw\`{"questions":[{"id":"over","prompt":"Solve \\\\\\\\(x^2 = 4\\\\\\\\).","options":[{"id":"a","text":"A"},{"id":"b","text":"B"}],"correctOptionIds":["a"]}]}\`
+    const jsonText = String.raw`{"questions":[{"id":"over","prompt":"Solve \\\\\\\\(x^2 = 4\\\\\\\\).","options":[{"id":"a","text":"A"},{"id":"b","text":"B"}],"correctOptionIds":["a"]}]}`
     const parsed = parseImport(JSON.parse(jsonText))
     const { container } = render(<MathText text={parsed.questions[0].prompt} />)
     expect(container.querySelector('.katex')).toBeNull()
