@@ -18,7 +18,7 @@ for (const required of ['manifest.webmanifest', 'icon.svg', 'legal-info.json', '
 const assets = readdirSync(join(dist, 'assets'))
 assert.ok(assets.some(file => file.endsWith('.js')), 'built JavaScript must exist')
 assert.ok(assets.some(file => file.endsWith('.css')), 'built CSS must exist')
-for (const file of assets.filter(file => /\\.(js|css)$/.test(file))) {
+for (const file of assets.filter(file => file.endsWith('.js') || file.endsWith('.css'))) {
   assert.ok(worker.includes(base + 'assets/' + file), `worker must precache assets/${file}`)
 }
 assert.ok(worker.includes('request.mode === \'navigate\''), 'worker must provide offline navigation fallback')
