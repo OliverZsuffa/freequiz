@@ -1,0 +1,63 @@
+MODE: GENERATE NEW QUESTIONS
+
+If no source material is attached or pasted, ask for it.
+
+Use the supplied source's original filename for the output filename, preserving it exactly. Do not assume a particular filename or directory. If the environment does not support naming output files, return the required JSON without inventing a filename.
+
+LEARNING COVERAGE
+Read the supplied source as a whole and identify the examinable concepts, definitions, formulas, mechanisms, distinctions, relationships, and reasoning it teaches. Build a comprehensive question bank, not a short sample. First identify the major examinable topics and subtopics, then generate questions across that coverage before finishing.
+
+For each substantial topic, aim for at least 3 distinct questions and typically 5 or more for a large topic, using recall, explanation, comparison, application, and misconception checks where supported. There is no arbitrary maximum: continue while the material supports useful, distinct questions. Do not pad the bank with near-duplicates or trivia just to hit a count. Before finalizing, check that every major topic is represented and expand any thin areas.
+
+Questions and explanations should teach and reinforce the underlying principles, not merely test isolated details. Prioritize core concepts, definitions, formulas, mechanisms, distinctions, relationships, reasoning, applications, and common misconceptions.
+
+Do not generate questions about author names, publication years, document metadata, or other incidental details unless they are genuinely examinable. Do not test arbitrary exact numbers from an example company's dataset merely because those numbers appear in the source. Test the underlying principle or method instead, unless the exact figures themselves are important learning content.
+
+Skip introductions, agendas, advertisements, administrative details, contacts, schedules, icebreakers, and other non-course content. A conclusion is usable only if it contains examinable course content.
+
+QUESTION STEMS AND SOURCE GROUNDING
+Every question stem must be direct, natural, self-contained, and about the subject itself. STRICTLY DO NOT write phrases such as “according to the slides,” “according to the lecture,” “as described in the course material,” “the lecture material states,” “in the presentation,” or similar references to the source. Do not mention slides, lectures, notes, documents, or the source in question stems or explanations; test the concept directly. Only mention a source when the source itself is genuinely the subject of the question.
+
+Keep stems concise without removing context needed to test the concept. Ground correct answers and concise explanations in the supplied material; do not add unsupported outside facts or guess. If the source cannot support a sound answer, skip the item.
+
+DISTRACTOR QUALITY
+Every incorrect option must be a credible mistake based on a common misconception or a realistic misunderstanding of the subject.
+Do not use absurd, silly, nonsensical, impossible, or obviously irrelevant distractors.
+Distractors must be in the same domain as the correct answer and require actual subject knowledge to reject.
+Make distractors mutually distinguishable. Avoid overlapping options, duplicate wrong ideas, synonyms, or options that could both reasonably be correct.
+Each distractor must be genuinely incorrect under the exact wording and conditions of the question, not merely less complete or less preferred than the correct answer.
+Do not use “all of the above,” “none of the above,” or filler options unless the subject itself specifically requires them.
+
+ANSWER-LENGTH AND OPTION BALANCE
+Keep answer options comparable in specificity, grammar, and natural length.
+Do not systematically make the correct answer longer than the incorrect options.
+Do not make the correct answer more qualified, precise, detailed, or explanatory than the distractors in a way that reveals it.
+Keep options grammatically parallel where possible and use matching units, precision, notation, and answer type.
+Do not pad an option with unnecessary words or remove necessary detail just to make options the same length.
+
+CORRECT-ANSWER POSITION BALANCE
+Vary the positions of correct answers across the whole question set.
+Avoid predictable patterns or repeatedly placing the correct answer in the same position.
+For questions with multiple correct answers, ensure every correct option is keyed and no incorrect option is keyed.
+
+AVOIDING ANSWER CLUES AND AMBIGUITY
+Remove clues caused by grammar, repeated keywords, absolute terms, formatting, option length, distinctive copied wording, or extra qualifications.
+Check every option against the full question and its stated conditions. There must be exactly one defensible correct option for single-answer questions. For exactly-N questions, there must be exactly N correct options. For select-all questions, key every valid option and no invalid option.
+Do not rely on unstated assumptions to rule out a distractor. If multiple answers could reasonably be defended, rewrite the question or options.
+
+OPTION COUNT AND FINAL QUALITY AUDIT
+Use a variable number of options appropriate to each question. Use the supported answer modes: single, exactly-n, or select-all.
+Before finalizing, review the complete bank for:
+- coverage gaps or topics represented too thinly;
+- factual errors and claims unsupported by the source;
+- duplicate or near-duplicate questions;
+- ambiguous stems or multiple defensible answers;
+- weak, implausible, overlapping, or accidentally correct distractors;
+- answer options that reveal the key through length, grammar, specificity, wording, or formatting;
+- predictable correct-answer positions;
+- incorrect answer keys or explanations that do not match the question.
+Fix identified problems before returning the output.
+
+Return only the JSON object, with no Markdown fences or commentary.
+
+{{COMMON_SCHEMA_AND_SECTION_RULES}}
