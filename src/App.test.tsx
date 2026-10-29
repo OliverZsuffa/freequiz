@@ -23,7 +23,7 @@ describe('Freequiz', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
     const menu = document.querySelector('.global-menu')
     expect(menu).toBeInTheDocument()
-    expect(menu?.parentElement).toBe(document.body)
+    expect(menu?.parentElement).toHaveClass('main-area')
     fireEvent.click(within(menu as HTMLElement).getByRole('button', { name: 'Settings' }))
     expect(screen.getByRole('heading', { name: 'Settings' })).toBeInTheDocument()
     expect(document.querySelector('.global-menu')).not.toBeInTheDocument()
