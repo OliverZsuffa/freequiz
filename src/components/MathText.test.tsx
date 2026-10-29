@@ -17,6 +17,6 @@ describe('MathText', () => {
 
   it('does not crash on malformed LaTeX', () => {
     expect(() => render(<MathText text={'Bad formula \\(\\notacommand{'} />)).not.toThrow()
-    expect(document.querySelector('.katex')).toBeInTheDocument()
+    expect(document.querySelector('.math-inline')).toBeInTheDocument()
   })
 })
