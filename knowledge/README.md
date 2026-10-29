@@ -211,3 +211,13 @@ The Learning timeline's **Export history** exports only the active profile's his
 - Generate explicitly separates distractor quality, answer-length and option balance, correct-answer position balance, clue/ambiguity prevention, and the final quality audit. Keep these as distinct rules when editing.
 - Both modes instruct compatible external AI environments to preserve the source PDF/note filename for the output file. Freequiz cannot enforce external file naming.
 - Implemented and merged via [PR #46](https://github.com/OliverZsuffa/freequiz/pull/46), merge commit [`c0e2dbad91958b20242ee8b78895f3fbcf8625ea`](https://github.com/OliverZsuffa/freequiz/commit/c0e2dbad91958b20242ee8b78895f3fbcf8625ea). Workflow [40908254027](https://github.com/OliverZsuffa/freequiz/actions/runs/40908254027) passed 97 tests, TypeScript checking, production build, offline-build validation, Pages configuration, and artifact upload. Main-branch deployment has not been independently verified; manual browser/device testing was not performed.
+
+## Request 024: LaTeX rendering and explicit AI JSON schema
+
+- Implementation plan and execution record: [`requests/024-latex-and-ai-json-schema.md`](../requests/024-latex-and-ai-json-schema.md).
+- Merged in [PR #47](https://github.com/OliverZsuffa/freequiz/pull/47), merge commit [`cea6a2c6e6ef08f445e343c353b58425e95c1b07`](https://github.com/OliverZsuffa/freequiz/commit/cea6a2c6e6ef08f445e343c353b58425e95c1b07).
+- Both AI prompt modes now receive explicit `freequiz/questions-v1` schema instructions, including section names/IDs, answer modes, provenance, and JSON escaping for LaTeX. Import accepts legacy section `title` as an alias for `name`; stored profile and import-history sections are normalised on app load.
+- KaTeX is bundled locally for inline `\\(...\\)` and display `\\[...\\]` formulas in study content, answer options, explanations, the question library, and the editor preview. Raw formula strings remain the stored/exported data.
+- PR workflow [40921538249](https://github.com/OliverZsuffa/freequiz/actions/runs/40921538249) passed 101 tests across 5 files, TypeScript checking, production build, offline-build validation, Pages configuration, and artifact upload. The passing run covered the implementation code; the later changes to the request documentation did not change app code.
+- Main-branch deployment was not independently verified from the available workflow results. Manual browser, visual, and offline smoke tests have not been performed. Do not infer those checks from CI.
+
