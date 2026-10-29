@@ -2,7 +2,7 @@
 
 ## Status
 
-Implementation plan only. Awaiting approval before changing application code.
+Implementation is in progress on branch `plan/025-fix-latex-json-escaping` and proposed in PR. Automated checks are pending. No manual browser smoke test has been performed.
 
 ## Problem
 
@@ -60,3 +60,12 @@ Request 024 added local rendering for LaTeX delimiters `\\(...\\)` and `\\[...\\
 - Do not change the LaTeX delimiters supported by the renderer.
 - Do not silently rewrite arbitrary imported question strings or guess whether malformed JSON was intended to contain LaTeX.
 - Do not claim the preview works until the decoded-string-to-renderer path is covered and, where possible, manually checked.
+
+
+## Implementation record
+
+- Corrected the shared mathematical-notation instructions used by both Extract and Generate prompt modes. The prompt now distinguishes the two backslashes in JSON source from the one backslash in the decoded question text and explicitly warns against four backslashes for one delimiter.
+- Added prompt assertions for both AI modes.
+- Added an integration-style test that parses valid JSON containing inline math, an answer-option formula, and a display formula, then renders the decoded strings through \`MathText\`.
+- Added a negative test showing that over-escaped delimiters are not mistaken for supported delimiters.
+- Automated test/build results will be added after CI completes.
