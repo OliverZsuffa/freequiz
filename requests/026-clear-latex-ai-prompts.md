@@ -103,13 +103,13 @@ The decoded text must be one complete inline formula:
 - Do not silently rewrite existing imported question text.
 - Do not add dollar-delimiter support to the renderer unless separately justified and approved.
 - Do not alter mathematical meaning, answer keys, or unrelated AI question-quality rules.
-- Do not implement anything until this plan is explicitly approved.
+- Implementation requires explicit approval of this plan (received on 2026-10-29).
 
 
 ## Execution record
 
-- Updated the shared mathematical-notation instructions in \`src/domain.ts\`, which are inserted into both Extract and Generate prompts.
-- Explicitly prohibited dollar math delimiters because the current \`MathText\` renderer only interprets \`\\(...\\)\` and \`\\[...\\]\`.
+- Updated the shared mathematical-notation instructions in `src/domain.ts`, which are inserted into both Extract and Generate prompts.
+- Explicitly prohibited dollar math delimiters because the current `MathText` renderer only interprets `\\(...\\)` and `\\[...\\]`.
 - Added full-formula versus fragmented-formula examples and made the JSON-source versus decoded-string escaping distinction explicit.
-- Added prompt-contract assertions in \`src/domain.test.ts\` and a JSON-to-renderer regression test for an implication/equivalence formula in \`src/components/MathText.test.tsx\`.
+- Added prompt-contract assertions in `src/domain.test.ts` and a JSON-to-renderer regression test for an implication/equivalence formula in `src/components/MathText.test.tsx`.
 - Proposed in [PR #49](https://github.com/OliverZsuffa/freequiz/pull/49). CI result and deployment status will be recorded after the checks finish. Manual browser testing has not been performed.
