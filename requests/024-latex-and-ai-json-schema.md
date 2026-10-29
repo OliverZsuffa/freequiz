@@ -2,7 +2,7 @@
 
 ## Status
 
-Implementation in progress on `implement/latex-rendering-and-ai-json-schema`.
+Implementation proposed in [PR #47](https://github.com/OliverZsuffa/freequiz/pull/47); automated checks are being verified.
 
 ## Goals
 
@@ -10,7 +10,7 @@ Implementation in progress on `implement/latex-rendering-and-ai-json-schema`.
 2. Support LaTeX in question prompts, answer options, and explanations.
 3. Keep raw source strings unchanged in imports, exports, and backups.
 4. Bundle rendering locally for offline use; no API, backend, or external runtime dependency.
-5. Accept imported section objects using `title` as an alias for `name`.
+5. Accept imported section objects using `title` as an alias for `name`, and migrate previously stored title-only section objects on app load.
 
 ## JSON contract requirements
 
