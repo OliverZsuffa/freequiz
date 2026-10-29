@@ -2,7 +2,7 @@
 
 ## Status
 
-Approved by Oliver on 2026-10-29. Implementation is in [PR #49](https://github.com/OliverZsuffa/freequiz/pull/49); automated checks are pending. No deployment or manual browser verification is claimed.
+Approved by Oliver on 2026-10-29. Implementation is in [PR #49](https://github.com/OliverZsuffa/freequiz/pull/49). PR workflow [40930112083](https://github.com/OliverZsuffa/freequiz/actions/runs/40930112083) passed. The PR deployment job was skipped as expected; main-branch deployment and manual browser verification are not claimed.
 
 ## Problem
 
@@ -112,4 +112,6 @@ The decoded text must be one complete inline formula:
 - Explicitly prohibited dollar math delimiters because the current `MathText` renderer only interprets `\\(...\\)` and `\\[...\\]`.
 - Added full-formula versus fragmented-formula examples and made the JSON-source versus decoded-string escaping distinction explicit.
 - Added prompt-contract assertions in `src/domain.test.ts` and a JSON-to-renderer regression test for an implication/equivalence formula in `src/components/MathText.test.tsx`.
-- Proposed in [PR #49](https://github.com/OliverZsuffa/freequiz/pull/49). CI result and deployment status will be recorded after the checks finish. Manual browser testing has not been performed.
+- Proposed in [PR #49](https://github.com/OliverZsuffa/freequiz/pull/49).
+- PR workflow [40930112083](https://github.com/OliverZsuffa/freequiz/actions/runs/40930112083) passed 105 tests across 5 files, TypeScript checking, production build, offline-build validation, Pages configuration, and artifact upload.
+- The workflow's deployment job was skipped on the pull request as expected. Main-branch deployment has not been checked because the PR has not been merged. Manual browser/visual testing has not been performed.
