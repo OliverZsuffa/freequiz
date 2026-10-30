@@ -238,3 +238,12 @@ The Learning timeline's **Export history** exports only the active profile's his
 - Prompt-contract regression tests cover broad/deep generation, no fixed numeric quota, subsection creation with and without an existing catalogue, and preservation of existing-section safeguards.
 - Pull-request workflow [41028370949](https://github.com/OliverZsuffa/freequiz/actions/runs/41028370949) passed the test suite, TypeScript check, production build, offline-build validation, Pages configuration, and artifact upload. The PR deployment job was skipped. The main-branch deployment has not yet been independently verified.
 - Manual browser/device testing and real-world evaluation of question-bank size across long source documents have not been performed. The prompt encourages thorough generation but cannot guarantee a particular model's output volume.
+
+
+## Request 028: Download both AI prompts together
+
+- Adds a single **Download both prompts** action beside the existing prompt generator. It builds complete Extract and Generate prompts on demand using the shared `buildAiPrompt` function, with the current section-inclusion setting and profile section tree.
+- Downloads one UTF-8 plain-text file, `freequiz-ai-prompts.txt`, with clear headings and Extract before Generate. Individual prompt generation and copy remain unchanged.
+- Combined prompt content is covered by regression tests for completeness, ordering, provenance, section inclusion, and removal of the unresolved template placeholder.
+- Implementation is client-side and uses Blob/object-URL download; no backend, external API, or dependency is added.
+- Manual browser/device download testing remains to be performed after implementation.

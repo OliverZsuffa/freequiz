@@ -74,6 +74,23 @@ describe('answer modes and import compatibility', () => {
 })
 
 
+describe('combined AI prompt download content', () => {
+  it('contains both complete prompts in order and respects the section setting', () => {
+    const sections = [{ id: 'accounting', name: 'Accounting', parentId: null }]
+    const combined = buildCombinedAiPrompts(sections, true)
+    expect(combined.indexOf('EXTRACT EXISTING QUESTIONS')).toBeLessThan(combined.indexOf('GENERATE NEW QUESTIONS'))
+    expect(combined).toContain('Never invent a question from a fact')
+    expect(combined).toContain('Create a large, thorough question bank')
+    expect(combined).toContain('accounting | - | Accounting')
+    expect(combined).toContain('AI-Extracted')
+    expect(combined).toContain('AI-Generated')
+    expect(combined).not.toContain('{{COMMON_SCHEMA_AND_SECTION_RULES}}')
+    const withoutSections = buildCombinedAiPrompts(sections, false)
+    expect(withoutSections).not.toContain('Existing sections (id | parentId | name)')
+    expect(withoutSections).toContain('JSON OUTPUT CONTRACT — FOLLOW EXACTLY')
+  })
+})
+
 describe('AI prompt modes and provenance', () => {
   it('writes an extraction-only prompt that forbids invented content and guessing', () => {
     const prompt = buildAiPrompt([{ id: 'math', name: 'Math', parentId: null }], 'extract')
