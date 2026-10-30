@@ -2,7 +2,7 @@
 
 ## Status
 
-Implemented in [PR #50](https://github.com/OliverZsuffa/freequiz/pull/50). PR workflow [41028114284](https://github.com/OliverZsuffa/freequiz/actions/runs/41028114284) passed the automated checks and Pages artifact build. Main-branch deployment is pending merge.
+Implemented and merged in [PR #50](https://github.com/OliverZsuffa/freequiz/pull/50), merge commit [`baffe2b1eddecae7a379ba9a1b8e1fc1ad245810`](https://github.com/OliverZsuffa/freequiz/commit/baffe2b1eddecae7a379ba9a1b8e1fc1ad245810). PR workflow [41028370949](https://github.com/OliverZsuffa/freequiz/actions/runs/41028370949) passed the automated checks and Pages artifact build. Main-branch deployment has not yet been independently verified.
 
 ## Problem
 
