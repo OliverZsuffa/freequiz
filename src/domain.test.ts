@@ -135,7 +135,7 @@ describe('Request 006 AI prompt quality', () => {
     expect(included).toContain('create a new subsection under the best-fitting existing parent')
     expect(included).toContain('set parentId to that existing parent ID')
     expect(included).toContain('Assign each question to the most specific appropriate existing or newly created section')
-    expect(included).toContain('If all questions fit the existing hierarchy at the appropriate level, return sections: [].')
+    expect(included).toContain('If every question fits an existing section at the appropriate level, return sections: [].')
     expect(included).toContain('Existing IDs remain valid even when their definitions are absent from this import file')
     expect(included).toContain('Do NOT make the file self-contained by repeating existing section definitions')
     expect(included).toContain('Do not treat generic schema conventions or assumptions about self-contained JSON as a reason to repeat existing sections')
