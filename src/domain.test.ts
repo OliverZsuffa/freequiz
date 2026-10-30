@@ -21,14 +21,21 @@ describe('answer and review helpers',()=>{it('checks exact multi select matches'
 describe('JSON import',()=>{it('normalises simple question arrays',()=>{const r=parseImport([{prompt:'Pick one',options:['A','B'],answer:1}]);expect(r.questions[0].correctOptionIds).toEqual(['o2'])});it('normalises section title aliases into the internal name field',()=>{const r=parseImport({sections:[{id:'sec-1',title:'Einführung & Grundbegriffe'}],questions:[{id:'q1',prompt:'Question?',options:['A','B'],answer:0,sectionId:'sec-1'}]});expect(r.sections).toEqual([{id:'sec-1',name:'Einführung & Grundbegriffe',parentId:null}]);expect(r.questions[0].sectionId).toBe('sec-1')});it('rejects too few options',()=>expect(()=>parseImport({questions:[{prompt:'Broken',options:['A'],correctOptionIds:['a']}]})).toThrow(/at least two options/));it('rejects invalid option IDs',()=>expect(()=>parseImport({questions:[{prompt:'Broken',options:['A','B'],correctOptionIds:['missing']}]})).toThrow(/correctOptionIds/))})
 it('includes existing sections and reusable source instructions in AI prompt',()=>{const p=buildAiPrompt([{id:'math',name:'Math',parentId:null}]);expect(p).toContain('Math');expect(p).toContain('source material');expect(p).toContain('exactly-n');expect(p).toContain('select-all');expect(p).toContain('freequiz/questions-v1');expect(p).toContain('"name": "Section name"');expect(p).toContain('Use "name", not "title"');expect(p).toContain('MATHEMATICAL NOTATION');expect(p).toContain('correctOptionIds')})
 
-describe('LaTeX JSON escaping instructions', () => {
-  it('explains the JSON and decoded-string escaping layers in both AI modes', () => {
+describe('LaTeX instructions in AI prompts', () => {
+  it('specifies renderer-supported delimiters and complete formula spans in both AI modes', () => {
     for (const mode of ['extract', 'generate'] as const) {
       const prompt = buildAiPrompt([], mode)
-      expect(prompt).toContain('write TWO backslash characters')
-      expect(prompt).toContain('"prompt": "Solve ' + '\\\\' + '(x^2 = 4' + '\\\\' + ')."')
-      expect(prompt).toContain('After JSON parsing, the question text is: Solve \\(x^2 = 4\\).')
-      expect(prompt).toContain('Do not write four backslashes for one delimiter backslash')
+      expect(prompt).toContain('MATHEMATICAL NOTATION')
+      expect(prompt).toContain('Do NOT use dollar delimiters')
+      expect(prompt).toContain('Freequiz does not render those delimiters')
+      expect(prompt).toContain('Enclose each complete mathematical expression in one matching pair of delimiters')
+      expect(prompt).toContain('operators are not accidentally outside the span')
+      expect(prompt).toContain('Correct complete formula in JSON')
+      expect(prompt).toContain('In extraction mode, preserve source wording')
+      expect(prompt).toContain('Correct inline JSON example: "prompt": "Solve ' + '\\\\' + '(x^2 = 4' + '\\\\' + ')."' )
+      expect(prompt).toContain('After JSON parsing, the question text is: Solve ' + '\\(' + 'x^2 = 4' + '\\)' + '.')
+      expect(prompt).toContain('Do not add a second layer of escaping')
+      expect(prompt).toContain('Correct it to the complete-formula example above')
     }
   })
 })
