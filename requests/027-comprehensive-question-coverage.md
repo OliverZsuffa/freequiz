@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed plan; awaiting Oliver's approval. No implementation changes have been made.
+Implemented in [PR #50](https://github.com/OliverZsuffa/freequiz/pull/50). PR workflow [41028114284](https://github.com/OliverZsuffa/freequiz/actions/runs/41028114284) passed the automated checks and Pages artifact build. Main-branch deployment is pending merge.
 
 ## Problem
 
