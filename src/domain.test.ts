@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
-import { buildAiPrompt, dueForReview, exportQuestions, isCorrect, masteryFor, selectRandom, parseBackup, parseImport, demoProfile, type Attempt } from './domain'
+import { buildAiPrompt, buildCombinedAiPrompts, dueForReview, exportQuestions, isCorrect, masteryFor, selectRandom, parseBackup, parseImport, demoProfile, type Attempt } from './domain'
 const a=(correct:boolean,at:string):Attempt=>({id:at,questionId:'q',at,selectedOptionIds:[],correct})
 describe('mastery states',()=>{
  it('marks untouched questions new',()=>expect(masteryFor([],'q')).toBe('new'))
